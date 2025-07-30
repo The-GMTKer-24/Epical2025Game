@@ -337,8 +337,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""31586b96-2a3d-48fc-ac36-4ee9c68ee046"",
-                    ""path"": ""<VirtualMouse>/leftButton"",
-                    ""interactions"": ""MultiTap"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""MultiTap(tapDelay=0.25)"",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Quick Focus"",
@@ -348,7 +348,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0747c8e2-6a69-4b55-bd29-f0c316f71de2"",
-                    ""path"": ""<VirtualMouse>/position"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
