@@ -11,7 +11,6 @@ namespace Factory_Elements.Blocks
         [SerializeField] private ResourceSet resourcePool;
         [SerializeField] private float timeBetweenGenerations;
         
-        private List<IFactoryElement> neighbors;
         private readonly ElementSettings<Direction> outputDirectionSetting = new(Direction.South, "Output direction", "Which description to put items into");
         
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,18 +23,6 @@ namespace Factory_Elements.Blocks
         void Update()
         {
         
-        }
-
-        public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
-        {
-            if (added)
-            {
-                neighbors.Add(newNeighbor);
-            }
-            else
-            {
-                neighbors.Remove(newNeighbor);
-            }
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)

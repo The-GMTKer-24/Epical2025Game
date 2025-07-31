@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using Unity.Mathematics;
@@ -14,10 +15,22 @@ namespace Factory_Elements.Blocks
             get => position;
             set => position = value;
         }
+        protected List<IFactoryElement> neighbors;
 
         public FactoryElementType FactoryElementType { get => factoryElementType; }
 
-        public abstract void OnNeighborUpdate(IFactoryElement newNeighbor, bool added);
+        public void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
+        {
+            if (added)
+            {
+                neighbors.Add(newNeighbor);
+            }
+            else
+            {
+                neighbors.Remove(newNeighbor);
+            }
+        }
+        
         public abstract bool AcceptsResource(IFactoryElement sender, Resource resource);
         public abstract bool TryInsertResource(IFactoryElement sender, Resource resource);
         public abstract ISetting[] GetSettings();
