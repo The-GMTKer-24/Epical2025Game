@@ -1487,18 +1487,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b75d17108d60c40b14c5fe5dea19c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40.6
-  zoomPercentPerSecond: 13.17
-  clickMoveSpeed: 24.9
-  clickZoomSpeed: 1.81
-  playerFollowSpeed: 1.52
+  zoomPercentPerSecond: 20
+  clickMoveSpeed: 15
+  clickZoomSpeed: 15
+  playerFollowSpeed: 10
   defaultZoomLevel: 7
   minCamSize: 0.4
   maxCamSize: 31.16
-  panSpeed: 8.18
-  interpolationEarlyEndPoint: 5.7
-  interpolationTargetEndPoint: 3.04
-  doubleClickLockoutTime: 4.5
+  panSpeed: 2
+  interpolationEarlyEndPoint: 1
+  interpolationTargetEndPoint: 0.1
+  doubleClickLockoutTime: 0.1
   snapBackAfterPan: 0
   player: {fileID: 1157949481}
 --- !u!1 &1157949480

@@ -20,13 +20,21 @@ namespace Factory_Elements
 
         public bool CanPlace(FactoryElementType type, int2 location)
         {
-            return factoryElements.Overlaps(new Rect(location.x, location.y, type.Size.x, type.Size.y));
+            return !factoryElements.Overlaps(new Rect(location.x, location.y, type.Size.x, type.Size.y));
         }
 
-        public bool TryPlace(FactoryElementType type, int2 location)
+        public GameObject TryPlace(FactoryElementType type, int2 location, out bool placed)
         {
             
-            throw new NotImplementedException();
+            if (!CanPlace(type, location))
+            {
+                placed = false;
+                return null;
+            }
+
+            GameObject newFactoryElement = Instantiate(type.Prefab);
+            placed = true;
+            return newFactoryElement;
         }
         
         

@@ -6,7 +6,6 @@ namespace Player
 {
     public class PlayerCamera : MonoBehaviour
     {
-        [SerializeField] private float moveSpeed;
         [SerializeField] private float zoomPercentPerSecond;
         [SerializeField] private float clickMoveSpeed;
         [SerializeField] private float clickZoomSpeed;
