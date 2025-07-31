@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GridSystem : MonoBehaviour
@@ -7,13 +8,24 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int cellHeight = 10;
     [SerializeField] private int gridHeight = 10;
     [SerializeField] private int gridWidth = 10;
+    [SerializeField] private bool renderGrid = false;
 
-
+    private LineRenderer lineRenderer;
+    
     private void Start()
     {
-        var lr = gameObject.AddComponent<LineRenderer>();
-        lr.endWidth = 0.2f;
-        lr.startWidth = 0.2f;
+        
+        InitializeGridRender(out var lr);
+        lineRenderer = lr;
+    }
+
+    /// <summary>
+    /// Instantiates a grid line renderer and returns it. The renderer will not update if the values change
+    /// </summary>
+    /// <param name="lr"></param>
+    private void InitializeGridRender(out LineRenderer lr)
+    {
+        lr = gameObject.GetComponent<LineRenderer > ();
         lr.positionCount = 5 + 3 * (gridHeight - 1) + 3 * (gridWidth - 1) + 1;
 
 
@@ -31,7 +43,7 @@ public class GridSystem : MonoBehaviour
         var index = 5;
         var yposition = 0;
         var xposition = 0;
-        for (var i = 0; i < gridWidth - 1; i++)
+        for (var i = 0; i < gridHeight - 1; i++)
         {
             yposition += cellHeight;
 
@@ -74,6 +86,32 @@ public class GridSystem : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        lineRenderer.enabled = renderGrid;
+        Debug.Log(WorldToGridSpace(Input.mousePosition));
+    }
+
+    /// <summary>
+    /// Returns the grid coordinates of any 2d world space position. Returns -1,-1 if the space is outside of the grid.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    private Vector2 WorldToGridSpace(Vector2 worldPosition)
+    {
+        // Bounds check
+        if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y || worldPosition.x > transform.position.x + gridWidth || worldPosition.y > transform.position.y + gridHeight)
+        {
+            return new Vector2(-1, -1);
+        }
+        
+        // If we get here then it's somewhere inside the grid
+        // Recenter the grid to make math easier
+        Vector2 centeredWorldPosition =
+            new Vector2(worldPosition.x - transform.position.x, worldPosition.y - transform.position.y);
+
+        int row = (int) Math.Floor(centeredWorldPosition.x / cellWidth);
+        int column = (int) Math.Floor(centeredWorldPosition.y / cellHeight);
+
+        return new Vector2(row, column);
     }
 
     private void DrawCell(Vector2 position)
