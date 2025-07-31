@@ -4,8 +4,11 @@ namespace Factory_Elements
 {
     public class Fluid : Resource
     {
-        protected Fluid(FluidType resourceType, float amount) : base(resourceType)
+        public float amount;
+        
+        public Fluid(FluidType resourceType, float amount) : base(resourceType)
         {
+            this.amount = amount;
         }
     }
 }
