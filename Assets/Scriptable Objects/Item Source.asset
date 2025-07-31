@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item Source
   m_EditorClassIdentifier: 
   cost: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 8729464739455396551, guid: dc3f1e90b50ab244a9e00ae75a79e53f, type: 3}
   size:
     x: 1
     y: 1

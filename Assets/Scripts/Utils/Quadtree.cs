@@ -7,18 +7,14 @@ namespace Utils
 {
     public class Quadtree<T>
     {
-        private int subdivideAt;
-        private int maxDepth;
+
         private List<T> items;
         private QuadNode<T> root;
-        private RectInt bounding;
         
         public Quadtree(int subdivideAt, int maxDepth, RectInt bounding)
         {
             items = new List<T>();
-            this.subdivideAt = subdivideAt;
-            this.maxDepth = maxDepth;
-            this.bounding = bounding;
+            root = new QuadNode<T>(null, bounding, 0, maxDepth, subdivideAt);
         }
         private List<QuadNode<T>> FindLeaves(RectInt target)
         {

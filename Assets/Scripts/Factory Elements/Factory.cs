@@ -17,8 +17,8 @@ namespace Factory_Elements
         public void Awake()
         {
             Instance = this;
-            if (Instance != null) throw new Exception("Multiple instances exist, replacing old instance");
             factoryElements = new Quadtree<IFactoryElement>(2, maxDepth,bounds);
+            
         }
 
         public bool CanPlace(FactoryElementType type, int2 location)

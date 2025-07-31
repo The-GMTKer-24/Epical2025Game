@@ -20,11 +20,12 @@ namespace Game_Info
         private int money;
         public void Awake()
         {
+            Instance = this;
+            
             activeQuests = initialQuests.Quests.ToList();
             unlockedFactoryElements = startingFactoryElements.Elements.ToList();
             money = initialMoney;
-            Instance = this;
-            if (Instance != null) throw new Exception("Multiple instances exist, replacing old instance");
+
         }
 
         public List<Quest> ActiveQuests => activeQuests;
