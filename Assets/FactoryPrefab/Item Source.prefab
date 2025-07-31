@@ -100,5 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da2d76f531ca70b4bac5659e068c6bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePool: {fileID: 0}
-  timeBetweenGenerations: 0
+  factoryElementType: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
+  resourcePool: {fileID: 11400000, guid: 881ad2528cac075479bd0bee26eaa8e6, type: 2}
+  ticksBetweenGenerations: 20
+  capacity: 10

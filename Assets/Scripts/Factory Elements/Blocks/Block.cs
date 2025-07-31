@@ -9,13 +9,14 @@ namespace Factory_Elements.Blocks
     public abstract class Block : MonoBehaviour, IFactoryElement
     {
         protected int2 position;
+        [SerializeField]
         protected FactoryElementType factoryElementType;
         public int2 Position
         {
             get => position;
             set => position = value;
         }
-        protected List<IFactoryElement> neighbors;
+        protected List<IFactoryElement> neighbors = new List<IFactoryElement>();
 
         public FactoryElementType FactoryElementType { get => factoryElementType; }
 

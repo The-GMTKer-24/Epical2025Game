@@ -14,6 +14,8 @@ namespace Factory_Elements
         private Quadtree<IFactoryElement> factoryElements;
         [SerializeField] private RectInt bounds;
         [SerializeField] private int maxDepth;
+        public RectInt Bounds => bounds;
+
         public void Awake()
         {
             Instance = this;
@@ -41,7 +43,7 @@ namespace Factory_Elements
             List<IFactoryElement> nearby = factoryElements.ItemsInArea(new RectInt(location.x - 1, location.y - 1, factoryElement.FactoryElementType.Size.x +1 , factoryElement.FactoryElementType.Size.y + 1));
             foreach (IFactoryElement e in nearby)
             {
-                if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)))
+                if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)) && e != factoryElement)
                 {
                     e.OnNeighborUpdate(factoryElement,true);
                     factoryElement.OnNeighborUpdate(e, true);

@@ -1531,10 +1531,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7dfaeeb53e0674d83fd38401be754f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMoney: 0
-  initialQuests: {fileID: 0}
-  questList: {fileID: 0}
-  startingFactoryElements: {fileID: 0}
+  initialMoney: 5
+  initialQuests: {fileID: 11400000, guid: c5cfb1366e93ef04899c6d18a811a947, type: 2}
+  questList: {fileID: 11400000, guid: 572db3dd719b258459dfda6ee9d8ac2d, type: 2}
+  startingUnlockedFactoryElements: {fileID: 11400000, guid: 59698fb70e670d04d93a77babb513167, type: 2}
+  startingFactoryElements: {fileID: 11400000, guid: 96185ab0e96398943ba1caea5cc574fd, type: 2}
 --- !u!114 &1106256256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1550,9 +1551,9 @@ MonoBehaviour:
   bounds:
     x: 0
     y: 0
-    width: 0
-    height: 0
-  maxDepth: 0
+    width: 256
+    height: 256
+  maxDepth: 8
 --- !u!4 &1106256257
 Transform:
   m_ObjectHideFlags: 0
@@ -1643,7 +1644,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 1305847185194394691, guid: ad2c7b6ad67072e41baf885a05d52038, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

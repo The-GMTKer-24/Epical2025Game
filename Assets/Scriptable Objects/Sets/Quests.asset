@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
-  m_Name: To be a item
+  m_Script: {fileID: 11500000, guid: 056451b832b94fcf83605628a43208a1, type: 3}
+  m_Name: Quests
   m_EditorClassIdentifier: 
-  resourceName: 
-  marketBehaviour: {fileID: 0}
+  quests:
+  - {fileID: 11400000, guid: 3a2f58afc2d2d3d488bb8723a8f0f940, type: 2}

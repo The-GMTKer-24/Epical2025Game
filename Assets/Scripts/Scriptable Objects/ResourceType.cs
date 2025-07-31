@@ -4,8 +4,8 @@ namespace Scriptable_Objects
 {
     public class ResourceType : ScriptableObject
     {
-        [SerializeField] private string resourceName;
+        [SerializeField] private Sprite icon;
 
-        public string ResourceName => resourceName;
+        public Sprite Icon => icon;
     }
 }

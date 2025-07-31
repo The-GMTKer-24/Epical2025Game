@@ -14,6 +14,7 @@ namespace Factory_Elements.Blocks
         [SerializeField] private ResourceSet resourcePool;
         [SerializeField] private int ticksBetweenGenerations;
         [SerializeField] private int capacity;
+        
         private Queue<Resource> resources = new();
         private Queue<IFactoryElement> nextUpNeighbor;
         private int lastGenerationAt;
@@ -47,11 +48,12 @@ namespace Factory_Elements.Blocks
             Queue<IFactoryElement> nextNeighborBatch = new Queue<IFactoryElement>();
             while (resources.Count > 0)
             {
-                foreach (IFactoryElement neighbor in nextUpNeighbor) // There is a case where an item that will miss it's only output option but that's only for one tick and hopefully will not come up often
+                foreach (IFactoryElement neighbor in nextUpNeighbor.ToArray()) // There is a case where an item that will miss it's only output option but that's only for one tick and hopefully will not come up often
                 {
                     if (neighbor.TryInsertResource(this, resources.Peek()))
                     {
                         resources.Dequeue();
+                        break;
                     }
                     nextNeighborBatch.Enqueue(neighbor);
                 }
@@ -59,10 +61,7 @@ namespace Factory_Elements.Blocks
                 nextUpNeighbor = nextNeighborBatch;
                 failedToExport.Enqueue(resources.Dequeue());
             }
-
             resources = failedToExport;
-
-
         }
         
 
