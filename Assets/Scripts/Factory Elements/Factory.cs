@@ -12,15 +12,18 @@ namespace Factory_Elements
         public static Factory Instance { get; private set; }
 
         private Quadtree<IFactoryElement> factoryElements;
+        [SerializeField] private RectInt bounds;
+        [SerializeField] private int maxDepth;
         public void Awake()
         {
             Instance = this;
             if (Instance != null) throw new Exception("Multiple instances exist, replacing old instance");
+            factoryElements = new Quadtree<IFactoryElement>(2, maxDepth,bounds);
         }
 
         public bool CanPlace(FactoryElementType type, int2 location)
         {
-            return !factoryElements.Overlaps(new Rect(location.x, location.y, type.Size.x, type.Size.y));
+            return !factoryElements.Overlaps(new RectInt(location.x, location.y, type.Size.x, type.Size.y));
         }
 
         public GameObject TryPlace(FactoryElementType type, int2 location, out bool placed)
@@ -34,8 +37,8 @@ namespace Factory_Elements
 
             GameObject newFactoryElement = Instantiate(type.Prefab);
             IFactoryElement factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
-            factoryElements.Insert(factoryElement, new Rect(location.x, location.y, factoryElement.FactoryElementType.Size.x, factoryElement.FactoryElementType.Size.y));
-            List<IFactoryElement> nearby = factoryElements.ItemsInArea(new Rect(location.x - 1, location.y - 1, factoryElement.FactoryElementType.Size.x +1 , factoryElement.FactoryElementType.Size.y + 1));
+            factoryElements.Insert(factoryElement, new RectInt(location.x, location.y, factoryElement.FactoryElementType.Size.x, factoryElement.FactoryElementType.Size.y));
+            List<IFactoryElement> nearby = factoryElements.ItemsInArea(new RectInt(location.x - 1, location.y - 1, factoryElement.FactoryElementType.Size.x +1 , factoryElement.FactoryElementType.Size.y + 1));
             foreach (IFactoryElement e in nearby)
             {
                 if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)))

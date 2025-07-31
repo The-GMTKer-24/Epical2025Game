@@ -11,16 +11,16 @@ namespace Utils
         private int maxDepth;
         private List<T> items;
         private QuadNode<T> root;
-        private Rect bounding;
+        private RectInt bounding;
         
-        public Quadtree(int subdivideAt, int maxDepth, Rect bounding)
+        public Quadtree(int subdivideAt, int maxDepth, RectInt bounding)
         {
             items = new List<T>();
             this.subdivideAt = subdivideAt;
             this.maxDepth = maxDepth;
             this.bounding = bounding;
         }
-        private List<QuadNode<T>> FindLeaves(Rect target)
+        private List<QuadNode<T>> FindLeaves(RectInt target)
         {
             Queue<QuadNode<T>> ToProccess = new Queue<QuadNode<T>>();
             List<QuadNode<T>> Leaves = new List<QuadNode<T>>();
@@ -45,7 +45,7 @@ namespace Utils
             return Leaves;
         }
 
-        public bool Overlaps(Rect area)
+        public bool Overlaps(RectInt area)
         {
             foreach (QuadNode<T> quadNode in FindLeaves(area))
             {
@@ -61,7 +61,7 @@ namespace Utils
             }
             return false;
         }
-        public List<T> ItemsInArea(Rect area)
+        public List<T> ItemsInArea(RectInt area)
         {
             List<T> overlaps = new List<T>();
             foreach (QuadNode<T> quadNode in FindLeaves(area))
@@ -78,7 +78,7 @@ namespace Utils
             }
             return overlaps;
         }
-        public void Insert(T item, Rect area)
+        public void Insert(T item, RectInt area)
         {
             items.Add(item);
             foreach (QuadNode<T> quadNode in FindLeaves(area))
@@ -94,13 +94,13 @@ namespace Utils
         public int Count { get; private set; }
         public int Depth { get;}
         
-        public Rect Bounding;
+        public RectInt Bounding;
         [CanBeNull] public QuadData<T> Data;
 
         private readonly int maxDepth;
         private readonly int subdivideAt;
         
-        public QuadNode(QuadNode<T>[] children,Rect bounding, int depth, int maxDepth, int subdivideAt)
+        public QuadNode(QuadNode<T>[] children,RectInt bounding, int depth, int maxDepth, int subdivideAt)
         {
             Children = children;
             Count = 0;
@@ -111,7 +111,7 @@ namespace Utils
             this.subdivideAt = subdivideAt;
         }
 
-        public void Put(T item, Rect bounds)
+        public void Put(T item, RectInt bounds)
         {
             Data = new QuadData<T>(new Data<T>(item, bounds), Data);
             Count++;
@@ -123,13 +123,15 @@ namespace Utils
         
         private void Subdivide()
         {
+            /**
             Children = new[]
             {
-                new QuadNode<T>(null, new Rect(Bounding.x,Bounding.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new Rect(Bounding.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new Rect(Bounding.center.x,Bounding.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new Rect(Bounding.center.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt)
-            };
+                
+                new QuadNode<T>(null, new RectInt(Bounding.x,Bounding.y,Bounding.center, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(Bounding.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(Bounding.center.x,Bounding.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(Bounding.center.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt)
+            };**/
             while (Data != null)
             {
                 foreach (QuadNode<T> child in Children)
@@ -163,9 +165,9 @@ namespace Utils
     {
         public T Value { get; }
 
-        public Rect Rect { get; }
+        public RectInt Rect { get; }
 
-        public Data(T value, Rect rect)
+        public Data(T value, RectInt rect)
         {
             Value = value;
             Rect = rect;
