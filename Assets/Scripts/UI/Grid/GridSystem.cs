@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GridSystem : MonoBehaviour
 {
@@ -9,11 +10,16 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int gridHeight = 10;
     [SerializeField] private int gridWidth = 10;
     [SerializeField] private bool renderGrid = false;
+    [SerializeField] private Camera camera;
 
     private LineRenderer lineRenderer;
+    private int gridSystemWidth;
+    private int gridSystemHeight;
     
     private void Start()
     {
+        gridSystemHeight = cellHeight * gridHeight;
+        gridSystemWidth = cellWidth * gridWidth;
         
         InitializeGridRender(out var lr);
         lineRenderer = lr;
@@ -27,11 +33,6 @@ public class GridSystem : MonoBehaviour
     {
         lr = gameObject.GetComponent<LineRenderer > ();
         lr.positionCount = 5 + 3 * (gridHeight - 1) + 3 * (gridWidth - 1) + 1;
-
-
-        var gridSystemHeight = cellHeight * gridHeight;
-        var gridSystemWidth = cellWidth * gridWidth;
-
 
         lr.SetPosition(0, new Vector3(0, 0, 0));
         lr.SetPosition(1, new Vector3(0, gridSystemHeight, 0));
@@ -87,7 +88,10 @@ public class GridSystem : MonoBehaviour
     private void Update()
     {
         lineRenderer.enabled = renderGrid;
-        Debug.Log(WorldToGridSpace(Input.mousePosition));
+        
+        var worldPos= camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+        
+        Debug.Log(WorldToGridSpace(worldPos));
     }
 
     /// <summary>
@@ -98,7 +102,7 @@ public class GridSystem : MonoBehaviour
     private Vector2 WorldToGridSpace(Vector2 worldPosition)
     {
         // Bounds check
-        if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y || worldPosition.x > transform.position.x + gridWidth || worldPosition.y > transform.position.y + gridHeight)
+        if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y || worldPosition.x > transform.position.x + gridSystemWidth || worldPosition.y > transform.position.y + gridSystemHeight)
         {
             return new Vector2(-1, -1);
         }

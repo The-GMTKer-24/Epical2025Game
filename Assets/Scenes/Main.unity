@@ -154,6 +154,7 @@ MonoBehaviour:
   gridHeight: 26
   gridWidth: 50
   renderGrid: 0
+  camera: {fileID: 997193167}
 --- !u!4 &75410824
 Transform:
   m_ObjectHideFlags: 0

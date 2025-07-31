@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
+  m_Name: TestPipe
+  m_EditorClassIdentifier: 
+  cost: 0
+  prefab: {fileID: 8729464739455396551, guid: 3a626eba3b2f4ea5489faa304f0d57ae, type: 3}
+  size:
+    x: 1
+    y: 1
+  recipes: []
+  capacity: 0
