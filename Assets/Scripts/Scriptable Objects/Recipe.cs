@@ -7,25 +7,25 @@ namespace Scriptable_Objects
     [CreateAssetMenu(fileName = "New Recipe", menuName = "Resources/Recipe", order = 0)]
     public class Recipe : ScriptableObject
     {
-        [SerializeField] private ItemQuantity[] inputs;
-        [SerializeField] private ItemQuantity[] outputs;
+        [SerializeField] private ResourceQuantity[] inputs;
+        [SerializeField] private ResourceQuantity[] outputs;
         [SerializeField] private float processingTime;
 
-        public ItemQuantity[] Inputs => inputs;
+        public ResourceQuantity[] Inputs => inputs;
 
         public float ProcessingTime => processingTime;
 
-        public ItemQuantity[] Outputs => outputs;
+        public ResourceQuantity[] Outputs => outputs;
     }
 }
 
 [Serializable]
-public struct ItemQuantity
+public struct ResourceQuantity
 {
-    [SerializeField] private ItemType type;
+    [SerializeField] private ResourceType type;
     [SerializeField] private int amount;
 
-    public ItemType Type => type;
+    public ResourceType Type => type;
 
     public int Amount => amount;
 }

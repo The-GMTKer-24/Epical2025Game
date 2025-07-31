@@ -6,15 +6,15 @@ namespace Scriptable_Objects
     public class Quest : ScriptableObject
     {
         [SerializeField] private Quest[] prerequisites;
-        [SerializeField] private ItemQuantity[] requirements;
-        [SerializeField] private ItemQuantity[] rewards;
+        [SerializeField] private ResourceQuantity[] requirements;
+        [SerializeField] private ResourceQuantity[] rewards;
         [SerializeField] private FactoryElementType[] unlocks;
 
         public Quest[] Prerequisites => prerequisites;
 
-        public ItemQuantity[] Requirements => requirements;
+        public ResourceQuantity[] Requirements => requirements;
 
-        public ItemQuantity[] Rewards => rewards;
+        public ResourceQuantity[] Rewards => rewards;
 
         public FactoryElementType[] Unlocks => unlocks;
     }
