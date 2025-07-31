@@ -5,16 +5,15 @@ using Unity.Mathematics;
 public interface IFactoryElement
 {
     /// <summary>
-    /// Returns the element's position in 2D space (each unit is one cell)
+    /// The element's position in 2D space (each unit is one cell)
     /// If the element takes multiple cells of space, represents the bottom left corner (lowest x and y)
     /// </summary>
-    int2 GetPosition();
+    public int2 Position { get; }
     
     /// <summary>
-    /// Returns the element's size (width in the x direction and depth in y)
+    /// The element's size (width in the x direction and depth in y)
     /// </summary>
-    /// <returns></returns>
-    int2 GetSize();
+    public int2 Size { get; }
     
     /// <summary>
     /// Updates the element with new information about its neighbors
@@ -26,12 +25,12 @@ public interface IFactoryElement
     /// <summary>
     /// Returns whether this element will take an item or not
     /// </summary>
-    bool AcceptsItem(IFactoryElement sender, InFlightItem item);
+    bool AcceptsResource(IFactoryElement sender, Resource resource);
     
     /// <summary>
     /// Returns true if the item was successfully inserted
     /// </summary>
-    bool TryInsertItem(IFactoryElement sender, InFlightItem item);
+    bool TryInsertResource(IFactoryElement sender, Resource resource);
     
     /// <summary>
     /// This method should return the settings for this factory element
