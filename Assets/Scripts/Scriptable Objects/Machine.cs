@@ -2,8 +2,8 @@
 
 namespace Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "Machine", menuName = "Factory/Machine", order = 0)]
-    public class Machine : FactoryElement
+    [CreateAssetMenu(fileName = "New Machine", menuName = "Factory/Machine", order = 0)]
+    public class Machine : FactoryElementType
     {
         [SerializeField] private Recipe[] recipes;
         [SerializeField] private int capacity;

@@ -6,9 +6,9 @@ namespace Factory_Elements
     {
         public float Temperature;
 
-        public Item(ResourceType resourceType, float temperature) : base(resourceType)
+        public Item(ItemType resourceType, float temperature) : base(resourceType)
         {
-            this.Temperature = temperature;
+            Temperature = temperature;
         }
     }
 }

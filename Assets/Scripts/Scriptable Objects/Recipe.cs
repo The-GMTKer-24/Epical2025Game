@@ -1,19 +1,31 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+﻿using System;
+using Scriptable_Objects;
+using UnityEngine;
 
 namespace Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "Recipe", menuName = "Items/Recipe", order = 0)]
+    [CreateAssetMenu(fileName = "New Recipe", menuName = "Resources/Recipe", order = 0)]
     public class Recipe : ScriptableObject
     {
-        [SerializeField] private ItemType[] inputs;
-        [SerializeField] private ItemType[] outputs;
+        [SerializeField] private ItemQuantity[] inputs;
+        [SerializeField] private ItemQuantity[] outputs;
         [SerializeField] private float processingTime;
-        
-        public ItemType[] Inputs => inputs;
+
+        public ItemQuantity[] Inputs => inputs;
 
         public float ProcessingTime => processingTime;
 
-        public ItemType[] Outputs => outputs;
+        public ItemQuantity[] Outputs => outputs;
     }
+}
+
+[Serializable]
+public struct ItemQuantity
+{
+    [SerializeField] private ItemType type;
+    [SerializeField] private int amount;
+
+    public ItemType Type => type;
+
+    public int Amount => amount;
 }

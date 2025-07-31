@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 
-
-[CreateAssetMenu(fileName = "Market Behaviour", menuName = "Items/Market Behaviour", order = 0)]
-public class MarketBehaviour : ScriptableObject
+namespace Scriptable_Objects
 {
-    [SerializeField] private int standardPrice;
-    [SerializeField] private int minPrice;
-    [SerializeField] private int maxPrice;
+    [CreateAssetMenu(fileName = "New Market Behaviour", menuName = "Resources/Market Behaviour", order = 0)]
+    public class MarketBehaviour : ScriptableObject
+    {
+        [SerializeField] private int standardPrice;
+        [SerializeField] private int minPrice;
+        [SerializeField] private int maxPrice;
 
-    public int StandardPrice => standardPrice;
+        public int StandardPrice => standardPrice;
 
-    public int MinPrice => minPrice;
+        public int MinPrice => minPrice;
 
-    public int MaxPrice => maxPrice;
+        public int MaxPrice => maxPrice;
+    }
 }

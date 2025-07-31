@@ -6,9 +6,9 @@ namespace Factory_Elements
     {
         public readonly ResourceType ResourceType;
 
-        public Resource(ResourceType resourceType)
+        protected Resource(ResourceType resourceType)
         {
-            this.ResourceType = resourceType;
+            ResourceType = resourceType;
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using System;
 
-public interface ISetting
+namespace Factory_Elements.Settings
 {
-    string Name { get; }
-    string Description { get; }
-    object ValueUntyped { get; set; }
-    Type Type { get; }
+    public interface ISetting
+    {
+        string Name { get; }
+        string Description { get; }
+        object ValueUntyped { get; set; }
+        Type Type { get; }
+    }
 }

@@ -1,10 +1,12 @@
-using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "Items/Item")]
-public class ItemType : ScriptableObject
+namespace Scriptable_Objects
 {
-    [SerializeField] private MarketBehaviour marketBehaviour;
+    [CreateAssetMenu(fileName = "New Item", menuName = "Resources/Item")]
+    public class ItemType : ResourceType
+    {
+        [SerializeField] private MarketBehaviour marketBehaviour;
 
-    public MarketBehaviour MarketBehaviour => marketBehaviour;
+        public MarketBehaviour MarketBehaviour => marketBehaviour;
+    }
 }

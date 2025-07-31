@@ -1,14 +1,18 @@
+using Factory_Elements.Settings;
+using Scriptable_Objects;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
     public abstract class Block : IFactoryElement
     {
-        private int2 position;
+        protected int2 position;
+        protected FactoryElementType factoryElementType;
         public int2 Position => position;
-        private int2 size;
-        public int2 Size => size;
         
+        public FactoryElementType FactoryElementType { get => factoryElementType; }
+
         public abstract void OnNeighborUpdate(IFactoryElement newNeighbor, bool added);
         public abstract bool AcceptsResource(IFactoryElement sender, Resource resource);
         public abstract bool TryInsertResource(IFactoryElement sender, Resource resource);
