@@ -9,8 +9,12 @@ namespace Factory_Elements.Blocks
     {
         protected int2 position;
         protected FactoryElementType factoryElementType;
-        public int2 Position => position;
-        
+        public int2 Position
+        {
+            get => position;
+            set => position = value;
+        }
+
         public FactoryElementType FactoryElementType { get => factoryElementType; }
 
         public abstract void OnNeighborUpdate(IFactoryElement newNeighbor, bool added);

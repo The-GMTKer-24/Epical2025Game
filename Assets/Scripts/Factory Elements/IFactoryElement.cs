@@ -8,9 +8,9 @@ namespace Factory_Elements
     {
         /// <summary>
         ///     The element's position in 2D space (each unit is one cell)
-        ///     If the element takes multiple cells of space, represents the bottom left corner (lowest x and y)
+        ///     If the element takes multiple cells of space, represents the top right corner (lowest x and y)
         /// </summary>
-        public int2 Position { get; }
+        public int2 Position { get; set; }
 
         /// <summary>
         /// Reference to the corresponding scriptable object

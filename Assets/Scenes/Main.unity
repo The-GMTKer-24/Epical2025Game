@@ -1488,9 +1488,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoomPercentPerSecond: 20
-  clickMoveSpeed: 15
-  clickZoomSpeed: 15
-  playerFollowSpeed: 10
+  clickMoveSpeed: 12
+  clickZoomSpeed: 12
+  playerFollowSpeed: 5
   defaultZoomLevel: 7
   minCamSize: 0.4
   maxCamSize: 31.16
