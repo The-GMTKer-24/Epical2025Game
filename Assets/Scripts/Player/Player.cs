@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float speed;
     private PlayerControls playerControls;
     
     private void Awake()
@@ -22,7 +23,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 scaledInput = playerControls.Player.Move.ReadValue<Vector2>() * Time.deltaTime;
+        Vector2 scaledInput = playerControls.Player.Move.ReadValue<Vector2>() * (Time.deltaTime * speed);
+        // Animation shenanigans HERE
         transform.transform.position += new Vector3(scaledInput.x, scaledInput.y, 0);
     }
 }
