@@ -8,15 +8,19 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] float zoomPercentPerSecond;
     [SerializeField] float clickMoveSpeed;
     [SerializeField] float clickZoomSpeed;
-    [SerializeField] private float defaultZoomLevel;
+    [SerializeField] float defaultZoomLevel;
+    [SerializeField] float minCamSize;
+    [SerializeField] float maxCamSize;
 
-    [SerializeField] private float interpolationEarlyEndPoint;
-    [SerializeField] private float interpolationTargetEndPoint;
     
+    [SerializeField] float interpolationEarlyEndPoint;
+    [SerializeField] float interpolationTargetEndPoint;
+    [SerializeField] Player player;
     
     private Camera viewCamera;
     private PlayerControls playerControls;
     private bool isInterpolating;
+    private bool arrived;
     private Vector2 targetLocation;
     private void Awake()
     {
@@ -55,6 +59,7 @@ public class PlayerCamera : MonoBehaviour
             distFromTarget <= interpolationTargetEndPoint)
         {
             isInterpolating = false;
+            arrived = true;
         }
         
         if (isInterpolating)
@@ -64,30 +69,31 @@ public class PlayerCamera : MonoBehaviour
             viewCamera.orthographicSize = ExpDecay(viewCamera.orthographicSize, defaultZoomLevel, clickMoveSpeed,
                 Time.deltaTime);
         }
+        else if (arrived)
+        {
+            
+        }
         else
         {
-            Vector2 scaledInput = movementInput * (moveSpeed * Time.deltaTime);
-            transform.transform.position += new Vector3(scaledInput.x, scaledInput.y, 0);
-
             float scaledZoom = zoomInput.y * (zoomPercentPerSecond * Time.deltaTime) * -1;
             float newScale = scaledZoom * viewCamera.orthographicSize;
             float oldScale = viewCamera.orthographicSize;
             
             Vector2 screenPosition = playerControls.Player.MousePosition.ReadValue<Vector2>();
             Vector2 oldPosition = viewCamera.ScreenToWorldPoint(screenPosition);
-            viewCamera.orthographicSize += newScale;
+            viewCamera.orthographicSize = Mathf.Clamp(newScale + viewCamera.orthographicSize, minCamSize, maxCamSize);
             if (movementInput.sqrMagnitude <= threshold && zoomInput.sqrMagnitude >= threshold)
             {
                 Vector2 cameraDelta = oldPosition - (Vector2)viewCamera.ScreenToWorldPoint(screenPosition);
                 transform.position += new Vector3(cameraDelta.x, cameraDelta.y, 0);
             }
-
         }
 
     }
     private void OnQuickFocus(InputAction.CallbackContext obj)
     {
         isInterpolating = true;
+        arrived = false;
         targetLocation = viewCamera.ScreenToWorldPoint(playerControls.Player.MousePosition.ReadValue<Vector2>());
     }
 
