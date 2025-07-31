@@ -41,6 +41,6 @@ namespace Player
 
         public int MaxInventorySize => maxInventorySize;
 
-        public List<Resource> Inventory => inventory;
+        public List<ItemStack> Inventory => inventory;
     }
 }
