@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using Unity.Mathematics;
@@ -5,15 +6,18 @@ using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
-    public class ItemSource : MonoBehaviour, IFactoryElement
+    public class ItemSource : Block
     {
-        [SerializeField] private FactoryElementType type;
-        [SerializeField] private ResourceSet pool;
+        [SerializeField] private ResourceSet resourcePool;
+        [SerializeField] private float timeBetweenGenerations;
+        
+        private List<IFactoryElement> neighbors;
+        private readonly ElementSettings<Direction> outputDirectionSetting = new(Direction.South, "Output direction", "Which description to put items into");
         
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-        
+            
         }
 
         // Update is called once per frame
@@ -22,27 +26,31 @@ namespace Factory_Elements.Blocks
         
         }
 
-        public int2 Position { get; set; }
-        public FactoryElementType FactoryElementType { get => type; }
-    
-        public void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
+        public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
         {
-            Debug.Log($"{newNeighbor.FactoryElementType.name} has been changed");
+            if (added)
+            {
+                neighbors.Add(newNeighbor);
+            }
+            else
+            {
+                neighbors.Remove(newNeighbor);
+            }
         }
 
-        public bool AcceptsResource(IFactoryElement sender, Resource resource)
+        public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
             return false;
         }
 
-        public bool TryInsertResource(IFactoryElement sender, Resource resource)
+        public override bool TryInsertResource(IFactoryElement sender, Resource resource)
         {
             return false;
         }
 
-        public ISetting[] GetSettings()
+        public override ISetting[] GetSettings()
         {
-            throw new System.NotImplementedException();
+            return new ISetting[]{outputDirectionSetting};
         }
     }
 }

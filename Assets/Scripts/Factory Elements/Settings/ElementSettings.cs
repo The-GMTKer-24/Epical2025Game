@@ -17,10 +17,16 @@ namespace Factory_Elements.Settings
 
         public string Description { get; }
 
+        public event Action SettingUpdated;
+
         public object ValueUntyped
         {
             get => Value!;
-            set => Value = (T)Convert.ChangeType(value, typeof(T));
+            set
+            {
+                SettingUpdated?.Invoke();
+                Value = (T)Convert.ChangeType(value, typeof(T));
+            }
         }
 
         public Type Type => typeof(T);
