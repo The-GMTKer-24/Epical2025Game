@@ -274,7 +274,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -322,12 +322,14 @@ MonoBehaviour:
   clickMoveSpeed: 20
   clickZoomSpeed: 20
   playerFollowSpeed: 5
-  defaultZoomLevel: 10
-  minCamSize: 1
-  maxCamSize: 100
+  defaultZoomLevel: 7
+  minCamSize: 5
+  maxCamSize: 40
+  panSpeed: 2
   interpolationEarlyEndPoint: 1
   interpolationTargetEndPoint: 0.1
-  doubleClickLockoutTime: 0
+  doubleClickLockoutTime: 0.1
+  snapBackAfterPan: 0
   player: {fileID: 1157949481}
 --- !u!1 &1157949480
 GameObject:

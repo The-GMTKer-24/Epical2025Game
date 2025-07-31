@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerControls",
     "maps": [
         {
@@ -10,6 +11,15 @@
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pan",
+                    "type": "Button",
+                    "id": "f170a930-6626-4588-bdcc-0561c3e91e9b",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -54,6 +64,15 @@
                     "name": "Mouse Position",
                     "type": "Value",
                     "id": "9e902907-c16e-404d-b77e-1c6723840a16",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Mouse Delta",
+                    "type": "Value",
+                    "id": "78fb1305-eda8-4eb1-8f4b-f2c17c641262",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -267,6 +286,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Mouse Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7ef54714-db1b-4f51-a2ab-f8db141a4771",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pan",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad2a0b8e-62da-42ce-a807-bf95d61095db",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
