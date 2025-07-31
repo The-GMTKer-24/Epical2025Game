@@ -38,13 +38,21 @@ namespace Factory_Elements
             List<IFactoryElement> nearby = factoryElements.ItemsInArea(new Rect(location.x - 1, location.y - 1, factoryElement.FactoryElementType.Size.x +1 , factoryElement.FactoryElementType.Size.y + 1));
             foreach (IFactoryElement e in nearby)
             {
-                new Rect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
-                    factoryElement.FactoryElementType.Size.y);
+                if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)))
+                {
+                    e.OnNeighborUpdate(factoryElement,true);
+                    factoryElement.OnNeighborUpdate(e, true);
+                }
             }
             placed = true;
             return newFactoryElement;
         }
-        
-        
+
+        public Rect FromFactoryElement(IFactoryElement factoryElement)
+        {
+            return new Rect(factoryElement.Position.x, factoryElement.Position.x,
+                factoryElement.FactoryElementType.Size.x,
+                factoryElement.FactoryElementType.Size.y);
+        }
     }
 }
