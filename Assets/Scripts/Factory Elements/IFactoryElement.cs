@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using DefaultNamespace;
 using Factory_Elements;
+using Unity.Mathematics;
 
 public interface IFactoryElement
 {
@@ -8,13 +9,13 @@ public interface IFactoryElement
     /// Returns the element's position in 2D space (each unit is one cell)
     /// If the element takes multiple cells of space, represents the bottom left corner (lowest x and y)
     /// </summary>
-    Int2D GetPosition();
+    int2 GetPosition();
     
     /// <summary>
     /// Returns the element's size (width in the x direction and depth in y)
     /// </summary>
     /// <returns></returns>
-    Int2D GetSize();
+    int2 GetSize();
     
     /// <summary>
     /// Updates the element with new information about its neighbors
