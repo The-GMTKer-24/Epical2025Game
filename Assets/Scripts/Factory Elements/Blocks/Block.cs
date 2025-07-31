@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
-    public abstract class Block : IFactoryElement
+    public abstract class Block : MonoBehaviour, IFactoryElement
     {
         protected int2 position;
         protected FactoryElementType factoryElementType;
