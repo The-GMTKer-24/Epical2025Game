@@ -1,13 +1,28 @@
-﻿using Factory_Elements;
+﻿using System.Drawing;
+using DefaultNamespace;
+using Factory_Elements;
 
 public interface IFactoryElement
 {
     /// <summary>
-    /// Updates a neighbor
+    /// Returns the element's position in 2D space (each unit is one cell)
+    /// If the element takes multiple cells of space, represents the bottom left corner (lowest x and y)
     /// </summary>
-    /// <param name="edge">The side that a new neighbor is created from</param>
-    /// <param name="newNeighbor">New neighbor on the side. Null if the neighbor has been removed</param>
-    void OnNeighborUpdate(Direction edge, IFactoryElement newNeighbor);
+    Int2D GetPosition();
+    
+    /// <summary>
+    /// Returns the element's size (width in the x direction and depth in y)
+    /// </summary>
+    /// <returns></returns>
+    Int2D GetSize();
+    
+    /// <summary>
+    /// Updates the element with new information about its neighbors
+    /// </summary>
+    /// <param name="newNeighbor">The neighbor that has been altered</param>
+    /// <param name="added">True if the neighbor was added, false if removed</param>
+    void OnNeighborUpdate(IFactoryElement newNeighbor, bool added);
+    
     /// <summary>
     /// Returns whether this element will take an item or not
     /// </summary>
