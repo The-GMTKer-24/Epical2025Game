@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Factory_Elements;
+using Game_Info;
+using Scriptable_Objects;
+using Unity.Mathematics;
 
 public class GridSystem : MonoBehaviour
 {
@@ -11,6 +15,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int gridWidth = 10;
     [SerializeField] private bool renderGrid = false;
     [SerializeField] private Camera camera;
+    [SerializeField] private FactoryElementType placeElement;
 
     private LineRenderer lineRenderer;
     private int gridSystemWidth;
@@ -89,9 +94,14 @@ public class GridSystem : MonoBehaviour
     {
         lineRenderer.enabled = renderGrid;
         
-        var worldPos= camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+        var mouseWorldPoint= camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+
+        Vector2 gridSpace = WorldToGridSpace(mouseWorldPoint);
         
-        Debug.Log(WorldToGridSpace(worldPos));
+        Factory factory = Factory.Instance;
+        
+        
+        Debug.Log(factory.CanPlace(placeElement, new int2((int)gridSpace.x, (int)gridSpace.y)));
     }
 
     /// <summary>

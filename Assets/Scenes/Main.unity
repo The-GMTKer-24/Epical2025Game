@@ -155,6 +155,7 @@ MonoBehaviour:
   gridWidth: 50
   renderGrid: 0
   camera: {fileID: 997193167}
+  placeElement: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
 --- !u!4 &75410824
 Transform:
   m_ObjectHideFlags: 0
