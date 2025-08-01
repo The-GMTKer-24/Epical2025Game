@@ -15,5 +15,5 @@ MonoBehaviour:
   cost: 0
   prefab: {fileID: 8729464739455396551, guid: 3a626eba3b2f4ea5489faa304f0d57ae, type: 3}
   size:
-    x: 0
-    y: 0
+    x: 1
+    y: 1
