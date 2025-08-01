@@ -48,6 +48,7 @@ namespace Factory_Elements.Blocks
             if (AcceptsResource(sender, resource))
             {
                 buffers[resource.ResourceType].AddResource(resource);
+                Debug.Log("got item" + resource.ResourceType.name);
                 return true;
             }
             return false;
