@@ -9,7 +9,7 @@ namespace Factory_Elements
 {
     public class Factory : MonoBehaviour
     {
-        public const int ROOM_TEMPERATURE = 20; // Degrees Celsius
+        public const float ROOM_TEMPERATURE = 20.0f; // Degrees Celsius
         
         public static Factory Instance { get; private set; }
 

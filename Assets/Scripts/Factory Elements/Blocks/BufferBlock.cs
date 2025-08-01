@@ -142,11 +142,24 @@ namespace Factory_Elements.Blocks
             Stack.AddResource(resource);
         }
 
-        public void CreateResources(ResourceType resourceType, int quantity)
+        public void CreateResources(int quantity)
         {
             for (int i = 0; i < quantity; i++)
             {
-                Resource newResource = new 
+                Resource newResource = Resource.fromType(ResourceType);
+                AddResource(newResource);
+            }
+        }
+
+        public void ConsumeResources(int quantity)
+        {
+            if (quantity > Quantity)
+            {
+                throw new Exception("Not enough resources");
+            }
+            for (int i = 0; i < quantity; i++)
+            {
+                TakeResource();
             }
         }
     }

@@ -46,12 +46,12 @@ namespace Factory_Elements.Blocks
                     foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
                     {
                         ResourceType resourceType = resourceQuantity.Type;
-                        buffers[resourceType].TakeResource()
+                        buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
                     }
                     foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
                     {
                         ResourceType resourceType = resourceQuantity.Type;
-                        
+                        buffers[resourceType].CreateResources(resourceQuantity.Amount);
                     }
                 }
             }
@@ -63,7 +63,7 @@ namespace Factory_Elements.Blocks
 
         public override ISetting[] GetSettings()
         {
-            
+            return new [] { recipeSetting };
         }
     }
 }

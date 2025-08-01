@@ -25,6 +25,12 @@ public struct ResourceQuantity
     [SerializeField] private ResourceType type;
     [SerializeField] private int amount;
 
+    public ResourceQuantity(ResourceType type, int amount)
+    {
+        this.type = type;
+        this.amount = amount;
+    }
+
     public ResourceType Type => type;
 
     public int Amount => amount;

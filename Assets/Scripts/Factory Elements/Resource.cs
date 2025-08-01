@@ -13,7 +13,7 @@ namespace Factory_Elements
             ResourceType = resourceType;
         }
 
-        public Resource fromType(ResourceType resourceType)
+        public static Resource fromType(ResourceType resourceType)
         {
             if (resourceType is ItemType itemType)
             {
@@ -21,7 +21,7 @@ namespace Factory_Elements
             } 
             else if (resourceType is FluidType fluidType)
             {
-                return new Fluid(fluidType, 1.0f);
+                return new Fluid(fluidType);
             }
             
             throw new Exception($"Resource type {resourceType} is not supported");

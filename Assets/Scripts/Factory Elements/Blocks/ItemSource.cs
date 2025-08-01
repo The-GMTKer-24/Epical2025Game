@@ -30,10 +30,10 @@ namespace Factory_Elements.Blocks
                 switch (toCreate)
                 {
                     case ItemType item:
-                        resources.Enqueue(new Item(item,20.0f)); // Is celcius :D
+                        resources.Enqueue(new Item(item, Factory.ROOM_TEMPERATURE)); // Is celcius :D
                         break;
                     case FluidType fluid:
-                        resources.Enqueue(new Fluid(fluid, 1.0f));
+                        resources.Enqueue(new Fluid(fluid));
                         break;
                 }
             }
