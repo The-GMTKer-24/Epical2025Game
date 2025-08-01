@@ -102,7 +102,11 @@ namespace Factory_Elements.Blocks
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
-            var room = items.First.Value.Progress;
+            if (items.Count == 0)
+            {
+                return true;
+            }
+            float room = items.First.Value.Progress;
             return room >= minDistance;
         }
 
