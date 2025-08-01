@@ -17,6 +17,8 @@ namespace Factory_Elements.Blocks
 
         private int currentOutputNeighborIndex;
         private List<int> resourceTypeIndexPerNeighbor = new();
+        
+        
 
         // this code is EVIL. I'm so sorry
         protected virtual void FixedUpdate()
@@ -96,7 +98,13 @@ namespace Factory_Elements.Blocks
         public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
         {
             base.OnNeighborUpdate(newNeighbor, added);
-            resourceTypeIndexPerNeighbor = new List<int>(neighbors.Count);
+            // resourceTypeIndexPerNeighbor = new List<int>(neighbors.Count);
+            resourceTypeIndexPerNeighbor = new List<int>();
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                resourceTypeIndexPerNeighbor.Add(0);
+            }
+            
             currentOutputNeighborIndex = 0;
         }
     }

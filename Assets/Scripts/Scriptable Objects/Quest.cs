@@ -8,6 +8,7 @@ namespace Scriptable_Objects
         [SerializeField] private Quest[] prerequisites;
         [SerializeField] private ResourceQuantity[] requirements;
         [SerializeField] private ResourceQuantity[] rewards;
+        [SerializeField] private int moneyReward;
         [SerializeField] private FactoryElementType[] unlocks;
 
         public Quest[] Prerequisites => prerequisites;
@@ -15,6 +16,8 @@ namespace Scriptable_Objects
         public ResourceQuantity[] Requirements => requirements;
 
         public ResourceQuantity[] Rewards => rewards;
+        
+        public int MoneyReward => moneyReward;
 
         public FactoryElementType[] Unlocks => unlocks;
     }
