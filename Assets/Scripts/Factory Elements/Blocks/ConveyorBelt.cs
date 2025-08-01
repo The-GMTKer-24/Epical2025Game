@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements;
@@ -29,49 +30,28 @@ namespace Factory_Elements.Blocks
         {
             base.OnNeighborUpdate(newNeighbor, added);
             
-            // Update aheadBelt
-            if (!added && newNeighbor == aheadNeighbor)
+            int2 direction;
+            switch (directionSetting.Value)
             {
-                aheadBelt = null;
-                aheadNeighbor = null;
+                case Direction.North: direction = new int2(0, 1); break;
+                case Direction.East: direction = new int2(1, 0); break;
+                case Direction.South: direction = new int2(0, -1); break;
+                case Direction.West: direction = new int2(-1, 0); break;
+                default: throw new Exception("Invalid direction");
             }
             
-            int2 north = new int2(0, 1);
-            int2 east = new int2(1, 0);
-            int2 south = new int2(0, -1);
-            int2 west = new int2(-1, 0);
-
-            if (added && newNeighbor is ConveyorBelt newBelt)
+            aheadNeighbor = Factory.Instance.FromLocation(this.Position + direction);
+            if (aheadNeighbor == null)
             {
-                int2 relativePos = newBelt.Position - this.Position;
-                if (relativePos.Equals(north) && directionSetting.Value == Direction.North
-                    || relativePos.Equals(east) && directionSetting.Value == Direction.East
-                    || relativePos.Equals(south) && directionSetting.Value == Direction.South
-                    || relativePos.Equals(west) && directionSetting.Value == Direction.West)
-                {
-                    aheadBelt = newBelt;
-                }
+                aheadBelt = null;
+            } 
+            else if (aheadNeighbor is ConveyorBelt belt)
+            {
+                aheadBelt = belt;
             }
-
-            if (added)
+            else
             {
-                for (int x = newNeighbor.Position.x;
-                     x < newNeighbor.Position.x + newNeighbor.FactoryElementType.Size.x;
-                     x++)
-                {
-                    for (int y = newNeighbor.Position.y;
-                         y < newNeighbor.Position.y + newNeighbor.FactoryElementType.Size.y;)
-                    {
-                        int2 relativePos = new int2(x, y) - this.Position;
-                        if (relativePos.Equals(north) && directionSetting.Value == Direction.North
-                            || relativePos.Equals(east) && directionSetting.Value == Direction.East
-                            || relativePos.Equals(south) && directionSetting.Value == Direction.South
-                            || relativePos.Equals(west) && directionSetting.Value == Direction.West)
-                        {
-                            aheadNeighbor = newNeighbor;
-                        }
-                    }
-                }
+                aheadBelt = null;
             }
         }
 

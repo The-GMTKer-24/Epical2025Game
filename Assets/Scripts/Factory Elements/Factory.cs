@@ -65,5 +65,22 @@ namespace Factory_Elements
                 factoryElement.FactoryElementType.Size.x,
                 factoryElement.FactoryElementType.Size.y);
         }
+
+        public IFactoryElement FromLocation(int2 location)
+        {
+            RectInt bounds = new RectInt(location.x, location.y, 1, 1);
+            List<IFactoryElement> nearbyElements = factoryElements.ItemsInArea(bounds);
+            if (nearbyElements.Count == 0)
+            {
+                return null;
+            }
+
+            if (nearbyElements.Count == 1)
+            {
+                return nearbyElements[0];
+            }
+
+            throw new Exception("Factory elements cannot overlap!");
+        }
     }
 }
