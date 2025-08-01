@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
@@ -8,14 +7,15 @@ namespace Factory_Elements.Blocks
 {
     public class Crafter : BufferBlock
     {
-        [SerializeField] Recipe defaultRecipe;
-        protected ElementSettings<Recipe> recipeSetting;
+        [SerializeField] private Recipe defaultRecipe;
         private float recipeProgress; // In seconds
+        protected ElementSettings<Recipe> recipeSetting;
         private bool running;
 
         public void Awake()
         {
-            recipeSetting = new ElementSettings<Recipe>(defaultRecipe, "Active Recipe", "The recipe that this machine is currently using");
+            recipeSetting = new ElementSettings<Recipe>(defaultRecipe, "Active Recipe",
+                "The recipe that this machine is currently using");
             RecipeUpdate();
             recipeSetting.SettingUpdated += RecipeUpdate;
             recipeProgress = 0;
@@ -27,64 +27,47 @@ namespace Factory_Elements.Blocks
             RecipeUpdate();
         }
 
-        private void RecipeUpdate()
-        {
-            List<Buffer> newBuffers = new List<Buffer>();
-            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
-            {
-                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, true, false));
-            }
-            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
-            {
-                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, false, true));
-            }
-            setBuffers(newBuffers);
-        }
-
         public void FixedUpdate()
         {
             base.FixedUpdate();
-            
-            bool canRun = true;
-            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
+
+            var canRun = true;
+            foreach (var resourceQuantity in recipeSetting.Value.Inputs)
             {
-                ResourceType resourceType = resourceQuantity.Type;
-                if (buffers[resourceType].Quantity < resourceQuantity.Amount)
-                {
-                    canRun = false;
-                }
+                var resourceType = resourceQuantity.Type;
+                if (buffers[resourceType].Quantity < resourceQuantity.Amount) canRun = false;
             }
-            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
+
+            foreach (var resourceQuantity in recipeSetting.Value.Outputs)
             {
-                ResourceType resourceType = resourceQuantity.Type;
-                int remainingSpace = buffers[resourceType].Capacity - buffers[resourceType].Quantity;
-                if (remainingSpace < resourceQuantity.Amount)
-                {
-                    canRun = false;
-                }
+                var resourceType = resourceQuantity.Type;
+                var remainingSpace = buffers[resourceType].Capacity - buffers[resourceType].Quantity;
+                if (remainingSpace < resourceQuantity.Amount) canRun = false;
             }
+
             running = canRun;
 
             if (running)
             {
                 recipeProgress += Time.fixedDeltaTime;
-                Recipe recipe = recipeSetting.Value;
+                var recipe = recipeSetting.Value;
                 if (recipeProgress >= recipe.ProcessingTime)
                 {
                     recipeProgress = 0;
                     // Recipe finished!
                     Debug.Log("Crafted!");
-                    foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
+                    foreach (var resourceQuantity in recipeSetting.Value.Inputs)
                     {
-                        ResourceType resourceType = resourceQuantity.Type;
+                        var resourceType = resourceQuantity.Type;
                         buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
                         Debug.Log("Consumed:");
                         Debug.Log(resourceQuantity.Type.name);
                         Debug.Log(resourceQuantity.Amount.ToString());
                     }
-                    foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
+
+                    foreach (var resourceQuantity in recipeSetting.Value.Outputs)
                     {
-                        ResourceType resourceType = resourceQuantity.Type;
+                        var resourceType = resourceQuantity.Type;
                         buffers[resourceType].CreateResources(resourceQuantity.Amount);
                         Debug.Log("Created:");
                         Debug.Log(resourceQuantity.Type.name);
@@ -98,9 +81,19 @@ namespace Factory_Elements.Blocks
             }
         }
 
+        private void RecipeUpdate()
+        {
+            var newBuffers = new List<Buffer>();
+            foreach (var resourceQuantity in recipeSetting.Value.Inputs)
+                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, true, false));
+            foreach (var resourceQuantity in recipeSetting.Value.Outputs)
+                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, false, true));
+            setBuffers(newBuffers);
+        }
+
         public override ISetting[] GetSettings()
         {
-            return new [] { recipeSetting };
+            return new[] { recipeSetting };
         }
     }
 }

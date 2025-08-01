@@ -15,15 +15,10 @@ namespace Factory_Elements
 
         public static Resource fromType(ResourceType resourceType)
         {
-            if (resourceType is ItemType itemType)
-            {
-                return new Item(itemType, Factory.ROOM_TEMPERATURE);
-            } 
-            else if (resourceType is FluidType fluidType)
-            {
-                return new Fluid(fluidType);
-            }
-            
+            if (resourceType is ItemType itemType) return new Item(itemType, Factory.Instance.roomTemperature);
+
+            if (resourceType is FluidType fluidType) return new Fluid(fluidType);
+
             throw new Exception($"Resource type {resourceType} is not supported");
         }
     }

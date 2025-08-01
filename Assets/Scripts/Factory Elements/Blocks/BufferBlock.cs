@@ -6,34 +6,72 @@ using UnityEngine;
 namespace Factory_Elements.Blocks
 {
     /// <summary>
-    /// A factory element with input and output buffers. Handles I/O handling fully.
+    ///     A factory element with input and output buffers. Handles I/O handling fully.
     /// </summary>
     public abstract class BufferBlock : Block
     {
-        private List<ResourceType> resourceTypes = new List<ResourceType>();
-        private List<ResourceType> inputtableResourceTypes = new List<ResourceType>();
-        private List<ResourceType> outputtableResourceTypes = new List<ResourceType>();
+        private readonly List<ResourceType> inputtableResourceTypes = new();
+        private readonly List<ResourceType> outputtableResourceTypes = new();
+        private readonly List<ResourceType> resourceTypes = new();
         protected Dictionary<ResourceType, Buffer> buffers = new();
+
+        private int currentOutputNeighborIndex;
+        private List<int> resourceTypeIndexPerNeighbor = new();
+
+        // this code is EVIL. I'm so sorry
+        protected virtual void FixedUpdate()
+        {
+            // Try to output to neighbors if possible
+            var previousOutputNeighborIndex = currentOutputNeighborIndex;
+            currentOutputNeighborIndex++;
+            if (currentOutputNeighborIndex >= neighbors.Count) currentOutputNeighborIndex = 0;
+            while (currentOutputNeighborIndex != previousOutputNeighborIndex)
+            {
+                var neighbor = neighbors[currentOutputNeighborIndex];
+
+                // Trying this neighbor, either a resource can be output or cycle to the next
+                {
+                    resourceTypeIndexPerNeighbor[currentOutputNeighborIndex]++;
+                    if (resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] >= outputtableResourceTypes.Count)
+                        resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] = 0;
+                    var resourceIndex = resourceTypeIndexPerNeighbor[currentOutputNeighborIndex];
+                    resourceIndex++;
+                    if (resourceIndex >= outputtableResourceTypes.Count) resourceIndex = 0;
+
+                    while (resourceIndex != resourceTypeIndexPerNeighbor[currentOutputNeighborIndex])
+                    {
+                        var resourceType = outputtableResourceTypes[resourceIndex];
+                        var buffer = buffers[resourceType];
+                        if (buffer.Quantity != 0)
+                            if (neighbor.AcceptsResource(this, buffer.QueryResource()))
+                            {
+                                neighbor.TryInsertResource(this, buffer.TakeResource());
+                                return;
+                            }
+
+                        resourceIndex++;
+                        if (resourceIndex >= outputtableResourceTypes.Count) resourceIndex = 0;
+                    }
+                }
+
+                currentOutputNeighborIndex++;
+                if (currentOutputNeighborIndex >= neighbors.Count) currentOutputNeighborIndex = 0;
+            }
+        }
 
         protected void setBuffers(IEnumerable<Buffer> buffers)
         {
-            this.resourceTypes.Clear();
-            this.inputtableResourceTypes.Clear();
-            this.outputtableResourceTypes.Clear();
+            resourceTypes.Clear();
+            inputtableResourceTypes.Clear();
+            outputtableResourceTypes.Clear();
             this.buffers.Clear();
-            foreach (Buffer buffer in buffers)
+            foreach (var buffer in buffers)
             {
                 this.buffers.Add(buffer.ResourceType, buffer);
                 resourceTypes.Add(buffer.ResourceType);
-                if (buffer.CanAcceptInput)
-                {
-                    inputtableResourceTypes.Add(buffer.ResourceType);
-                }
+                if (buffer.CanAcceptInput) inputtableResourceTypes.Add(buffer.ResourceType);
 
-                if (buffer.CanGiveOutput)
-                {
-                    outputtableResourceTypes.Add(buffer.ResourceType);
-                }
+                if (buffer.CanGiveOutput) outputtableResourceTypes.Add(buffer.ResourceType);
             }
         }
 
@@ -51,6 +89,7 @@ namespace Factory_Elements.Blocks
                 Debug.Log("got item" + resource.ResourceType.name);
                 return true;
             }
+
             return false;
         }
 
@@ -60,73 +99,14 @@ namespace Factory_Elements.Blocks
             resourceTypeIndexPerNeighbor = new List<int>(neighbors.Count);
             currentOutputNeighborIndex = 0;
         }
-
-        private int currentOutputNeighborIndex = 0;
-        private List<int> resourceTypeIndexPerNeighbor = new();
-
-        // this code is EVIL. I'm so sorry
-        protected virtual void FixedUpdate()
-        {
-            // Try to output to neighbors if possible
-            int previousOutputNeighborIndex = currentOutputNeighborIndex;
-            currentOutputNeighborIndex++;
-            if (currentOutputNeighborIndex >= neighbors.Count)
-            {
-                currentOutputNeighborIndex = 0;
-            }
-            while (currentOutputNeighborIndex != previousOutputNeighborIndex)
-            {
-                IFactoryElement neighbor = neighbors[currentOutputNeighborIndex];
-                
-                // Trying this neighbor, either a resource can be output or cycle to the next
-                {
-                    resourceTypeIndexPerNeighbor[currentOutputNeighborIndex]++;
-                    if (resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] >= outputtableResourceTypes.Count)
-                    {
-                        resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] = 0;
-                    }
-                    int resourceIndex = resourceTypeIndexPerNeighbor[currentOutputNeighborIndex];
-                    resourceIndex++;
-                    if (resourceIndex >= outputtableResourceTypes.Count)
-                    {
-                        resourceIndex = 0;
-                    }
-
-                    while (resourceIndex != resourceTypeIndexPerNeighbor[currentOutputNeighborIndex])
-                    {
-                        ResourceType resourceType = outputtableResourceTypes[resourceIndex];
-                        Buffer buffer = buffers[resourceType];
-                        if (buffer.Quantity != 0)
-                        {
-                            if (neighbor.AcceptsResource(this, buffer.QueryResource()))
-                            {
-                                neighbor.TryInsertResource(this, buffer.TakeResource());
-                                return;
-                            }
-                        }
-                        resourceIndex++;
-                        if (resourceIndex >= outputtableResourceTypes.Count)
-                        {
-                            resourceIndex = 0;
-                        }
-                    }
-                }
-
-                currentOutputNeighborIndex++;
-                if (currentOutputNeighborIndex >= neighbors.Count)
-                {
-                    currentOutputNeighborIndex = 0;
-                }
-            }
-        }
     }
 
     public class Buffer
     {
         public readonly int Capacity;
-        private ResourceStack Stack;
         public bool CanAcceptInput;
         public bool CanGiveOutput;
+        private ResourceStack Stack;
 
         public Buffer(int capacity, ResourceType resourceType, bool canAcceptInput, bool canGiveOutput)
         {
@@ -135,46 +115,42 @@ namespace Factory_Elements.Blocks
             CanGiveOutput = canGiveOutput;
             Stack = ResourceStack.Create(resourceType);
         }
-        
-        public ResourceType ResourceType {get => Stack.ResourceType;}
-        public int Quantity {get => Stack.Quantity;}
-        public Resource QueryResource() { return Stack.QueryResource(); }
-        public Resource TakeResource() { return Stack.TakeResource(); }
 
-        public void AddResource(Resource resource) 
+        public ResourceType ResourceType => Stack.ResourceType;
+        public int Quantity => Stack.Quantity;
+
+        public Resource QueryResource()
         {
-            if (Quantity >= Capacity) 
-            {
-                throw new Exception("Buffer is full");
-            }
+            return Stack.QueryResource();
+        }
 
-            if (ResourceType != resource.ResourceType)
-            {
-                throw new Exception("Cannot add different resource type");
-            }
-            
+        public Resource TakeResource()
+        {
+            return Stack.TakeResource();
+        }
+
+        public void AddResource(Resource resource)
+        {
+            if (Quantity >= Capacity) throw new Exception("Buffer is full");
+
+            if (ResourceType != resource.ResourceType) throw new Exception("Cannot add different resource type");
+
             Stack.AddResource(resource);
         }
 
         public void CreateResources(int quantity)
         {
-            for (int i = 0; i < quantity; i++)
+            for (var i = 0; i < quantity; i++)
             {
-                Resource newResource = Resource.fromType(ResourceType);
+                var newResource = Resource.fromType(ResourceType);
                 AddResource(newResource);
             }
         }
 
         public void ConsumeResources(int quantity)
         {
-            if (quantity > Quantity)
-            {
-                throw new Exception("Not enough resources");
-            }
-            for (int i = 0; i < quantity; i++)
-            {
-                TakeResource();
-            }
+            if (quantity > Quantity) throw new Exception("Not enough resources");
+            for (var i = 0; i < quantity; i++) TakeResource();
         }
 
         public void Empty()
@@ -182,5 +158,4 @@ namespace Factory_Elements.Blocks
             Stack = ResourceStack.Create(ResourceType);
         }
     }
-
 }

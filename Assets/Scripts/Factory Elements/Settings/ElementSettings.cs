@@ -11,14 +11,12 @@ namespace Factory_Elements.Settings
             Name = name;
             Description = description;
         }
-        
+
         public T Value { get; set; }
 
         public string Name { get; }
 
         public string Description { get; }
-
-        public event Action SettingUpdated;
 
         public object ValueUntyped
         {
@@ -31,5 +29,7 @@ namespace Factory_Elements.Settings
         }
 
         public Type Type => typeof(T);
+
+        public event Action SettingUpdated;
     }
 }

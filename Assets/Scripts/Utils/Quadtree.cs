@@ -1,177 +1,186 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-using NUnit.Framework;
-using UnityEngine;
+using System.Linq;
 
 namespace Utils
 {
     public class Quadtree<T>
     {
+        private readonly Dictionary<T, IntRect> itemToRectMap = new();
+        private readonly int maxDepth;
 
-        private List<T> items;
-        private QuadNode<T> root;
-        
-        public Quadtree(int subdivideAt, int maxDepth, RectInt bounding)
+        private readonly int maxItemsPerNode;
+        private readonly QuadNode root;
+
+        public Quadtree(IntRect bounds, int maxItemsPerNode = 4, int maxDepth = 8)
         {
-            items = new List<T>();
-            root = new QuadNode<T>(null, bounding, 0, maxDepth, subdivideAt);
-        }
-        private List<QuadNode<T>> FindLeaves(RectInt target)
-        {
-            Queue<QuadNode<T>> ToProccess = new Queue<QuadNode<T>>();
-            List<QuadNode<T>> Leaves = new List<QuadNode<T>>();
-            ToProccess.Enqueue(root);
-            while (ToProccess.TryDequeue(out QuadNode<T> result))
-            {
-                if (result.Count != -1)
-                {
-                    Leaves.Add(result);
-                }
-                else
-                {
-                    foreach (QuadNode<T> child in result.Children)
-                    {
-                        if (child.Bounding.Overlaps(target))
-                        {
-                            ToProccess.Enqueue(child);
-                        }
-                    }
-                }
-            }
-            return Leaves;
+            this.maxItemsPerNode = maxItemsPerNode;
+            this.maxDepth = maxDepth;
+            root = new QuadNode(bounds);
         }
 
-        public bool Overlaps(RectInt area)
+        public void Insert(T item, IntRect rect)
         {
-            foreach (QuadNode<T> quadNode in FindLeaves(area))
+            if (itemToRectMap.ContainsKey(item)) Remove(item);
+
+            itemToRectMap[item] = rect;
+            InsertRecursive(root, new QuadtreeItem { Item = item, Rect = rect }, 0);
+        }
+
+        private void InsertRecursive(QuadNode node, QuadtreeItem item, int depth)
+        {
+            if (!node.Bounds.Overlaps(item.Rect)) return;
+
+            if (node.IsLeaf)
             {
-                QuadData<T> current = quadNode.Data;
-                while (current != null)
-                {
-                    if (current.Data.Rect.Overlaps(area))
-                    {
-                        return true;
-                    }
-                    current = current.Next;
-                }
+                node.Items.Add(item);
+                if (node.Items.Count > maxItemsPerNode && depth < maxDepth)
+                    node.Split(depth, maxDepth, maxItemsPerNode);
             }
+            else
+            {
+                foreach (var child in node.Children)
+                    if (child.Bounds.Overlaps(item.Rect))
+                        InsertRecursive(child, item, depth + 1);
+            }
+        }
+
+        public void Remove(T item)
+        {
+            if (!itemToRectMap.TryGetValue(item, out var rect)) return;
+
+            RemoveRecursive(root, item, rect);
+            itemToRectMap.Remove(item);
+        }
+
+        private void RemoveRecursive(QuadNode node, T item, IntRect rect)
+        {
+            if (!node.Bounds.Overlaps(rect)) return;
+
+            if (node.IsLeaf)
+                node.Items.RemoveAll(i => EqualityComparer<T>.Default.Equals(i.Item, item));
+            else
+                foreach (var child in node.Children)
+                    if (child.Bounds.Overlaps(rect))
+                        RemoveRecursive(child, item, rect);
+        }
+
+        public bool Overlaps(IntRect area)
+        {
+            return IsOccupiedRecursive(root, area);
+        }
+
+        private bool IsOccupiedRecursive(QuadNode node, IntRect area)
+        {
+            if (!node.Bounds.Overlaps(area)) return false;
+
+            if (node.IsLeaf) return node.Items.Any(item => item.Rect.Overlaps(area));
+
+            foreach (var child in node.Children)
+                if (IsOccupiedRecursive(child, area))
+                    return true;
             return false;
         }
-        public List<T> ItemsInArea(RectInt area)
+
+        public List<T> ItemsInArea(IntRect area)
         {
-            List<T> overlaps = new List<T>();
-            foreach (QuadNode<T> quadNode in FindLeaves(area))
-            {
-                QuadData<T> current = quadNode.Data;
-                while (current != null)
-                {
-                    if (current.Data.Rect.Overlaps(area))
-                    {
-                        overlaps.Add(current.Data.Value);
-                    }
-                    current = current.Next;
-                }
-            }
-            return overlaps;
+            var results = new HashSet<T>();
+            GetItemsRecursive(root, area, results);
+            return results.ToList();
         }
-        public void Insert(T item, RectInt area)
+
+        private void GetItemsRecursive(QuadNode node, IntRect area, HashSet<T> results)
         {
-            items.Add(item);
-            foreach (QuadNode<T> quadNode in FindLeaves(area))
+            if (!node.Bounds.Overlaps(area)) return;
+
+            if (node.IsLeaf)
             {
-                quadNode.Put(item, area);
+                foreach (var item in node.Items)
+                    if (item.Rect.Overlaps(area))
+                        results.Add(item.Item);
             }
+            else
+            {
+                foreach (var child in node.Children) GetItemsRecursive(child, area, results);
+            }
+        }
+
+        private class QuadNode
+        {
+            public QuadNode(IntRect bounds)
+            {
+                Bounds = bounds;
+                Items = new List<QuadtreeItem>();
+            }
+
+            public IntRect Bounds { get; }
+            public List<QuadtreeItem> Items { get; }
+            public QuadNode[] Children { get; private set; }
+            public bool IsLeaf => Children == null;
+
+            public void Split(int depth, int maxDepth, int maxItems)
+            {
+                if (depth >= maxDepth) return;
+
+                var left = Bounds.Left;
+                var bottom = Bounds.Bottom;
+                var width = Bounds.Width;
+                var height = Bounds.Height;
+
+                var halfWidth = width / 2;
+                var halfHeight = height / 2;
+                var remWidth = width - halfWidth;
+                var remHeight = height - halfHeight;
+
+                Children = new QuadNode[4];
+                // NW (top-left in bottom-left system)
+                Children[0] = new QuadNode(new IntRect(left, bottom + halfHeight, halfWidth, remHeight));
+                // NE (top-right)
+                Children[1] = new QuadNode(new IntRect(left + halfWidth, bottom + halfHeight, remWidth, remHeight));
+                // SW (bottom-left)
+                Children[2] = new QuadNode(new IntRect(left, bottom, halfWidth, halfHeight));
+                // SE (bottom-right)
+                Children[3] = new QuadNode(new IntRect(left + halfWidth, bottom, remWidth, halfHeight));
+
+                foreach (var item in Items)
+                    for (var i = 0; i < 4; i++)
+                        if (Children[i].Bounds.Overlaps(item.Rect))
+                            Children[i].Items.Add(item);
+
+                Items.Clear();
+            }
+        }
+
+        private struct QuadtreeItem
+        {
+            public T Item;
+            public IntRect Rect;
         }
     }
 
-    class QuadNode<T>
+    public struct IntRect
     {
-        public QuadNode<T>[] Children;
-        public int Count { get; private set; }
-        public int Depth { get;}
-        
-        public RectInt Bounding;
-        [CanBeNull] public QuadData<T> Data;
+        public int Left;
+        public int Bottom;
+        public int Width;
+        public int Height;
 
-        private readonly int maxDepth;
-        private readonly int subdivideAt;
-        
-        public QuadNode(QuadNode<T>[] children,RectInt bounding, int depth, int maxDepth, int subdivideAt)
+        public int Right => Left + Width;
+        public int Top => Bottom + Height;
+
+        public IntRect(int left, int bottom, int width, int height)
         {
-            Children = children;
-            Count = 0;
-            Data = null;
-            Bounding = bounding;
-            Depth = depth;
-            this.maxDepth = maxDepth;
-            this.subdivideAt = subdivideAt;
+            Left = left;
+            Bottom = bottom;
+            Width = width;
+            Height = height;
         }
 
-        public void Put(T item, RectInt bounds)
+        public bool Overlaps(IntRect other)
         {
-            Data = new QuadData<T>(new Data<T>(item, bounds), Data);
-            Count++;
-            if (Count >= subdivideAt && Depth < maxDepth)
-            {
-                Subdivide();
-            }
-        }
-        
-        private void Subdivide()
-        {
-            int midX = Bounding.x + Bounding.width / 2;
-            int midY = Bounding.y + Bounding.height / 2;
-            int w1 = midX - Bounding.x;
-            int w2 = Bounding.width - w1;
-            int h1 = midY - Bounding.y;
-            int h2 = Bounding.height - h1;
-            Children = new[]
-            {
-                new QuadNode<T>(null, new RectInt(Bounding.x, Bounding.y, w1, h1), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(midX, Bounding.y, w2, h1), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(Bounding.x, midY, w1, h2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(midX, midY, w2, h2), Depth + 1, maxDepth, subdivideAt)
-            };
-            while (Data != null)
-            {
-                foreach (QuadNode<T> child in Children)
-                {
-                    if (child.Bounding.Overlaps(Data.Data.Rect))
-                    {
-                        child.Put(Data.Data.Value, Data.Data.Rect);
-                    }
-                }
-                Data = Data.Next;
-            }
-            Count = 0;
+            return Left < other.Right &&
+                   Right > other.Left &&
+                   Bottom < other.Top &&
+                   Top > other.Bottom;
         }
     }
-
-    class QuadData<T>
-    {
-        public QuadData(Data<T> data, [CanBeNull] QuadData<T> next)
-        {
-            this.Data = data;
-            this.Next = next;
-        }
-
-        public Data<T> Data { get; private set; }
-
-        [CanBeNull]
-        public QuadData<T> Next { get; private set; }
-    }
-    
-    struct Data<T>
-    {
-        public T Value { get; }
-
-        public RectInt Rect { get; }
-
-        public Data(T value, RectInt rect)
-        {
-            Value = value;
-            Rect = rect;
-        }
-    }
-    
 }

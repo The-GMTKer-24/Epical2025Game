@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Scriptable_Objects;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,52 +8,56 @@ namespace Factory_Elements
 {
     public class Factory : MonoBehaviour
     {
-        public const float ROOM_TEMPERATURE = 20.0f; // Degrees Celsius
-        
-        public static Factory Instance { get; private set; }
+        [SerializeField] public float roomTemperature = 20.0f; // Degrees Celsius
 
-        private Quadtree<IFactoryElement> factoryElements;
         [SerializeField] private RectInt bounds;
         [SerializeField] private int maxDepth;
+        [SerializeField] private int maxItemsPerNode;
+
+        private Quadtree<IFactoryElement> factoryElements;
+
+        public static Factory Instance { get; private set; }
         public RectInt Bounds => bounds;
 
         public void Awake()
         {
             Instance = this;
-            factoryElements = new Quadtree<IFactoryElement>(2, maxDepth,bounds);
-            
+            factoryElements =
+                new Quadtree<IFactoryElement>(new IntRect(bounds.x, bounds.y, bounds.width, bounds.height),
+                    maxItemsPerNode, maxDepth);
         }
 
         public bool CanPlace(FactoryElementType type, int2 location)
         {
-            return !factoryElements.Overlaps(new RectInt(location.x, location.y, type.Size.x, type.Size.y));
+            return !factoryElements.Overlaps(new IntRect(location.x, location.y, type.Size.x, type.Size.y));
         }
 
         public GameObject TryPlace(FactoryElementType type, int2 location, out bool placed)
         {
-            
             if (!CanPlace(type, location))
             {
+                Debug.Log("Uh-oh");
                 placed = false;
                 return null;
             }
 
             if (type.Prefab == null)
-            {
-                throw new Exception($"Tried to create a factory element {type.name} that has no associated unity object. ");
-            }
-            GameObject newFactoryElement = Instantiate(type.Prefab);
-            IFactoryElement factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
-            factoryElements.Insert(factoryElement, new RectInt(location.x, location.y, factoryElement.FactoryElementType.Size.x, factoryElement.FactoryElementType.Size.y));
-            List<IFactoryElement> nearby = factoryElements.ItemsInArea(new RectInt(location.x - 1, location.y - 1, factoryElement.FactoryElementType.Size.x +1 , factoryElement.FactoryElementType.Size.y + 1));
-            foreach (IFactoryElement e in nearby)
-            {
+                throw new Exception(
+                    $"Tried to create a factory element {type.name} that has no associated unity object. ");
+            var newFactoryElement = Instantiate(type.Prefab);
+            var factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
+            factoryElements.Insert(factoryElement,
+                new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
+                    factoryElement.FactoryElementType.Size.y));
+            var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
+                factoryElement.FactoryElementType.Size.x + 1, factoryElement.FactoryElementType.Size.y + 1));
+            foreach (var e in nearby)
                 if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)) && e != factoryElement)
                 {
-                    e.OnNeighborUpdate(factoryElement,true);
+                    e.OnNeighborUpdate(factoryElement, true);
                     factoryElement.OnNeighborUpdate(e, true);
                 }
-            }
+
             placed = true;
             return newFactoryElement;
         }
@@ -68,17 +71,11 @@ namespace Factory_Elements
 
         public IFactoryElement FromLocation(int2 location)
         {
-            RectInt bounds = new RectInt(location.x, location.y, 1, 1);
-            List<IFactoryElement> nearbyElements = factoryElements.ItemsInArea(bounds);
-            if (nearbyElements.Count == 0)
-            {
-                return null;
-            }
+            var bounds = new IntRect(location.x, location.y, 1, 1);
+            var nearbyElements = factoryElements.ItemsInArea(bounds);
+            if (nearbyElements.Count == 0) return null;
 
-            if (nearbyElements.Count == 1)
-            {
-                return nearbyElements[0];
-            }
+            if (nearbyElements.Count == 1) return nearbyElements[0];
 
             throw new Exception("Factory elements cannot overlap!");
         }

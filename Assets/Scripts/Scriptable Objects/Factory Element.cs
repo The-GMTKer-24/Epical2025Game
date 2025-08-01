@@ -1,6 +1,5 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using Utils;
 
 namespace Scriptable_Objects
 {
@@ -10,8 +9,8 @@ namespace Scriptable_Objects
         [SerializeField] private float cost;
         [SerializeField] private GameObject prefab;
         [SerializeField] private int2 size;
-        
-        
+
+
         public float Cost => cost;
         public GameObject Prefab => prefab;
 

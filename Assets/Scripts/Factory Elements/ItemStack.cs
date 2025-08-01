@@ -6,10 +6,16 @@ namespace Factory_Elements
 {
     public class ItemStack : ResourceStack
     {
-        private Queue<Item> items;
-        private ItemType itemType;
+        private readonly Queue<Item> items;
+        private readonly ItemType itemType;
 
-        public override ResourceType ResourceType { get => itemType; }
+        public ItemStack(ItemType type)
+        {
+            itemType = type;
+            items = new Queue<Item>();
+        }
+
+        public override ResourceType ResourceType => itemType;
 
         public override int Quantity => items.Count;
 
@@ -28,12 +34,6 @@ namespace Factory_Elements
             if (resource == null || resource.ResourceType != ResourceType || resource is not Item item)
                 throw new ArgumentException("Resource type mismatch");
             items.Enqueue(item);
-        }
-
-        public ItemStack(ItemType type)
-        {
-            itemType = type;
-            items = new Queue<Item>();
         }
     }
 }

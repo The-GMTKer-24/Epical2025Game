@@ -13,7 +13,7 @@ namespace Factory_Elements
         public int2 Position { get; set; }
 
         /// <summary>
-        /// Reference to the corresponding scriptable object
+        ///     Reference to the corresponding scriptable object
         /// </summary>
         public FactoryElementType FactoryElementType { get; }
 

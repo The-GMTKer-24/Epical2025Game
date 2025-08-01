@@ -1,10 +1,9 @@
 using System;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using Factory_Elements;
-using Game_Info;
 using Scriptable_Objects;
 using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GridSystem : MonoBehaviour
 {
@@ -18,19 +17,19 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private FactoryElementType itemSource;
-    private PlayerControls playerControls;
+    private int gridSystemHeight;
+    private int gridSystemWidth;
 
     private LineRenderer lineRenderer;
-    private int gridSystemWidth;
-    private int gridSystemHeight;
+    private PlayerControls playerControls;
     private FactoryElementType selectedElement;
-    
+
     private void Start()
     {
         gridSystemHeight = cellHeight * gridHeight;
         gridSystemWidth = cellWidth * gridWidth;
         selectedElement = belt;
-        
+
         InitializeGridRender(out var lr);
         lineRenderer = lr;
         playerControls.Player.PlaceMachine.performed += placeMachine;
@@ -39,21 +38,12 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.SelectPulverizer.performed += SelectPulverizer;
     }
 
-    private void SelectBelt(InputAction.CallbackContext ctx)
+    // Update is called once per frame
+    private void Update()
     {
-        selectedElement = belt;
+        lineRenderer.enabled = renderGrid;
     }
-    
-    private void SelectItemSource(InputAction.CallbackContext ctx)
-    {
-        selectedElement = itemSource;
-    }
-    
-    private void SelectPulverizer(InputAction.CallbackContext ctx)
-    {
-        selectedElement = pulverizer;
-    }
-    
+
     private void OnEnable()
     {
         playerControls = new PlayerControls();
@@ -65,19 +55,35 @@ public class GridSystem : MonoBehaviour
         playerControls.Disable();
     }
 
+    private void SelectBelt(InputAction.CallbackContext ctx)
+    {
+        selectedElement = belt;
+    }
+
+    private void SelectItemSource(InputAction.CallbackContext ctx)
+    {
+        selectedElement = itemSource;
+    }
+
+    private void SelectPulverizer(InputAction.CallbackContext ctx)
+    {
+        selectedElement = pulverizer;
+    }
+
     /// <summary>
-    /// Instantiates a grid line renderer and returns it. The renderer will not update if the values change
+    ///     Instantiates a grid line renderer and returns it. The renderer will not update if the values change
     /// </summary>
     /// <param name="lr"></param>
     private void InitializeGridRender(out LineRenderer lr)
     {
-        lr = gameObject.GetComponent<LineRenderer > ();
+        lr = gameObject.GetComponent<LineRenderer>();
         lr.positionCount = 5 + 3 * (gridHeight - 1) + 3 * (gridWidth - 1) + 1;
 
         // This just draws a rectangle with the bottom left at the position of the transform
         lr.SetPosition(0, new Vector3(transform.position.x, transform.position.y, 0));
         lr.SetPosition(1, new Vector3(transform.position.x, gridSystemHeight + transform.position.y, 0));
-        lr.SetPosition(2, new Vector3(gridSystemWidth + transform.position.x, gridSystemHeight + transform.position.y, 0));
+        lr.SetPosition(2,
+            new Vector3(gridSystemWidth + transform.position.x, gridSystemHeight + transform.position.y, 0));
         lr.SetPosition(3, new Vector3(gridSystemWidth + transform.position.x, transform.position.y, 0));
         lr.SetPosition(4, new Vector3(transform.position.x, transform.position.y, 0));
 
@@ -125,37 +131,30 @@ public class GridSystem : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        lineRenderer.enabled = renderGrid;
-    }
-
     private void placeMachine(InputAction.CallbackContext ctx)
     {
-        var mouseWorldPoint= camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+        var mouseWorldPoint =
+            camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
 
-        Vector2 gridSpace = WorldToGridSpace(mouseWorldPoint);
-        
-        Factory factory = Factory.Instance;
-        
+        var gridSpace = WorldToGridSpace(mouseWorldPoint);
+
+        var factory = Factory.Instance;
+
         if (Mathf.Approximately(gridSpace.x, -1f))
         {
             Debug.Log("Space is outside of placement grid");
             return;
         }
 
-        GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
-        if (placed)
-        {
-            placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
-        }
-        
+        var placedElement =
+            factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out var placed);
+        if (placed) placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+
         Debug.Log($"Placed: {placed}");
     }
 
     /// <summary>
-    /// Returns the grid coordinates of any 2d world space position. Returns -1,-1 if the space is outside the grid.
+    ///     Returns the grid coordinates of any 2d world space position. Returns -1,-1 if the space is outside the grid.
     /// </summary>
     /// <param name="worldPosition"></param>
     /// <returns></returns>
@@ -164,24 +163,24 @@ public class GridSystem : MonoBehaviour
         Debug.Log(worldPosition);
         Debug.Log(transform.position);
         // Bounds check
-        if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y || worldPosition.x > transform.position.x + gridSystemWidth || worldPosition.y > transform.position.y + gridSystemHeight)
-        {
-            return new Vector2(-1, -1);
-        }
-        
+        if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y ||
+            worldPosition.x > transform.position.x + gridSystemWidth ||
+            worldPosition.y > transform.position.y + gridSystemHeight) return new Vector2(-1, -1);
+
         // If we get here then it's somewhere inside the grid
         // Recenter the grid to make math easier
-        Vector2 centeredWorldPosition =
+        var centeredWorldPosition =
             new Vector2(worldPosition.x - transform.position.x, worldPosition.y - transform.position.y);
 
-        int row = (int) Math.Floor(centeredWorldPosition.x / cellWidth);
-        int column = (int) Math.Floor(centeredWorldPosition.y / cellHeight);
+        var row = (int)Math.Floor(centeredWorldPosition.x / cellWidth);
+        var column = (int)Math.Floor(centeredWorldPosition.y / cellHeight);
 
         return new Vector2(row, column);
     }
 
     /// <summary>
-    /// Returns the world space position of a grid position. Throws an IndexOutOfRangeException if the bound is not within the grid
+    ///     Returns the world space position of a grid position. Throws an IndexOutOfRangeException if the bound is not within
+    ///     the grid
     /// </summary>
     /// <param name="gridPosition">The vector2 of the grid position</param>
     /// <returns>World space coordinates of the center of the grid cell</returns>
@@ -189,14 +188,12 @@ public class GridSystem : MonoBehaviour
     {
         if (gridPosition.x < 0 || gridPosition.x > gridWidth - 1 || gridPosition.y < 0 ||
             gridPosition.y > gridHeight - 1)
-        {
             throw new IndexOutOfRangeException("The provided coordinates are not valid in the grid");
-        }
 
-        return new Vector2(gridPosition.x * cellWidth +  transform.position.x,
+        return new Vector2(gridPosition.x * cellWidth + transform.position.x,
             gridPosition.y * cellHeight + transform.position.y);
     }
-    
+
 
     private void DrawCell(Vector2 position)
     {

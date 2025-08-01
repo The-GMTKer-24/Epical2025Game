@@ -7,29 +7,52 @@ namespace Factory_Elements.Blocks
 {
     public class Pipe : BufferBlock
     {
+        [SerializeField] public int capacity = 10;
+
         // TODO: (not strictly necessary) replace with a generated singular pipe graph object, such that all pipes have equal pressure across a network
-        private FluidType type = null;
-        private Buffer buffer => buffers.Count == 0 ? null : buffers.GetEnumerator().Current.Value;
-        public const int CAPACITY = 10;
-        
+        private readonly FluidType type = null;
+
         // Flushes all pipes in a pipe network
         // TODO: Integrate into UI
-        private bool flushed = false;
-        public void Flush()
+        private bool flushed;
+        private Buffer buffer => buffers.Count == 0 ? null : buffers.GetEnumerator().Current.Value;
+
+        public void FixedUpdate()
         {
-            if (flushed)
-            {
-                return;
-            }
-            this.flushed = true;
-            buffer.Empty();
-            foreach (IFactoryElement neighbor in neighbors)
-            {
+            base.FixedUpdate();
+
+            if (buffer != null && buffer.Quantity == 0) buffers.Remove(buffer.ResourceType);
+
+            foreach (var neighbor in neighbors)
+                if (neighbor is not Pipe)
+                    while (neighbor.TryInsertResource(this, buffer.QueryResource()))
+                        buffer.TakeResource();
+
+            var sumVolume = buffer.Quantity;
+            var pipeList = new List<Pipe>();
+            foreach (var neighbor in neighbors)
                 if (neighbor is Pipe pipe)
                 {
-                    pipe.Flush();
+                    sumVolume += pipe.buffer.Quantity;
+                    pipeList.Add(pipe);
                 }
-            }
+
+            var averageVolume = Mathf.RoundToInt((float)sumVolume / pipeList.Count);
+            if (buffer.Quantity >= averageVolume)
+                foreach (var pipe in pipeList)
+                    while (pipe.buffer.Quantity < averageVolume)
+                        if (pipe.TryInsertResource(this, buffer.QueryResource()))
+                            buffer.TakeResource();
+        }
+
+        public void Flush()
+        {
+            if (flushed) return;
+            flushed = true;
+            buffer.Empty();
+            foreach (var neighbor in neighbors)
+                if (neighbor is Pipe pipe)
+                    pipe.Flush();
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
@@ -47,8 +70,8 @@ namespace Factory_Elements.Blocks
             if (!AcceptsResource(sender, resource)) return false;
             if (buffer is null)
             {
-                Buffer newBuffer = new Buffer(CAPACITY, resource.ResourceType, true, true);
-                setBuffers(new [] {newBuffer});
+                var newBuffer = new Buffer(capacity, resource.ResourceType, true, true);
+                setBuffers(new[] { newBuffer });
             }
             else
             {
@@ -56,52 +79,6 @@ namespace Factory_Elements.Blocks
             }
 
             return true;
-        }
-
-        public void FixedUpdate()
-        {
-            base.FixedUpdate();
-
-            if (buffer != null && buffer.Quantity == 0)
-            {
-                buffers.Remove(buffer.ResourceType);
-            }
-
-            foreach (IFactoryElement neighbor in neighbors)
-            {
-                if (neighbor is not Pipe)
-                {
-                    while (neighbor.TryInsertResource(this, buffer.QueryResource()))
-                    {
-                        buffer.TakeResource();
-                    }
-                }
-            }
-            
-            int sumVolume = buffer.Quantity;
-            List<Pipe> pipeList = new List<Pipe>();
-            foreach (IFactoryElement neighbor in neighbors)
-            {
-                if (neighbor is Pipe pipe)
-                {
-                    sumVolume += pipe.buffer.Quantity;
-                    pipeList.Add(pipe);
-                }
-            }
-            int averageVolume = Mathf.RoundToInt((float)sumVolume / pipeList.Count);
-            if (buffer.Quantity >= averageVolume)
-            {
-                foreach (Pipe pipe in pipeList)
-                {
-                    while (pipe.buffer.Quantity < averageVolume)
-                    {
-                        if (pipe.TryInsertResource(this, buffer.QueryResource()))
-                        {
-                            buffer.TakeResource();
-                        }
-                    }
-                }
-            }
         }
 
         public override ISetting[] GetSettings()
