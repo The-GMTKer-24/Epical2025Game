@@ -64,7 +64,7 @@ namespace Factory_Elements.Blocks
 
                 if (itemList[i].Progress > 1.0f)
                 {
-                    if (aheadNeighbor.TryInsertResource(this, itemList[i].Item))
+                    if (aheadNeighbor is not null && aheadNeighbor.TryInsertResource(this, itemList[i].Item))
                         markedForRemoval.Add(itemList[i]);
                     else
                         itemList[i].Progress = 1.0f;
