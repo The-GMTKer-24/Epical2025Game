@@ -6,10 +6,29 @@ namespace Factory_Elements.Blocks
     public class Pipe : BufferBlock
     {
         // TODO: (not strictly necessary) replace with a generated singular pipe graph object, such that all pipes have equal pressure across a network
-        // TODO: If keeping current system, add a pipe network flush option in UI
         private FluidType type = null;
         private Buffer buffer => buffers.Count == 0 ? null : buffers.GetEnumerator().Current.Value;
         public const int CAPACITY = 10;
+        
+        // Flushes all pipes in a pipe network
+        // TODO: Integrate into UI
+        private bool flushed = false;
+        public void Flush()
+        {
+            if (flushed)
+            {
+                return;
+            }
+            this.flushed = true;
+            buffer.Empty();
+            foreach (IFactoryElement neighbor in neighbors)
+            {
+                if (neighbor is Pipe pipe)
+                {
+                    pipe.Flush();
+                }
+            }
+        }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {

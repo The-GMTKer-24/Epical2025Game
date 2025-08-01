@@ -170,6 +170,11 @@ namespace Factory_Elements.Blocks
                 TakeResource();
             }
         }
+
+        public void Empty()
+        {
+            Stack = ResourceStack.Create(ResourceType);
+        }
     }
 
 }
