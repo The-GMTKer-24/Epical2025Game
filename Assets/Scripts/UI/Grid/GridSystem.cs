@@ -190,8 +190,8 @@ public class GridSystem : MonoBehaviour
             throw new IndexOutOfRangeException("The provided coordinates are not valid in the grid");
         }
 
-        return new Vector2(gridPosition.x * cellWidth + (float)cellWidth / 2 + transform.position.x,
-            gridPosition.y * cellHeight + (float)cellHeight/2 + transform.position.y);
+        return new Vector2(gridPosition.x * cellWidth +  transform.position.x,
+            gridPosition.y * cellHeight + transform.position.y);
     }
     
 
