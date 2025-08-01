@@ -10,9 +10,9 @@ namespace Factory_Elements.Blocks
     /// </summary>
     public abstract class BufferBlock : Block
     {
-        private readonly List<ResourceType> inputtableResourceTypes = new();
-        private readonly List<ResourceType> outputtableResourceTypes = new();
-        private readonly List<ResourceType> resourceTypes = new();
+        protected readonly List<ResourceType> inputtableResourceTypes = new();
+        protected readonly List<ResourceType> outputtableResourceTypes = new();
+        protected readonly List<ResourceType> resourceTypes = new();
         protected Dictionary<ResourceType, Buffer> buffers = new();
 
         private int currentOutputNeighborIndex;
