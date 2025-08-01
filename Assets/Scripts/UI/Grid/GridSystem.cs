@@ -15,21 +15,43 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int gridWidth = 10;
     [SerializeField] private bool renderGrid = false;
     [SerializeField] private Camera camera;
-    [SerializeField] private FactoryElementType placeElement;
+    [SerializeField] private FactoryElementType belt;
+    [SerializeField] private FactoryElementType pulverizer;
+    [SerializeField] private FactoryElementType itemSource;
     private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
     private int gridSystemWidth;
     private int gridSystemHeight;
+    private FactoryElementType selectedElement;
     
     private void Start()
     {
         gridSystemHeight = cellHeight * gridHeight;
         gridSystemWidth = cellWidth * gridWidth;
+        selectedElement = belt;
         
         InitializeGridRender(out var lr);
         lineRenderer = lr;
         playerControls.Player.PlaceMachine.performed += placeMachine;
+        playerControls.Player.SelectBelt.performed += SelectBelt;
+        playerControls.Player.SelectItemSource.performed += SelectItemSource;
+        playerControls.Player.SelectPulverizer.performed += SelectPulverizer;
+    }
+
+    private void SelectBelt(InputAction.CallbackContext ctx)
+    {
+        selectedElement = belt;
+    }
+    
+    private void SelectItemSource(InputAction.CallbackContext ctx)
+    {
+        selectedElement = itemSource;
+    }
+    
+    private void SelectPulverizer(InputAction.CallbackContext ctx)
+    {
+        selectedElement = pulverizer;
     }
     
     private void OnEnable()
@@ -122,7 +144,7 @@ public class GridSystem : MonoBehaviour
             return;
         }
 
-        GameObject placedElement = factory.TryPlace(placeElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
+        GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
         if (placed)
         {
             placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5608614131228641592}
   - component: {fileID: 9054450959081098509}
+  - component: {fileID: 3027288085370625357}
   m_Layer: 0
   m_Name: Conveyer
   m_TagString: Untagged
@@ -87,3 +88,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3027288085370625357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729464739455396551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d01495babb142468be2aa7cac1cc103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factoryElementType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}

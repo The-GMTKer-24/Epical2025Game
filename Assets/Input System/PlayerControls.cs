@@ -172,6 +172,42 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectBelt"",
+                    ""type"": ""Button"",
+                    ""id"": ""47973d5b-5f0c-44e8-878c-ea77e876635b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectPulverizer"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4e60b72-4ab8-408b-ac4e-0d671eb6308a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectItemSource"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dc25e35-77ff-4081-b3fb-9b049c897d41"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0478890-b500-4343-a85e-feb0bac05aa4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -414,6 +450,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""PlaceMachine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99f79be5-221b-4402-9d7f-6aa3df31de48"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SelectBelt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f0dbdb4-6e89-4b77-b0c1-34d24eb5a00c"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SelectPulverizer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c919a52-b6ab-418d-956b-7b027661a49a"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SelectItemSource"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f58e0b2-36f1-47f4-937c-7ee3e2d50bff"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1010,6 +1090,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_MousePosition = m_Player.FindAction("Mouse Position", throwIfNotFound: true);
         m_Player_MouseDelta = m_Player.FindAction("Mouse Delta", throwIfNotFound: true);
         m_Player_PlaceMachine = m_Player.FindAction("PlaceMachine", throwIfNotFound: true);
+        m_Player_SelectBelt = m_Player.FindAction("SelectBelt", throwIfNotFound: true);
+        m_Player_SelectPulverizer = m_Player.FindAction("SelectPulverizer", throwIfNotFound: true);
+        m_Player_SelectItemSource = m_Player.FindAction("SelectItemSource", throwIfNotFound: true);
+        m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1112,6 +1196,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_MouseDelta;
     private readonly InputAction m_Player_PlaceMachine;
+    private readonly InputAction m_Player_SelectBelt;
+    private readonly InputAction m_Player_SelectPulverizer;
+    private readonly InputAction m_Player_SelectItemSource;
+    private readonly InputAction m_Player_Rotate;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1159,6 +1247,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/PlaceMachine".
         /// </summary>
         public InputAction @PlaceMachine => m_Wrapper.m_Player_PlaceMachine;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SelectBelt".
+        /// </summary>
+        public InputAction @SelectBelt => m_Wrapper.m_Player_SelectBelt;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SelectPulverizer".
+        /// </summary>
+        public InputAction @SelectPulverizer => m_Wrapper.m_Player_SelectPulverizer;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SelectItemSource".
+        /// </summary>
+        public InputAction @SelectItemSource => m_Wrapper.m_Player_SelectItemSource;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Rotate".
+        /// </summary>
+        public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1212,6 +1316,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PlaceMachine.started += instance.OnPlaceMachine;
             @PlaceMachine.performed += instance.OnPlaceMachine;
             @PlaceMachine.canceled += instance.OnPlaceMachine;
+            @SelectBelt.started += instance.OnSelectBelt;
+            @SelectBelt.performed += instance.OnSelectBelt;
+            @SelectBelt.canceled += instance.OnSelectBelt;
+            @SelectPulverizer.started += instance.OnSelectPulverizer;
+            @SelectPulverizer.performed += instance.OnSelectPulverizer;
+            @SelectPulverizer.canceled += instance.OnSelectPulverizer;
+            @SelectItemSource.started += instance.OnSelectItemSource;
+            @SelectItemSource.performed += instance.OnSelectItemSource;
+            @SelectItemSource.canceled += instance.OnSelectItemSource;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         /// <summary>
@@ -1250,6 +1366,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PlaceMachine.started -= instance.OnPlaceMachine;
             @PlaceMachine.performed -= instance.OnPlaceMachine;
             @PlaceMachine.canceled -= instance.OnPlaceMachine;
+            @SelectBelt.started -= instance.OnSelectBelt;
+            @SelectBelt.performed -= instance.OnSelectBelt;
+            @SelectBelt.canceled -= instance.OnSelectBelt;
+            @SelectPulverizer.started -= instance.OnSelectPulverizer;
+            @SelectPulverizer.performed -= instance.OnSelectPulverizer;
+            @SelectPulverizer.canceled -= instance.OnSelectPulverizer;
+            @SelectItemSource.started -= instance.OnSelectItemSource;
+            @SelectItemSource.performed -= instance.OnSelectItemSource;
+            @SelectItemSource.canceled -= instance.OnSelectItemSource;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         /// <summary>
@@ -1613,6 +1741,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlaceMachine(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectBelt" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectBelt(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectPulverizer" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectPulverizer(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectItemSource" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectItemSource(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Rotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotate(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

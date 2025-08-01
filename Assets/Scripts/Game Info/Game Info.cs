@@ -31,24 +31,6 @@ namespace Game_Info
             
         }
 
-        public void Start()
-        {
-            foreach (var startingFactoryElement in startingFactoryElements.Elements)
-            {
-                bool placed = false;
-                int count = 0;
-                foreach (var position in Factory.Instance.Bounds.allPositionsWithin)
-                {
-                    GameObject newObj = Factory.Instance.TryPlace(startingFactoryElement, new int2(position.x, position.y), out placed);
-                    if (placed)
-                    {
-                        newObj.transform.position = (Vector2)position;
-                        break;
-                    }
-                }
-            }
-        }
-
         public List<Quest> ActiveQuests => activeQuests;
 
         public List<FactoryElementType> UnlockedFactoryElements => unlockedFactoryElements;

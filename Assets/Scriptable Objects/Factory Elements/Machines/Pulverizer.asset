@@ -15,8 +15,8 @@ MonoBehaviour:
   cost: 10
   prefab: {fileID: 8729464739455396551, guid: ed8ceaf57f9e7a145b1cf11f6e413191, type: 3}
   size:
-    x: 1
-    y: 1
+    x: 2
+    y: 2
   recipes:
   - {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
   capacity: 10
