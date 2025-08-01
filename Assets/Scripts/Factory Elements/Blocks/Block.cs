@@ -20,7 +20,7 @@ namespace Factory_Elements.Blocks
 
         public FactoryElementType FactoryElementType { get => factoryElementType; }
 
-        public void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
+        public virtual void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
         {
             if (added)
             {
