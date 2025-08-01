@@ -22,18 +22,23 @@ namespace Factory_Elements.Blocks
             running = false;
         }
 
+        public void Start()
+        {
+            RecipeUpdate();
+        }
+
         private void RecipeUpdate()
         {
-            List<Buffer> buffers = new List<Buffer>();
+            List<Buffer> newBuffers = new List<Buffer>();
             foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
             {
-                buffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, true, false));
+                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, true, false));
             }
             foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
             {
-                buffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, false, true));
+                newBuffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, false, true));
             }
-            setBuffers(buffers);
+            setBuffers(newBuffers);
         }
 
         public void FixedUpdate()

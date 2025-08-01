@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Scriptable_Objects;
+using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
@@ -16,6 +17,10 @@ namespace Factory_Elements.Blocks
 
         protected void setBuffers(IEnumerable<Buffer> buffers)
         {
+            this.resourceTypes.Clear();
+            this.inputtableResourceTypes.Clear();
+            this.outputtableResourceTypes.Clear();
+            this.buffers.Clear();
             foreach (Buffer buffer in buffers)
             {
                 this.buffers.Add(buffer.ResourceType, buffer);
@@ -127,7 +132,7 @@ namespace Factory_Elements.Blocks
             Capacity = capacity;
             CanAcceptInput = canAcceptInput;
             CanGiveOutput = canGiveOutput;
-            Stack = ResourceStack.Create(ResourceType);
+            Stack = ResourceStack.Create(resourceType);
         }
         
         public ResourceType ResourceType {get => Stack.ResourceType;}
