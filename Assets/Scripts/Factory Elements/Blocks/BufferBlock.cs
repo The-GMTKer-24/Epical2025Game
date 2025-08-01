@@ -16,6 +16,7 @@ namespace Factory_Elements.Blocks
         protected Dictionary<ResourceType, Buffer> buffers = new();
 
         private int currentOutputNeighborIndex;
+        [SerializeField]
         private List<int> resourceTypeIndexPerNeighbor = new();
 
         // this code is EVIL. I'm so sorry
@@ -31,6 +32,8 @@ namespace Factory_Elements.Blocks
 
                 // Trying this neighbor, either a resource can be output or cycle to the next
                 {
+                    Debug.Log("Runnning: "+ currentOutputNeighborIndex + "Count is: "+ resourceTypeIndexPerNeighbor.Count);
+
                     resourceTypeIndexPerNeighbor[currentOutputNeighborIndex]++;
                     if (resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] >= outputtableResourceTypes.Count)
                         resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] = 0;

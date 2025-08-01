@@ -36,7 +36,6 @@ namespace Factory_Elements
         {
             if (!CanPlace(type, location))
             {
-                Debug.Log("Uh-oh");
                 placed = false;
                 return null;
             }
@@ -49,8 +48,12 @@ namespace Factory_Elements
             factoryElements.Insert(factoryElement,
                 new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
                     factoryElement.FactoryElementType.Size.y));
+            IntRect suroundingsToCHeck = new IntRect(location.x - 1, location.y - 1,
+                factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2);
+            
             var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
-                factoryElement.FactoryElementType.Size.x + 1, factoryElement.FactoryElementType.Size.y + 1));
+                factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2));
+
             foreach (var e in nearby)
                 if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)) && e != factoryElement)
                 {
@@ -62,9 +65,9 @@ namespace Factory_Elements
             return newFactoryElement;
         }
 
-        public Rect FromFactoryElement(IFactoryElement factoryElement)
+        public IntRect FromFactoryElement(IFactoryElement factoryElement)
         {
-            return new Rect(factoryElement.Position.x, factoryElement.Position.x,
+            return new IntRect(factoryElement.Position.x, factoryElement.Position.x,
                 factoryElement.FactoryElementType.Size.x,
                 factoryElement.FactoryElementType.Size.y);
         }

@@ -12,13 +12,18 @@ namespace Factory_Elements.Blocks
         [SerializeField] private int ticksBetweenGenerations;
         [SerializeField] private int capacity;
         private int lastGenerationAt;
-        private Queue<IFactoryElement> nextUpNeighbor;
 
-        private Queue<Resource> resources = new();
+        private Queue<Resource> resources;
+
+        private void Awake()
+        {
+            resources = new Queue<Resource>();
+        }
 
         // Update is called once per frame
         private void FixedUpdate()
         {
+            
             lastGenerationAt--;
             if (lastGenerationAt <= 0 && resources.Count < capacity)
             {
@@ -34,32 +39,24 @@ namespace Factory_Elements.Blocks
                         break;
                 }
             }
-
-            nextUpNeighbor = new Queue<IFactoryElement>();
-            foreach (var neighbor in neighbors) nextUpNeighbor.Enqueue(neighbor);
-
-            var failedToExport = new Queue<Resource>();
-            var nextNeighborBatch = new Queue<IFactoryElement>();
+            
+            int cycles = 0;
             while (resources.Count > 0)
             {
-                foreach (var neighbor in
-                         nextUpNeighbor
-                             .ToArray()) // There is a case where an item that will miss it's only output option but that's only for one tick and hopefully will not come up often
+                foreach (var neighbor in neighbors)
                 {
-                    if (neighbor.TryInsertResource(this, resources.Peek()))
+                    if (neighbor.TryInsertResource(this, resources.Peek()) && resources.Count > 0)
                     {
                         resources.Dequeue();
-                        break;
                     }
-
-                    nextNeighborBatch.Enqueue(neighbor);
                 }
 
-                nextUpNeighbor = nextNeighborBatch;
-                failedToExport.Enqueue(resources.Dequeue());
+                cycles++;
+                if (cycles >= resources.Count * 2)
+                {
+                    break;
+                }
             }
-
-            resources = failedToExport;
         }
 
 

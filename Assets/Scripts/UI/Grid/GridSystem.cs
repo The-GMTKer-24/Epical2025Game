@@ -160,8 +160,6 @@ public class GridSystem : MonoBehaviour
     /// <returns></returns>
     private Vector2 WorldToGridSpace(Vector2 worldPosition)
     {
-        Debug.Log(worldPosition);
-        Debug.Log(transform.position);
         // Bounds check
         if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y ||
             worldPosition.x > transform.position.x + gridSystemWidth ||

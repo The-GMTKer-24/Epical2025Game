@@ -5,7 +5,7 @@ namespace Utils
 {
     public class Quadtree<T>
     {
-        private readonly Dictionary<T, IntRect> itemToRectMap = new();
+        public readonly Dictionary<T, IntRect> itemToRectMap = new();
         private readonly int maxDepth;
 
         private readonly int maxItemsPerNode;
@@ -164,8 +164,8 @@ namespace Utils
         public int Width;
         public int Height;
 
-        public int Right => Left + Width;
-        public int Top => Bottom + Height;
+        public readonly int Right => Left + Width;
+        public readonly int Top => Bottom + Height;
 
         public IntRect(int left, int bottom, int width, int height)
         {
@@ -175,7 +175,7 @@ namespace Utils
             Height = height;
         }
 
-        public bool Overlaps(IntRect other)
+        public readonly bool Overlaps(IntRect other)
         {
             return Left < other.Right &&
                    Right > other.Left &&

@@ -1633,7 +1633,7 @@ MonoBehaviour:
   defaultZoomLevel: 7
   minCamSize: 0.4
   maxCamSize: 31.16
-  panSpeed: 2
+  panSpeed: 0.1
   interpolationEarlyEndPoint: 1
   interpolationTargetEndPoint: 0.1
   doubleClickLockoutTime: 0.1
@@ -1693,7 +1693,7 @@ MonoBehaviour:
     width: 512
     height: 512
   maxDepth: 7
-  maxItemsPerNode: 0
+  maxItemsPerNode: 16
 --- !u!4 &1106256257
 Transform:
   m_ObjectHideFlags: 0
