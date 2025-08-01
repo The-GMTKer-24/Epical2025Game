@@ -163,6 +163,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PlaceMachine"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ccdac76-f23a-4761-a8ab-16f30936a426"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -394,6 +403,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Mouse Delta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df669aff-83a4-448e-b0b9-d39864565437"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PlaceMachine"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -989,6 +1009,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_QuickFocus = m_Player.FindAction("Quick Focus", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("Mouse Position", throwIfNotFound: true);
         m_Player_MouseDelta = m_Player.FindAction("Mouse Delta", throwIfNotFound: true);
+        m_Player_PlaceMachine = m_Player.FindAction("PlaceMachine", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1090,6 +1111,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_QuickFocus;
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_MouseDelta;
+    private readonly InputAction m_Player_PlaceMachine;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1133,6 +1155,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/MouseDelta".
         /// </summary>
         public InputAction @MouseDelta => m_Wrapper.m_Player_MouseDelta;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/PlaceMachine".
+        /// </summary>
+        public InputAction @PlaceMachine => m_Wrapper.m_Player_PlaceMachine;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1183,6 +1209,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started += instance.OnMouseDelta;
             @MouseDelta.performed += instance.OnMouseDelta;
             @MouseDelta.canceled += instance.OnMouseDelta;
+            @PlaceMachine.started += instance.OnPlaceMachine;
+            @PlaceMachine.performed += instance.OnPlaceMachine;
+            @PlaceMachine.canceled += instance.OnPlaceMachine;
         }
 
         /// <summary>
@@ -1218,6 +1247,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started -= instance.OnMouseDelta;
             @MouseDelta.performed -= instance.OnMouseDelta;
             @MouseDelta.canceled -= instance.OnMouseDelta;
+            @PlaceMachine.started -= instance.OnPlaceMachine;
+            @PlaceMachine.performed -= instance.OnPlaceMachine;
+            @PlaceMachine.canceled -= instance.OnPlaceMachine;
         }
 
         /// <summary>
@@ -1574,6 +1606,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMouseDelta(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PlaceMachine" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPlaceMachine(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

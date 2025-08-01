@@ -16,6 +16,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private bool renderGrid = false;
     [SerializeField] private Camera camera;
     [SerializeField] private FactoryElementType placeElement;
+    private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
     private int gridSystemWidth;
@@ -28,6 +29,18 @@ public class GridSystem : MonoBehaviour
         
         InitializeGridRender(out var lr);
         lineRenderer = lr;
+        playerControls.Player.PlaceMachine.performed += placeMachine;
+    }
+    
+    private void OnEnable()
+    {
+        playerControls = new PlayerControls();
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
     }
 
     /// <summary>
@@ -93,19 +106,33 @@ public class GridSystem : MonoBehaviour
     private void Update()
     {
         lineRenderer.enabled = renderGrid;
-        
+    }
+
+    private void placeMachine(InputAction.CallbackContext ctx)
+    {
         var mouseWorldPoint= camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
 
         Vector2 gridSpace = WorldToGridSpace(mouseWorldPoint);
         
         Factory factory = Factory.Instance;
         
+        if (Mathf.Approximately(gridSpace.x, -1f))
+        {
+            Debug.Log("Space is outside of placement grid");
+            return;
+        }
+
+        GameObject placedElement = factory.TryPlace(placeElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
+        if (placed)
+        {
+            placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+        }
         
-        Debug.Log(factory.CanPlace(placeElement, new int2((int)gridSpace.x, (int)gridSpace.y)));
+        Debug.Log($"Placed: {placed}");
     }
 
     /// <summary>
-    /// Returns the grid coordinates of any 2d world space position. Returns -1,-1 if the space is outside of the grid.
+    /// Returns the grid coordinates of any 2d world space position. Returns -1,-1 if the space is outside the grid.
     /// </summary>
     /// <param name="worldPosition"></param>
     /// <returns></returns>
@@ -127,6 +154,24 @@ public class GridSystem : MonoBehaviour
 
         return new Vector2(row, column);
     }
+
+    /// <summary>
+    /// Returns the world space position of a grid position. Throws an IndexOutOfRangeException if the bound is not within the grid
+    /// </summary>
+    /// <param name="gridPosition">The vector2 of the grid position</param>
+    /// <returns>World space coordinates of the center of the grid cell</returns>
+    private Vector2 GridToWorldSpace(int2 gridPosition)
+    {
+        if (gridPosition.x < 0 || gridPosition.x > gridWidth - 1 || gridPosition.y < 0 ||
+            gridPosition.y > gridHeight - 1)
+        {
+            throw new IndexOutOfRangeException("The provided coordinates are not valid in the grid");
+        }
+
+        return new Vector2(gridPosition.x * cellWidth + (float)cellWidth / 2 + transform.position.x,
+            gridPosition.y * cellHeight + (float)cellHeight/2 + transform.position.y);
+    }
+    
 
     private void DrawCell(Vector2 position)
     {
