@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using UnityEngine;
@@ -15,6 +16,23 @@ namespace Factory_Elements.Blocks
         public void Awake()
         {
             recipeSetting = new ElementSettings<Recipe>(defaultRecipe, "Active Recipe", "The recipe that this machine is currently using");
+            recipeSetting.SettingUpdated += RecipeUpdate;
+            recipeProgress = 0;
+            running = false;
+        }
+
+        private void RecipeUpdate()
+        {
+            List<Buffer> buffers = new List<Buffer>();
+            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
+            {
+                buffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, true, false));
+            }
+            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
+            {
+                buffers.Add(new Buffer(resourceQuantity.Amount * 5, resourceQuantity.Type, false, true));
+            }
+            setBuffers(buffers);
         }
 
         public void FixedUpdate()

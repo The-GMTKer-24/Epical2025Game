@@ -118,9 +118,17 @@ namespace Factory_Elements.Blocks
     public class Buffer
     {
         public readonly int Capacity;
-        private IResourceStack Stack;
+        private ResourceStack Stack;
         public bool CanAcceptInput;
         public bool CanGiveOutput;
+
+        public Buffer(int capacity, ResourceType resourceType, bool canAcceptInput, bool canGiveOutput)
+        {
+            Capacity = capacity;
+            CanAcceptInput = canAcceptInput;
+            CanGiveOutput = canGiveOutput;
+            Stack = ResourceStack.Create(ResourceType);
+        }
         
         public ResourceType ResourceType {get => Stack.ResourceType;}
         public int Quantity {get => Stack.Quantity;}
