@@ -66,6 +66,17 @@ namespace Factory_Elements.Blocks
             {
                 buffers.Remove(buffer.ResourceType);
             }
+
+            foreach (IFactoryElement neighbor in neighbors)
+            {
+                if (neighbor is not Pipe)
+                {
+                    while (neighbor.TryInsertResource(this, buffer.QueryResource()))
+                    {
+                        buffer.TakeResource();
+                    }
+                }
+            }
             
             int sumVolume = buffer.Quantity;
             List<Pipe> pipeList = new List<Pipe>();
@@ -82,7 +93,13 @@ namespace Factory_Elements.Blocks
             {
                 foreach (Pipe pipe in pipeList)
                 {
-                    
+                    while (pipe.buffer.Quantity < averageVolume)
+                    {
+                        if (pipe.TryInsertResource(this, buffer.QueryResource()))
+                        {
+                            buffer.TakeResource();
+                        }
+                    }
                 }
             }
         }
