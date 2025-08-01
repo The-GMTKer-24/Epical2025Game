@@ -6,7 +6,16 @@ namespace UI.MainMenu
 {
     public class MenuButtons : MonoBehaviour
     {
-        public string sceneToLoad = "Main";
+        [SerializeField] private GameObject mainMenuObjects;
+        [SerializeField] private GameObject creditsMenuObjects;
+        
+        [SerializeField] private string sceneToLoad = "Main";
+
+        public void Awake()
+        {
+            mainMenuObjects.SetActive(true);
+            creditsMenuObjects.SetActive(false);
+        }
         
         public void PlayGame()
         {
@@ -22,6 +31,22 @@ namespace UI.MainMenu
             #else
                 Application.Quit();
             #endif
+        }
+
+        public void Credits()
+        {
+            Debug.Log("The system will credits now!");
+            
+            mainMenuObjects.SetActive(false);
+            creditsMenuObjects.SetActive(true);
+        }
+
+        public void CloseCredits()
+        {
+            Debug.Log("The system will close credits now!");
+            
+            mainMenuObjects.SetActive(true);
+            creditsMenuObjects.SetActive(false);
         }
     }
 }
