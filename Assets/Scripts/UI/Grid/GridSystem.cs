@@ -13,7 +13,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int cellHeight = 10;
     [SerializeField] private int gridHeight = 10;
     [SerializeField] private int gridWidth = 10;
-    [SerializeField] private bool renderGrid = false;
+    [SerializeField] private bool renderGrid;
     [SerializeField] private Camera camera;
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
@@ -74,16 +74,17 @@ public class GridSystem : MonoBehaviour
         lr = gameObject.GetComponent<LineRenderer > ();
         lr.positionCount = 5 + 3 * (gridHeight - 1) + 3 * (gridWidth - 1) + 1;
 
-        lr.SetPosition(0, new Vector3(0, 0, 0));
-        lr.SetPosition(1, new Vector3(0, gridSystemHeight, 0));
-        lr.SetPosition(2, new Vector3(gridSystemWidth, gridSystemHeight, 0));
-        lr.SetPosition(3, new Vector3(gridSystemWidth, 0, 0));
-        lr.SetPosition(4, new Vector3(0, 0, 0));
+        // This just draws a rectangle with the bottom left at the position of the transform
+        lr.SetPosition(0, new Vector3(transform.position.x, transform.position.y, 0));
+        lr.SetPosition(1, new Vector3(transform.position.x, gridSystemHeight + transform.position.y, 0));
+        lr.SetPosition(2, new Vector3(gridSystemWidth + transform.position.x, gridSystemHeight + transform.position.y, 0));
+        lr.SetPosition(3, new Vector3(gridSystemWidth + transform.position.x, transform.position.y, 0));
+        lr.SetPosition(4, new Vector3(transform.position.x, transform.position.y, 0));
 
         // Render the cross lines
         var index = 5;
-        var yposition = 0;
-        var xposition = 0;
+        var yposition = transform.position.y;
+        var xposition = transform.position.x;
         for (var i = 0; i < gridHeight - 1; i++)
         {
             yposition += cellHeight;
@@ -160,6 +161,8 @@ public class GridSystem : MonoBehaviour
     /// <returns></returns>
     private Vector2 WorldToGridSpace(Vector2 worldPosition)
     {
+        Debug.Log(worldPosition);
+        Debug.Log(transform.position);
         // Bounds check
         if (worldPosition.x < transform.position.x || worldPosition.y < transform.position.y || worldPosition.x > transform.position.x + gridSystemWidth || worldPosition.y > transform.position.y + gridSystemHeight)
         {
