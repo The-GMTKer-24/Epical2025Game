@@ -2,6 +2,7 @@
 
 namespace Factory_Elements.Settings
 {
+    [Serializable]
     public class ElementSettings<T> : ISetting
     {
         public ElementSettings(T value, string name, string description)
@@ -10,7 +11,7 @@ namespace Factory_Elements.Settings
             Name = name;
             Description = description;
         }
-
+        
         public T Value { get; set; }
 
         public string Name { get; }

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
-  m_Name: TestPipe
+  m_Name: Pulverizer
   m_EditorClassIdentifier: 
-  cost: 0
-  prefab: {fileID: 8729464739455396551, guid: 3a626eba3b2f4ea5489faa304f0d57ae, type: 3}
+  cost: 10
+  prefab: {fileID: 8729464739455396551, guid: ed8ceaf57f9e7a145b1cf11f6e413191, type: 3}
   size:
     x: 1
     y: 1
-  recipes: []
-  capacity: 0
+  recipes:
+  - {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
+  capacity: 10

@@ -119,15 +119,19 @@ namespace Utils
         
         private void Subdivide()
         {
-            /**
+            int midX = Bounding.x + Bounding.width / 2;
+            int midY = Bounding.y + Bounding.height / 2;
+            int w1 = midX - Bounding.x;
+            int w2 = Bounding.width - w1;
+            int h1 = midY - Bounding.y;
+            int h2 = Bounding.height - h1;
             Children = new[]
             {
-                
-                new QuadNode<T>(null, new RectInt(Bounding.x,Bounding.y,Bounding.center, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(Bounding.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(Bounding.center.x,Bounding.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt),
-                new QuadNode<T>(null, new RectInt(Bounding.center.x,Bounding.center.y,Bounding.width/2, Bounding.height/2), Depth + 1, maxDepth, subdivideAt)
-            };**/
+                new QuadNode<T>(null, new RectInt(Bounding.x, Bounding.y, w1, h1), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(midX, Bounding.y, w2, h1), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(Bounding.x, midY, w1, h2), Depth + 1, maxDepth, subdivideAt),
+                new QuadNode<T>(null, new RectInt(midX, midY, w2, h2), Depth + 1, maxDepth, subdivideAt)
+            };
             while (Data != null)
             {
                 foreach (QuadNode<T> child in Children)

@@ -39,6 +39,10 @@ namespace Factory_Elements
                 return null;
             }
 
+            if (type.Prefab == null)
+            {
+                throw new Exception($"Tried to create a factory element {type.name} that has no associated unity object. ");
+            }
             GameObject newFactoryElement = Instantiate(type.Prefab);
             IFactoryElement factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
             factoryElements.Insert(factoryElement, new RectInt(location.x, location.y, factoryElement.FactoryElementType.Size.x, factoryElement.FactoryElementType.Size.y));

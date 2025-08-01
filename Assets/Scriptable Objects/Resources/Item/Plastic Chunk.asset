@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
-  m_Name: To be a mchine
+  m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
+  m_Name: Plastic Chunk
   m_EditorClassIdentifier: 
-  cost: 0
-  prefab: {fileID: 0}
-  size:
-    x: 0
-    y: 0
-  recipes: []
-  capacity: 0
+  icon: {fileID: 0}
+  marketBehaviour: {fileID: 0}
+  inWorldSprite: {fileID: 0}
