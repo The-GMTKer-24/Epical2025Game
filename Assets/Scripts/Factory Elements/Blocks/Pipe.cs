@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
@@ -63,6 +65,25 @@ namespace Factory_Elements.Blocks
             if (buffer != null && buffer.Quantity == 0)
             {
                 buffers.Remove(buffer.ResourceType);
+            }
+            
+            int sumVolume = buffer.Quantity;
+            List<Pipe> pipeList = new List<Pipe>();
+            foreach (IFactoryElement neighbor in neighbors)
+            {
+                if (neighbor is Pipe pipe)
+                {
+                    sumVolume += pipe.buffer.Quantity;
+                    pipeList.Add(pipe);
+                }
+            }
+            int averageVolume = Mathf.RoundToInt((float)sumVolume / pipeList.Count);
+            if (buffer.Quantity >= averageVolume)
+            {
+                foreach (Pipe pipe in pipeList)
+                {
+                    
+                }
             }
         }
 

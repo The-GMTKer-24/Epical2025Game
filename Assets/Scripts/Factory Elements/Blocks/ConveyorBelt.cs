@@ -14,12 +14,14 @@ namespace Factory_Elements.Blocks
         private const float MinDistance = 1.0f / CAPACITY;
         private LinkedList<BeltItem> items; // First is most recently added (last to leave the belt), Last is least recently added (first to leave the belt)
         private ConveyorBelt aheadBelt;
+        private IFactoryElement aheadNeighbor;
         protected ElementSettings<Direction> directionSetting; 
 
         void Awake()
         {
             items = new LinkedList<BeltItem>();
             aheadBelt = null;
+            aheadNeighbor = null;
             directionSetting = new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.");
         }
 
@@ -28,24 +30,47 @@ namespace Factory_Elements.Blocks
             base.OnNeighborUpdate(newNeighbor, added);
             
             // Update aheadBelt
-            if (!added && newNeighbor is ConveyorBelt && newNeighbor == aheadBelt)
+            if (!added && newNeighbor == aheadNeighbor)
             {
                 aheadBelt = null;
+                aheadNeighbor = null;
             }
+            
+            int2 north = new int2(0, 1);
+            int2 east = new int2(1, 0);
+            int2 south = new int2(0, -1);
+            int2 west = new int2(-1, 0);
 
             if (added && newNeighbor is ConveyorBelt newBelt)
             {
                 int2 relativePos = newBelt.Position - this.Position;
-                int2 north = new int2(0, 1);
-                int2 east = new int2(1, 0);
-                int2 south = new int2(0, -1);
-                int2 west = new int2(-1, 0);
                 if (relativePos.Equals(north) && directionSetting.Value == Direction.North
                     || relativePos.Equals(east) && directionSetting.Value == Direction.East
                     || relativePos.Equals(south) && directionSetting.Value == Direction.South
                     || relativePos.Equals(west) && directionSetting.Value == Direction.West)
                 {
                     aheadBelt = newBelt;
+                }
+            }
+
+            if (added)
+            {
+                for (int x = newNeighbor.Position.x;
+                     x < newNeighbor.Position.x + newNeighbor.FactoryElementType.Size.x;
+                     x++)
+                {
+                    for (int y = newNeighbor.Position.y;
+                         y < newNeighbor.Position.y + newNeighbor.FactoryElementType.Size.y;)
+                    {
+                        int2 relativePos = new int2(x, y) - this.Position;
+                        if (relativePos.Equals(north) && directionSetting.Value == Direction.North
+                            || relativePos.Equals(east) && directionSetting.Value == Direction.East
+                            || relativePos.Equals(south) && directionSetting.Value == Direction.South
+                            || relativePos.Equals(west) && directionSetting.Value == Direction.West)
+                        {
+                            aheadNeighbor = newNeighbor;
+                        }
+                    }
                 }
             }
         }
@@ -79,10 +104,9 @@ namespace Factory_Elements.Blocks
             List<BeltItem> markedForRemoval = new List<BeltItem>();
             for (int i = itemList.Count - 1; i >= 0; i--)
             {
-                float distance;
                 if (i == itemList.Count - 1)
                 {
-                    distance = 1 - itemList[i].Progress + aheadProgress;
+                    var distance = 1 - itemList[i].Progress + aheadProgress;
                     if (distance > MinDistance)
                     {
                         itemList[i].Progress += deltaDistance;
@@ -98,7 +122,7 @@ namespace Factory_Elements.Blocks
 
                 if (itemList[i].Progress > 1.0f)
                 {
-                    if (aheadBelt.TryInsertResource(this, itemList[i].Item))
+                    if (aheadNeighbor.TryInsertResource(this, itemList[i].Item))
                     {
                         markedForRemoval.Add(itemList[i]);
                     }
