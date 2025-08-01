@@ -1,9 +1,9 @@
 using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using Factory_Elements;
 using Scriptable_Objects;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GridSystem : MonoBehaviour
 {
@@ -17,13 +17,13 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private FactoryElementType itemSource;
-    private int gridSystemHeight;
-    private int gridSystemWidth;
+    private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
-    private PlayerControls playerControls;
+    private int gridSystemWidth;
+    private int gridSystemHeight;
     private FactoryElementType selectedElement;
-
+    
     private void Start()
     {
         gridSystemHeight = cellHeight * gridHeight;
@@ -38,12 +38,21 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.SelectPulverizer.performed += SelectPulverizer;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void SelectBelt(InputAction.CallbackContext ctx)
     {
-        lineRenderer.enabled = renderGrid;
+        selectedElement = belt;
     }
-
+    
+    private void SelectItemSource(InputAction.CallbackContext ctx)
+    {
+        selectedElement = itemSource;
+    }
+    
+    private void SelectPulverizer(InputAction.CallbackContext ctx)
+    {
+        selectedElement = pulverizer;
+    }
+    
     private void OnEnable()
     {
         playerControls = new PlayerControls();
@@ -55,23 +64,8 @@ public class GridSystem : MonoBehaviour
         playerControls.Disable();
     }
 
-    private void SelectBelt(InputAction.CallbackContext ctx)
-    {
-        selectedElement = belt;
-    }
-
-    private void SelectItemSource(InputAction.CallbackContext ctx)
-    {
-        selectedElement = itemSource;
-    }
-
-    private void SelectPulverizer(InputAction.CallbackContext ctx)
-    {
-        selectedElement = pulverizer;
-    }
-
     /// <summary>
-    ///     Instantiates a grid line renderer and returns it. The renderer will not update if the values change
+    /// Instantiates a grid line renderer and returns it. The renderer will not update if the values change
     /// </summary>
     /// <param name="lr"></param>
     private void InitializeGridRender(out LineRenderer lr)
@@ -131,6 +125,12 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
+    private void Update()
+    {
+        lineRenderer.enabled = renderGrid;
+    }
+
     private void placeMachine(InputAction.CallbackContext ctx)
     {
         var mouseWorldPoint =
@@ -142,15 +142,15 @@ public class GridSystem : MonoBehaviour
 
         if (Mathf.Approximately(gridSpace.x, -1f))
         {
-            Debug.Log("Space is outside of placement grid");
             return;
         }
 
-        var placedElement =
-            factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out var placed);
-        if (placed) placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
-
-        Debug.Log($"Placed: {placed}");
+        GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
+        if (placed)
+        {
+            placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+        }
+        
     }
 
     /// <summary>
