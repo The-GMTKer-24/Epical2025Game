@@ -29,8 +29,6 @@ namespace Factory_Elements.Blocks
 
         protected override void FixedUpdate()
         {
-            base.FixedUpdate();
-
             var canRun = true;
             foreach (var resourceQuantity in recipeSetting.Value.Inputs)
             {
