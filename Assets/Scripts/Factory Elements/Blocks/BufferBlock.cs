@@ -110,6 +110,16 @@ namespace Factory_Elements.Blocks
             
             currentOutputNeighborIndex = 0;
         }
+
+        public override Dictionary<ResourceType, int> GetHeldResources()
+        {
+            Dictionary<ResourceType, int> heldResources = new();
+            foreach (Buffer buffer in buffers.Values)
+            {
+                heldResources.Add(buffer.ResourceType, buffer.Quantity);
+            }
+            return heldResources;
+        }
     }
 
     public class Buffer

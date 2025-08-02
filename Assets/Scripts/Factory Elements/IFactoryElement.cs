@@ -1,4 +1,5 @@
-﻿using Factory_Elements.Settings;
+﻿using System.Collections.Generic;
+using Factory_Elements.Settings;
 using Scriptable_Objects;
 using Unity.Mathematics;
 
@@ -39,5 +40,11 @@ namespace Factory_Elements
         /// </summary>
         /// <returns></returns>
         ISetting[] GetSettings();
+
+        /// <summary>
+        /// The extra items and liquids (not counting the parts the block comprises) that should be returned to the inventory upon deconstruction
+        /// </summary>
+        /// <returns>A mapping of all the included resource types, to the amount of that type that is included</returns>
+        Dictionary<ResourceType, int> GetHeldResources();
     }
 }

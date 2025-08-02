@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Factory_Elements;
 using Factory_Elements.Blocks;
 using Factory_Elements.Settings;
@@ -21,5 +22,10 @@ public class Decoration : Block
     public override ISetting[] GetSettings()
     {
         return Array.Empty<ISetting>();
+    }
+
+    public override Dictionary<ResourceType, int> GetHeldResources()
+    {
+        return new Dictionary<ResourceType, int>();
     }
 }

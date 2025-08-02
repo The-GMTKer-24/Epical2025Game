@@ -33,5 +33,6 @@ namespace Factory_Elements.Blocks
         public abstract bool AcceptsResource(IFactoryElement sender, Resource resource);
         public abstract bool TryInsertResource(IFactoryElement sender, Resource resource);
         public abstract ISetting[] GetSettings();
+        public abstract Dictionary<ResourceType, int> GetHeldResources();
     }
 }

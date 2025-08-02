@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
@@ -73,6 +74,12 @@ namespace Factory_Elements.Blocks
         public override ISetting[] GetSettings()
         {
             return new ISetting[] { };
+        }
+
+        public override Dictionary<ResourceType, int> GetHeldResources()
+        {
+            Debug.Log("Are you sure you should be able to deconstruct this");
+            return new Dictionary<ResourceType, int>();
         }
     }
 }
