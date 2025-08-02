@@ -15,7 +15,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private int gridHeight = 10;
     [SerializeField] private int gridWidth = 10;
     [SerializeField] private bool renderGrid;
-    [SerializeField] private Camera camera;
+    [SerializeField] private new Camera camera;
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
 
@@ -34,7 +34,22 @@ public class GridSystem : MonoBehaviour
     private int gridSystemHeight;
     private int selectedIndex;
     private bool isPlacing;
+    private bool canPlace;
+    public static GridSystem Instance { get; private set; }
+    
     public FactoryElementType selectedElement { get; private set; }
+
+
+    private void Awake()
+    {
+        canPlace = true;
+        Instance = this;
+    }
+
+    public void SetCanPlace(bool canPlace)
+    {
+        this.canPlace = canPlace;
+    }
 
     private void Start()
     {
@@ -150,7 +165,7 @@ public class GridSystem : MonoBehaviour
     {
         lineRenderer.enabled = renderGrid;
 
-        if (isPlacing)
+        if (isPlacing && canPlace)
         {
             var mouseWorldPoint =
                 camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));

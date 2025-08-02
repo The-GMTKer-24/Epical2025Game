@@ -21,10 +21,13 @@ namespace UI.Inventory
         public void Awake()
         {
             Instance = this;
+            factoryElementPanel.gameObject.SetActive(false);
+            inventoryPanel.gameObject.SetActive(false);
         }
 
         public void Show()
         {
+            GridSystem.Instance.SetCanPlace(false);
             inventoryPanel.gameObject.SetActive(true);
             foreach (Transform child in inventoryPanel.transform)
             {
@@ -65,6 +68,8 @@ namespace UI.Inventory
 
         public void Hide()
         {
+            GridSystem.Instance.SetCanPlace(true);
+
             inventoryPanel.gameObject.SetActive(false);
             factoryElementPanel.gameObject.SetActive(false);
             

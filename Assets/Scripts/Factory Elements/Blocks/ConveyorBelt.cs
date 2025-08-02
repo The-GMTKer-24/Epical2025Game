@@ -15,7 +15,7 @@ namespace Factory_Elements.Blocks
         [SerializeField] public int capacity = 4;
         [SerializeField] public float speed = 1.5f;
         [SerializeField] public float equalizationRate = 0.15f;
-        [SerializeField] public GameObject bottleAsset;
+        [SerializeField] public GameObject beltItemPrefab;
 
         private IFactoryElement aheadNeighbor;
         protected ElementSettings<Direction> directionSetting;
@@ -126,7 +126,7 @@ namespace Factory_Elements.Blocks
             if (resource is Item item)
             {
                 item.EqualizationRate = equalizationRate;
-                items.AddFirst(new BeltItem(item, 0.0f, bottleAsset));
+                items.AddFirst(new BeltItem(item, 0.0f, beltItemPrefab, (ItemType)item.ResourceType, transform));
                 return true;
             }
 
@@ -159,10 +159,12 @@ internal class BeltItem
 
     public float Progress; // 0-1
 
-    public BeltItem(Item item, float progress, GameObject asset)
+    public BeltItem(Item item, float progress, GameObject asset, ItemType itemType, Transform parent = null)
     {
         Item = item;
         Progress = progress;
-        LinkedObject = GameObject.Instantiate(asset);
+        LinkedObject = GameObject.Instantiate(asset,parent);
+        LinkedObject.name = itemType.name;
+        LinkedObject.GetComponent<SpriteRenderer>().sprite = itemType.InWorldSprite;
     }
 }

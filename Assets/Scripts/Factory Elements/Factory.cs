@@ -43,7 +43,8 @@ namespace Factory_Elements
             if (type.Prefab == null)
                 throw new Exception(
                     $"Tried to create a factory element {type.name} that has no associated unity object. ");
-            var newFactoryElement = Instantiate(type.Prefab);
+            var newFactoryElement = Instantiate(type.Prefab, transform);
+            newFactoryElement.name =$"{type.name}@({location.x}, {location.y})";
             var factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
             factoryElements.Insert(factoryElement,
                 new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,

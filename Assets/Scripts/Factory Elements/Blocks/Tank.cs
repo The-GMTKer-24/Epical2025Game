@@ -8,7 +8,7 @@ namespace Factory_Elements.Blocks
     {
         public const int STORAGE = 250;
         
-        void FixedUpdate()
+        protected override void FixedUpdate()
         {
             base.FixedUpdate();
 

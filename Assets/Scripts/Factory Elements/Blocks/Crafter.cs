@@ -27,7 +27,7 @@ namespace Factory_Elements.Blocks
             RecipeUpdate();
         }
 
-        public void FixedUpdate()
+        protected override void FixedUpdate()
         {
             base.FixedUpdate();
 

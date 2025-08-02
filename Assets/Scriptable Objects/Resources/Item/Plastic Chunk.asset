@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
   m_Name: Plastic Chunk
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
+  cost: 0
   marketBehaviour: {fileID: 0}
-  inWorldSprite: {fileID: 0}
+  inWorldSprite: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}

@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements;
+using Factory_Elements.Blocks;
 using Scriptable_Objects;
+using UI.Inventory;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Player
 {
@@ -24,6 +27,8 @@ namespace Player
         {
             Instance = this;
             playerControls = new PlayerControls();
+            playerControls.Player.Interact.performed += OpenInventoryWindow;
+            playerControls.Player.Cancel.performed += OnEscapePressed;
         }
 
         // Update is called once per frame
@@ -43,6 +48,29 @@ namespace Player
         {
             playerControls.Disable();
         }
+
+        private void OpenInventoryWindow(InputAction.CallbackContext ctx)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(playerControls.Player.MousePosition.ReadValue<Vector2>());
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            
+            if (hit && hit.collider != null)
+            {
+                BufferBlock block = hit.collider.GetComponent<BufferBlock>();
+                if (block)
+                {
+                    InventoryUI.Instance.Show(hit.collider.GetComponent<BufferBlock>());
+                    return;
+                }
+            }
+            InventoryUI.Instance.Show();
+        }
+
+        private void OnEscapePressed(InputAction.CallbackContext ctx)
+        {
+            InventoryUI.Instance.Hide();
+        }
+        
 
         public bool AddResource(Resource resource)
         {
@@ -65,7 +93,7 @@ namespace Player
 
         public void ConsumeResource(ResourceQuantity resourceQuantity)
         {
-            // TODO: implement for fluids and whateverrr if inventory can take fluids maybe it already can idk
+            // TODO: implement for fluids and whatever if inventory can take fluids maybe it already can idk
             // TODO: also needs overhauling if inventory system changes
             if (!inventory.ContainsKey(resourceQuantity.Type)) throw new Exception("Not enough resources to consume");
             if (inventory[resourceQuantity.Type].Quantity < resourceQuantity.Amount) throw new Exception("Not enough resources to consume");

@@ -9,6 +9,20 @@ namespace Scriptable_Objects
         [SerializeField] private MarketBehaviour marketBehaviour;
         [SerializeField] private Sprite inWorldSprite;
 
+
+        public override void Reset()
+        {
+            base.Reset();
+            if (missingPlaceholder != null)
+                inWorldSprite = missingPlaceholder;
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            if (inWorldSprite == null)
+                inWorldSprite = missingPlaceholder;
+        }
         public Sprite InWorldSprite => inWorldSprite;
 
         public MarketBehaviour MarketBehaviour => marketBehaviour;

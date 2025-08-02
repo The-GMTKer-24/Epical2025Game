@@ -17,7 +17,7 @@ namespace Factory_Elements.Blocks
         private bool flushed;
         private Buffer buffer => buffers.Count == 0 ? null : buffers.GetEnumerator().Current.Value;
 
-        public void FixedUpdate()
+        protected override void FixedUpdate()
         {
             base.FixedUpdate();
 

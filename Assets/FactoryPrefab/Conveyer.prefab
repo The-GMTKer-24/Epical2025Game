@@ -103,4 +103,5 @@ MonoBehaviour:
   factoryElementType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
   capacity: 2
   speed: 1.5
-  bottleAsset: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}
+  equalizationRate: 0.15
+  beltItemPrefab: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}
