@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bb1532882908081dc9bd1e79b7e2408a
+guid: 7f0a97f5199adbf44857da7f96d2378c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6263427297832242444
-    second: ConveyerStraight_0
+      213: 2010549040677302619
+    second: HigherQualityLilGuy_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,12 +113,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ConveyerStraight_0
+      name: HigherQualityLilGuy_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 238
+        width: 126
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c0d86cb31f92ce650800000000000000
-      internalID: 6263427297832242444
+      spriteID: b51b21d33b7e6eb10800000000000000
+      internalID: 2010549040677302619
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ConveyerStraight_0: 6263427297832242444
+      HigherQualityLilGuy_0: 2010549040677302619
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

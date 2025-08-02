@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b77dcf4c770da87c79d9cfae8e9c9a83
+guid: 7e569c6f94694bf83ba39f14c030c0f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3695081417236403052
-    second: ConveyerCurved_0
+      213: -5243475751331179512
+    second: StockMarket_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ConveyerCurved_0
+      name: StockMarket_0
       rect:
         serializedVersion: 2
-        x: 89
-        y: 89
-        width: 167
-        height: 167
+        x: 0
+        y: 0
+        width: 1024
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c63d58ab8f0974330800000000000000
-      internalID: 3695081417236403052
+      spriteID: 804d785d59e6b37b0800000000000000
+      internalID: -5243475751331179512
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ConveyerCurved_0: 3695081417236403052
+      StockMarket_0: -5243475751331179512
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
