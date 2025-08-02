@@ -34,7 +34,7 @@ namespace Factory_Elements.Blocks
 
                 // Trying this neighbor, either a resource can be output or cycle to the next
                 {
-                    Debug.Log("Runnning: "+ currentOutputNeighborIndex + "Count is: "+ resourceTypeIndexPerNeighbor.Count);
+                    // Debug.Log("Runnning: "+ currentOutputNeighborIndex + "Count is: "+ resourceTypeIndexPerNeighbor.Count);
 
                     resourceTypeIndexPerNeighbor[currentOutputNeighborIndex]++;
                     if (resourceTypeIndexPerNeighbor[currentOutputNeighborIndex] >= outputtableResourceTypes.Count)
