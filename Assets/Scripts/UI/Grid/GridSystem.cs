@@ -2,8 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Factory_Elements;
+using Game_Info;
 using Scriptable_Objects;
 using Unity.Mathematics;
+using UnityEngine.Serialization;
 
 public class GridSystem : MonoBehaviour
 {
@@ -17,48 +19,51 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private FactoryElementType itemSource;
-    [SerializeField] private FactoryElementType trophey;
+    // This is somewhat embarrassing
+    [FormerlySerializedAs("trophey")] [SerializeField] private FactoryElementType trophy;
     private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
+    
+    private GameInfo gameInfo;
     private int gridSystemWidth;
     private int gridSystemHeight;
+    private int selectedIndex;
     public FactoryElementType selectedElement { get; private set; }
 
     private void Start()
     {
         gridSystemHeight = cellHeight * gridHeight;
         gridSystemWidth = cellWidth * gridWidth;
-        selectedElement = belt;
+        gameInfo = GameInfo.Instance;
+        selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
 
         InitializeGridRender(out var lr);
         lineRenderer = lr;
         playerControls.Player.PlaceMachine.performed += placeMachine;
-        playerControls.Player.SelectBelt.performed += SelectBelt;
-        playerControls.Player.SelectItemSource.performed += SelectItemSource;
-        playerControls.Player.SelectPulverizer.performed += SelectPulverizer;
-        playerControls.Player.SelectItemTrophey.performed += SelectTrophey;
+        playerControls.Player.NextPlaceableItem.performed += selectNextItem;
+        playerControls.Player.PreviousPlaceableItem.performed += selectPreviousItem;
     }
 
-    private void SelectBelt(InputAction.CallbackContext ctx)
+    private void selectNextItem(InputAction.CallbackContext ctx)
     {
-        selectedElement = belt;
+        selectedIndex += 1;
+        selectedIndex %= gameInfo.UnlockedFactoryElements.Count;
+        Debug.Log(selectedIndex);
+        selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
     }
     
-    private void SelectItemSource(InputAction.CallbackContext ctx)
+    private void selectPreviousItem(InputAction.CallbackContext ctx)
     {
-        selectedElement = itemSource;
+        selectedIndex -= 1;
+        selectedIndex %= gameInfo.UnlockedFactoryElements.Count;
+        if (selectedIndex < 0)
+        {
+            selectedIndex += gameInfo.UnlockedFactoryElements.Count;
+        }
+        selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
     }
-    
-    private void SelectPulverizer(InputAction.CallbackContext ctx)
-    {
-        selectedElement = pulverizer;
-    }
-    
-    private void SelectTrophey(InputAction.CallbackContext ctx)
-    {
-        selectedElement = trophey;
-    }
+
     
     private void OnEnable()
     {
