@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements;
 using Factory_Elements.Settings;
+using Scriptable_Objects;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace Factory_Elements.Blocks
 {
+    // TODO: Implement running belts into the side of other belts (Low priority input)
     public class ConveyorBelt : Block
     {
         [SerializeField] public int capacity = 4;
@@ -122,6 +124,18 @@ namespace Factory_Elements.Blocks
         public override ISetting[] GetSettings()
         {
             return new ISetting[] { directionSetting };
+        }
+
+        public override Dictionary<ResourceType, int> GetHeldResources()
+        {
+            Dictionary<ResourceType, int> heldResources = new();
+            foreach (BeltItem item in items)
+            {
+                ResourceType resourceType = item.Item.ResourceType;
+                heldResources.TryAdd(resourceType, 0);
+                heldResources[resourceType]++;
+            }
+            return heldResources;
         }
     }
 }
