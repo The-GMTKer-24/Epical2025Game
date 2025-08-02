@@ -56,7 +56,7 @@ namespace Factory_Elements.Blocks
 
             var deltaDistance = Time.fixedDeltaTime * speed;
 
-            var markedForRemoval = new List<BeltItem>();
+            var markedForRemoval = new BeltItem[items.Count];
             for (var i = items.Count - 1; i >= 0; i--)
             {
                 if (i == items.Count - 1)
@@ -75,7 +75,7 @@ namespace Factory_Elements.Blocks
                 if (items[i].Progress > 1.0f)
                 {
                     if (aheadNeighbor is not null && aheadNeighbor.TryInsertResource(this, items[i].Item))
-                        markedForRemoval.Add(items[i]);
+                        markedForRemoval[i] = items[i];
                     else
                         items[i].Progress = 1.0f;
                 }
@@ -84,8 +84,11 @@ namespace Factory_Elements.Blocks
 
             foreach (var beltItem in markedForRemoval)
             {
-                Destroy(beltItem.LinkedObject);
-                items.Remove(beltItem);
+                if (beltItem != null)
+                {
+                    Destroy(beltItem.LinkedObject);
+                    items.Remove(beltItem);
+                }
             }
         }
 
