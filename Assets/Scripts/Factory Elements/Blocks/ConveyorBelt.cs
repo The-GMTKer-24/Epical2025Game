@@ -47,7 +47,7 @@ namespace Factory_Elements.Blocks
         {
             var aheadProgress = 1.0f;
 
-            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt)
+            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt && belt.items.Count > 0)
             {
                 aheadProgress = belt.items[0].Progress;
             }
