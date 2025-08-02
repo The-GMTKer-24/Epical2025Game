@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "New Market Behaviour", menuName = "Resources/Market Behaviour", order = 0)]
-    public class MarketBehaviour : ScriptableObject
+    [Serializable]
+    public struct MarketBehaviour 
     {
-        [SerializeField] private int standardPrice;
-        [SerializeField] private int minPrice;
-        [SerializeField] private int maxPrice;
+        [SerializeField] private float maxPrice;
+        [SerializeField] private float priceDeltaPerUnit;
+        [SerializeField] private float minPrice;
+        
+        [SerializeField] private float priceAddedFluctuationAverage;
+        [SerializeField] private float priceFluctuationStandardDeviation;
+        public float MinPrice => minPrice;
 
-        public int StandardPrice => standardPrice;
+        public float MaxPrice => maxPrice;
 
-        public int MinPrice => minPrice;
-
-        public int MaxPrice => maxPrice;
+        public float PriceDeltaPerUnit => priceDeltaPerUnit;
+        
     }
 }
