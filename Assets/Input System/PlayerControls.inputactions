@@ -131,6 +131,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Build Mode Toggle",
+                    "type": "Button",
+                    "id": "60e5b6a0-a634-4a34-b732-403e9461cf58",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -461,6 +470,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa57a32-e3e4-4b6a-9041-7dcc3da5a3d2",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";XR;Keyboard&Mouse",
+                    "action": "Build Mode Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -18,6 +18,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private new Camera camera;
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
+    [SerializeField] private RippleEffect rippleController;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -34,8 +35,8 @@ public class GridSystem : MonoBehaviour
     private int gridSystemHeight;
     private int selectedIndex;
     private bool isPlacing;
-    private bool canPlace;
-    private Direction placeDirection = Direction.North;
+    public bool buildMode { get; private set; }
+    public Direction placeDirection { get; private set; }
     public static GridSystem Instance { get; private set; }
     
     public FactoryElementType selectedElement { get; private set; }
@@ -43,13 +44,19 @@ public class GridSystem : MonoBehaviour
 
     private void Awake()
     {
-        canPlace = true;
         Instance = this;
+        placeDirection = Direction.North;
     }
 
-    public void SetCanPlace(bool canPlace)
+    public void SetBuildMode(bool mode)
     {
-        this.canPlace = canPlace;
+        buildMode = mode;
+        rippleController.SetActive(buildMode);
+    }
+
+    private void ToggleBuildMode(InputAction.CallbackContext ctx)
+    {
+        SetBuildMode(!buildMode);
     }
 
     private void Start()
@@ -58,6 +65,7 @@ public class GridSystem : MonoBehaviour
         gridSystemWidth = cellWidth * gridWidth;
         gameInfo = GameInfo.Instance;
         selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
+        
 
         InitializeGridRender(out var lr);
         lineRenderer = lr;
@@ -67,6 +75,7 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.NextPlaceableItem.performed += selectNextItem;
         playerControls.Player.PreviousPlaceableItem.performed += selectPreviousItem;
         playerControls.Player.Rotate.performed += rotateMachine;
+        playerControls.Player.BuildModeToggle.performed += ToggleBuildMode;
     }
 
     private void rotateMachine(InputAction.CallbackContext ctx)
@@ -173,7 +182,7 @@ public class GridSystem : MonoBehaviour
     {
         lineRenderer.enabled = renderGrid;
 
-        if (isPlacing && canPlace)
+        if (isPlacing && buildMode)
         {
             var mouseWorldPoint =
                 camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
