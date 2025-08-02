@@ -1,5 +1,6 @@
 using System;
 using Game_Info;
+using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +16,12 @@ public class Money : MonoBehaviour
 
     private GridSystem gridSystemClass;
     private GameInfo gameInfo;
+    private Image uiImage;
+    private FactoryElementType previousFrameSelectedElement;
 
     private void Start()
     {
+        uiImage = selectedItem.GetComponent<Image>();
         gridSystemClass = gridSystem.GetComponent<GridSystem>();
         gameInfo = GameInfo.Instance;
     }
@@ -34,6 +38,11 @@ public class Money : MonoBehaviour
         
         unlockedItems.text = unlockedThings;
 
-        selectedItem.GetComponent<Image>().sprite =  gridSystemClass.selectedElement.Prefab.GetComponent<SpriteRenderer>().sprite;
+        if (gridSystemClass.selectedElement != previousFrameSelectedElement)
+        {
+            uiImage.sprite = gridSystemClass.selectedElement.Prefab.GetComponent<SpriteRenderer>().sprite;
+        }
+
+        previousFrameSelectedElement = gridSystemClass.selectedElement;
     }
 }
