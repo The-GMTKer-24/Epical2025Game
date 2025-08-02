@@ -6,6 +6,8 @@ public class RippleEffect : MonoBehaviour
     public Material rippleMaterial;
     public float duration = 1.0f;
 
+    private AudioSource soundWhenSwitching;
+    
     private float currentTime = 0f;
     private bool isActive = false;
     private bool expanding = true;
@@ -16,12 +18,14 @@ public class RippleEffect : MonoBehaviour
         {
             rippleMaterial.SetFloat("_Radius", 0f);
         }
+        
+        soundWhenSwitching = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         if (!isActive || rippleMaterial is null) return;
-
+        
         if (expanding)
         {
             currentTime += Time.deltaTime;
@@ -50,6 +54,8 @@ public class RippleEffect : MonoBehaviour
 
     public void SetActive(bool active)
     {
+        soundWhenSwitching.Play();
+        
         if (active)
         {
             if (currentTime >= duration)

@@ -12,8 +12,8 @@ namespace Factory_Elements.Blocks
     // TODO: Implement running belts into the side of other belts (Low priority input)
     public class ConveyorBelt : Block
     {
-        [SerializeField] public int capacity = 4;
-        [SerializeField] public float speed = 1.5f;
+        [SerializeField] public int capacity = 4; // items
+        [SerializeField] public float rate = 5; // items/sec
         [SerializeField] public float equalizationRate = 0.15f;
         [SerializeField] public GameObject beltItemPrefab;
 
@@ -45,6 +45,8 @@ namespace Factory_Elements.Blocks
 
         private void FixedUpdate()
         {
+            float speed = rate / capacity;
+            
             var aheadProgress = 1.0f;
 
             if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt && belt.items.Count > 0)
