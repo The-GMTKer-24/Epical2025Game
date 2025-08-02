@@ -18,17 +18,22 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
+
     [SerializeField] private FactoryElementType itemSource;
+
     // This is somewhat embarrassing
-    [FormerlySerializedAs("trophey")] [SerializeField] private FactoryElementType trophy;
+    [FormerlySerializedAs("trophey")] [SerializeField]
+    private FactoryElementType trophy;
+
     private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
-    
+
     private GameInfo gameInfo;
     private int gridSystemWidth;
     private int gridSystemHeight;
     private int selectedIndex;
+    private bool isPlacing;
     public FactoryElementType selectedElement { get; private set; }
 
     private void Start()
@@ -40,7 +45,9 @@ public class GridSystem : MonoBehaviour
 
         InitializeGridRender(out var lr);
         lineRenderer = lr;
-        playerControls.Player.PlaceMachine.performed += placeMachine;
+        playerControls.Player.PlaceMachine.started += placeMachine;
+        playerControls.Player.PlaceMachine.canceled += stopPlacing;
+
         playerControls.Player.NextPlaceableItem.performed += selectNextItem;
         playerControls.Player.PreviousPlaceableItem.performed += selectPreviousItem;
     }
@@ -52,7 +59,7 @@ public class GridSystem : MonoBehaviour
         Debug.Log(selectedIndex);
         selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
     }
-    
+
     private void selectPreviousItem(InputAction.CallbackContext ctx)
     {
         selectedIndex -= 1;
@@ -61,10 +68,11 @@ public class GridSystem : MonoBehaviour
         {
             selectedIndex += gameInfo.UnlockedFactoryElements.Count;
         }
+
         selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
     }
 
-    
+
     private void OnEnable()
     {
         playerControls = new PlayerControls();
@@ -141,28 +149,38 @@ public class GridSystem : MonoBehaviour
     private void Update()
     {
         lineRenderer.enabled = renderGrid;
+
+        if (isPlacing)
+        {
+            var mouseWorldPoint =
+                camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+
+            var gridSpace = WorldToGridSpace(mouseWorldPoint);
+
+            var factory = Factory.Instance;
+
+            if (Mathf.Approximately(gridSpace.x, -1f))
+            {
+                return;
+            }
+
+            GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y),
+                out bool placed);
+            if (placed)
+            {
+                placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+            }
+        }
     }
 
     private void placeMachine(InputAction.CallbackContext ctx)
     {
-        var mouseWorldPoint =
-            camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
+        isPlacing = true;
+    }
 
-        var gridSpace = WorldToGridSpace(mouseWorldPoint);
-
-        var factory = Factory.Instance;
-
-        if (Mathf.Approximately(gridSpace.x, -1f))
-        {
-            return;
-        }
-
-        GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), out bool placed);
-        if (placed)
-        {
-            placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
-        }
-        
+    private void stopPlacing(InputAction.CallbackContext ctx)
+    {
+        isPlacing = false;
     }
 
     /// <summary>

@@ -351,6 +351,17 @@
                     "name": "",
                     "id": "df669aff-83a4-448e-b0b9-d39864565437",
                     "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "PlaceMachine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "985fcb47-ebac-4eaf-8c26-d3015977a354",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
