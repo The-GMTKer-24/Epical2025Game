@@ -32,7 +32,7 @@ namespace Factory_Elements
             return !factoryElements.Overlaps(new IntRect(location.x, location.y, type.Size.x, type.Size.y));
         }
 
-        public GameObject TryPlace(FactoryElementType type, int2 location, out bool placed)
+        public GameObject TryPlace(FactoryElementType type, int2 location, Direction rotation, out bool placed)
         {
             if (!CanPlace(type, location))
             {
@@ -46,10 +46,17 @@ namespace Factory_Elements
             var newFactoryElement = Instantiate(type.Prefab, transform);
             newFactoryElement.name =$"{type.name}@({location.x}, {location.y})";
             var factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
+            if (!factoryElement.SupportsRotation)
+            {
+                rotation = Direction.North;
+            }
             factoryElements.Insert(factoryElement,
-                new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
-                    factoryElement.FactoryElementType.Size.y));
+                calculateRotatedRectangle(location, factoryElement.FactoryElementType.Size.x, factoryElement.FactoryElementType.Size.y, rotation));
             factoryElement.Position = location;
+            if (factoryElement.SupportsRotation)
+            {
+                factoryElement.Rotation = rotation;
+            }
 
             var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
                 factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2));
@@ -63,6 +70,28 @@ namespace Factory_Elements
 
             placed = true;
             return newFactoryElement;
+        }
+
+        private IntRect calculateRotatedRectangle(int2 location, int width, int height, Direction rotation)
+        {
+            // // These functions will work by assuming the rectangle is at 0,0. It will perform the basic rotation and then offset with the real location
+            // if (rotation == Direction.North)
+            // {
+                // This is the simplest case
+                return new IntRect(location.x, location.y, width, height);
+            // } 
+            // if (rotation == Direction.South)
+            // {
+            //     // Our rectangle will just be offset by the height of it
+            //     return new IntRect(location.x - width, location.y - height, width, height);
+            // }
+            // if (rotation == Direction.East)
+            // {
+            //     // This will have the same x as the normal case, but an offset y. The width and height will also be flipped
+            //     return new IntRect(location.x, location.y - width, height, width);
+            // }
+            // // West case. Like the east case but the x is offset by the height
+            // return new IntRect(location.x-height, location.y, height, width);
         }
 
         public IntRect FromFactoryElement(IFactoryElement factoryElement)

@@ -38,21 +38,19 @@ namespace Factory_Elements.Blocks
         {
             foreach (BeltItem beltItem in items)
             {
-                if (directionSetting.Value is Direction.North or Direction.South)
-                {
-                    beltItem.LinkedObject.transform.position = new Vector3(transform.position.x + .5f,
-                        transform.position.y + beltItem.Progress, 0);
-                }
-                else
-                {
-                    beltItem.LinkedObject.transform.position = new Vector3(transform.position.x + beltItem.Progress, transform.position.y + .5f, 0);
-                }
+                    beltItem.LinkedObject.transform.localPosition = new Vector3(0,
+                        beltItem.Progress-.5f, 0);
             }
         }
 
         private void FixedUpdate()
         {
             var aheadProgress = 1.0f;
+
+            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt)
+            {
+                aheadProgress = belt.items[0].Progress;
+            }
 
             var deltaDistance = Time.fixedDeltaTime * speed;
 
@@ -92,7 +90,15 @@ namespace Factory_Elements.Blocks
             }
         }
 
-        public override Direction? Rotation => directionSetting.Value;
+        public override Direction? Rotation
+        {
+            get => directionSetting.Value;
+            set
+            {
+                if (value != null) directionSetting.Value = (Direction)value;
+            }
+        }
+
         public override bool Rotate(Direction direction)
         {
             directionSetting.Value = direction;

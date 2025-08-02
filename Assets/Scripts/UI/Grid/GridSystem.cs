@@ -35,6 +35,7 @@ public class GridSystem : MonoBehaviour
     private int selectedIndex;
     private bool isPlacing;
     private bool canPlace;
+    private Direction placeDirection = Direction.North;
     public static GridSystem Instance { get; private set; }
     
     public FactoryElementType selectedElement { get; private set; }
@@ -65,6 +66,13 @@ public class GridSystem : MonoBehaviour
 
         playerControls.Player.NextPlaceableItem.performed += selectNextItem;
         playerControls.Player.PreviousPlaceableItem.performed += selectPreviousItem;
+        playerControls.Player.Rotate.performed += rotateMachine;
+    }
+
+    private void rotateMachine(InputAction.CallbackContext ctx)
+    {
+        placeDirection += 1;
+        placeDirection = (Direction) ((int)placeDirection % 4);
     }
 
     private void selectNextItem(InputAction.CallbackContext ctx)
@@ -179,11 +187,18 @@ public class GridSystem : MonoBehaviour
                 return;
             }
 
-            GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y),
-                out bool placed);
+            
+            GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), placeDirection, out bool placed);
             if (placed)
             {
-                placedElement.transform.position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+                IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
+                Vector2 worldPoint = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+
+                placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
+                if (element.SupportsRotation)
+                {
+                    placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ namespace Factory_Elements
         /// <summary>
         /// The current rotation of the machine. Null if the machine does not support rotation
         /// </summary>
-        public Direction? Rotation { get; }
+        public Direction? Rotation { get; set; }
 
         /// <summary>
         /// Changes the rotation of the machine. Throws a not implemented exception if the machine does not support rotation
