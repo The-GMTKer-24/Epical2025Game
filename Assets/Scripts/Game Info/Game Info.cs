@@ -28,5 +28,15 @@ namespace Game_Info
             UnlockedFactoryElements = startingUnlockedFactoryElements.Elements.ToList();
             Money = initialMoney;
         }
+
+        public void SpendMoney(int amount)
+        {
+            Money -= amount;
+        }
+
+        public void GainMoney(int amount)
+        {
+            Money += amount;
+        }
     }
 }

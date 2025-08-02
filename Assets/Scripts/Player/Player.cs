@@ -53,5 +53,26 @@ namespace Player
             inventory[resource.ResourceType].AddResource(resource);
             return true;
         }
+        
+        // TODO: Allow for the either insertion or complete failure of a quantity of resources
+
+        public int GetResourceAmount(ResourceType resourceType)
+        {
+            // TODO: implement for fluids and whateverrr
+            if (!inventory.ContainsKey(resourceType)) return 0;
+            return inventory[resourceType].Quantity;
+        }
+
+        public void ConsumeResource(ResourceQuantity resourceQuantity)
+        {
+            // TODO: implement for fluids and whateverrr if inventory can take fluids maybe it already can idk
+            // TODO: also needs overhauling if inventory system changes
+            if (!inventory.ContainsKey(resourceQuantity.Type)) throw new Exception("Not enough resources to consume");
+            if (inventory[resourceQuantity.Type].Quantity < resourceQuantity.Amount) throw new Exception("Not enough resources to consume");
+            for (int i = 0; i < resourceQuantity.Amount; i++)
+            {
+                inventory[resourceQuantity.Type].TakeResource();
+            }
+        }
     }
 }
