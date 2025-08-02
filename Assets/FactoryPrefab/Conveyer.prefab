@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factoryElementType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
   capacity: 2
-  speed: 1.5
+  rate: 5
   equalizationRate: 0.15
   beltItemPrefab: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}
 --- !u!212 &8601062692840750735
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -288591241881019157, guid: 8015a4f31480b3463ad5d4b711f44250, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
