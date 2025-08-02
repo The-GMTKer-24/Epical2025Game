@@ -28,7 +28,7 @@ namespace Factory_Elements.Blocks
         private void Awake()
         {
             minDistance = 1.0f / capacity;
-            items = new List<BeltItem>();
+            items = new List<BeltItem>(capacity);
             aheadNeighbor = null;
             directionSetting =
                 new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.");
@@ -46,6 +46,11 @@ namespace Factory_Elements.Blocks
         private void FixedUpdate()
         {
             var aheadProgress = 1.0f;
+
+            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt)
+            {
+                aheadProgress = belt.items[0].Progress;
+            }
 
             var deltaDistance = Time.fixedDeltaTime * speed;
 
