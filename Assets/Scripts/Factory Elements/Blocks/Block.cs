@@ -19,6 +19,10 @@ namespace Factory_Elements.Blocks
             set => position = value;
         }
 
+        public abstract Direction? Rotation { get; }
+        public abstract bool Rotate(Direction direction);
+        public abstract bool SupportsRotation { get; }
+
         public FactoryElementType FactoryElementType => factoryElementType;
 
         public virtual void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)

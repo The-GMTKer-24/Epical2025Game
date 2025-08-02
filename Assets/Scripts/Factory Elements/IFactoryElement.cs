@@ -14,6 +14,23 @@ namespace Factory_Elements
         public int2 Position { get; set; }
 
         /// <summary>
+        /// The current rotation of the machine. Null if the machine does not support rotation
+        /// </summary>
+        public Direction? Rotation { get; }
+
+        /// <summary>
+        /// Changes the rotation of the machine. Throws a not implemented exception if the machine does not support rotation
+        /// </summary>
+        /// <param name="direction">The direction that you want the element to face in</param>
+        /// <returns>True if the rotation was successful. False if rotation was unable to be performed</returns>
+        bool Rotate(Direction direction);
+        
+        /// <summary>
+        /// Returns if the machine supports rotation.
+        /// </summary>
+        public bool SupportsRotation { get; }
+
+        /// <summary>
         ///     Reference to the corresponding scriptable object
         /// </summary>
         public FactoryElementType FactoryElementType { get; }

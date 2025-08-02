@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5608614131228641592}
-  - component: {fileID: 9054450959081098509}
   - component: {fileID: 3027288085370625357}
+  - component: {fileID: 8601062692840750735}
   m_Layer: 0
   m_Name: Conveyer
   m_TagString: Untagged
@@ -33,7 +33,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &9054450959081098509
+--- !u!114 &3027288085370625357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729464739455396551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d01495babb142468be2aa7cac1cc103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factoryElementType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
+  capacity: 2
+  speed: 1.5
+  equalizationRate: 0.15
+  beltItemPrefab: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}
+--- !u!212 &8601062692840750735
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,20 +105,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3027288085370625357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8729464739455396551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d01495babb142468be2aa7cac1cc103, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  factoryElementType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
-  capacity: 2
-  speed: 1.5
-  equalizationRate: 0.15
-  beltItemPrefab: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}

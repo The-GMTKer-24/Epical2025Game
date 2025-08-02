@@ -55,6 +55,14 @@ namespace Factory_Elements.Blocks
                     pipe.Flush();
         }
 
+        public override Direction? Rotation => null;
+        public override bool Rotate(Direction direction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool SupportsRotation => false;
+
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
             if (resource is not Fluid) return false;

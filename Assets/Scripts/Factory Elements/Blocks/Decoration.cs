@@ -9,6 +9,14 @@ using UnityEngine;
 
 public class Decoration : Block
 {
+    public override Direction? Rotation => null;
+    public override bool Rotate(Direction direction)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override bool SupportsRotation => false;
+
     public override bool AcceptsResource(IFactoryElement sender, Resource resource)
     {
         return false;

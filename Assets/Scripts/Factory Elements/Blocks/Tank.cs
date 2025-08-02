@@ -18,7 +18,15 @@ namespace Factory_Elements.Blocks
                 buffers.Clear();
             }
         }
-        
+
+        public override Direction? Rotation => null;
+        public override bool Rotate(Direction direction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool SupportsRotation => false;
+
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
             if (buffers.Count == 0) return true;

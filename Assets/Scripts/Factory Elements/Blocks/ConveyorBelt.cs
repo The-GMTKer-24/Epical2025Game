@@ -20,7 +20,7 @@ namespace Factory_Elements.Blocks
         private IFactoryElement aheadNeighbor;
         protected ElementSettings<Direction> directionSetting;
 
-        private LinkedList<BeltItem>
+        private List<BeltItem>
             items; // First is most recently added (last to leave the belt), Last is least recently added (first to leave the belt)
 
         private float minDistance;
@@ -28,7 +28,7 @@ namespace Factory_Elements.Blocks
         private void Awake()
         {
             minDistance = 1.0f / capacity;
-            items = new LinkedList<BeltItem>();
+            items = new List<BeltItem>();
             aheadNeighbor = null;
             directionSetting =
                 new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.");
@@ -56,41 +56,48 @@ namespace Factory_Elements.Blocks
 
             var deltaDistance = Time.fixedDeltaTime * speed;
 
-            var itemList = items.ToList();
             var markedForRemoval = new List<BeltItem>();
-            for (var i = itemList.Count - 1; i >= 0; i--)
+            for (var i = items.Count - 1; i >= 0; i--)
             {
-                if (i == itemList.Count - 1)
+                if (i == items.Count - 1)
                 {
-                    var distance = 1 - itemList[i].Progress + aheadProgress;
-                    if (distance > minDistance) itemList[i].Progress += deltaDistance; // Otherwise gets stuck
+                    var distance = 1 - items[i].Progress + aheadProgress;
+                    if (distance > minDistance) items[i].Progress += deltaDistance; // Otherwise gets stuck
                 }
                 else
                 {
-                    var farthestAllowableProgress = itemList[i + 1].Progress - minDistance;
-                    var farthestReachableProgress = itemList[i].Progress + deltaDistance;
+                    var farthestAllowableProgress = items[i + 1].Progress - minDistance;
+                    var farthestReachableProgress = items[i].Progress + deltaDistance;
                     var newProgress = Mathf.Min(farthestAllowableProgress, farthestReachableProgress);
-                    itemList[i].Progress = newProgress;
+                    items[i].Progress = newProgress;
                 }
 
-                if (itemList[i].Progress > 1.0f)
+                if (items[i].Progress > 1.0f)
                 {
-                    if (aheadNeighbor is not null && aheadNeighbor.TryInsertResource(this, itemList[i].Item))
-                        markedForRemoval.Add(itemList[i]);
+                    if (aheadNeighbor is not null && aheadNeighbor.TryInsertResource(this, items[i].Item))
+                        markedForRemoval.Add(items[i]);
                     else
-                        itemList[i].Progress = 1.0f;
+                        items[i].Progress = 1.0f;
                 }
             }
 
-            items = new LinkedList<BeltItem>(itemList);
 
             foreach (var beltItem in markedForRemoval)
             {
                 Destroy(beltItem.LinkedObject);
                 items.Remove(beltItem);
-                
             }
         }
+
+        public override Direction? Rotation => directionSetting.Value;
+        public override bool Rotate(Direction direction)
+        {
+            directionSetting.Value = direction;
+            gameObject.transform.rotation = Quaternion.Euler(0,0,(int)direction * 90);
+            return true;
+        }
+
+        public override bool SupportsRotation => true;
 
         public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
         {
@@ -116,7 +123,7 @@ namespace Factory_Elements.Blocks
             {
                 return true;
             }
-            float room = items.First.Value.Progress;
+            float room = items[0].Progress;
             return room >= minDistance;
         }
 
@@ -126,7 +133,7 @@ namespace Factory_Elements.Blocks
             if (resource is Item item)
             {
                 item.EqualizationRate = equalizationRate;
-                items.AddFirst(new BeltItem(item, 0.0f, beltItemPrefab, (ItemType)item.ResourceType, transform));
+                items.Insert(0,new BeltItem(item, 0.0f, beltItemPrefab, (ItemType)item.ResourceType, transform));
                 return true;
             }
 

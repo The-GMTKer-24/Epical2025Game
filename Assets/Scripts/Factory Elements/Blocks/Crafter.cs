@@ -89,6 +89,14 @@ namespace Factory_Elements.Blocks
             setBuffers(newBuffers);
         }
 
+        public override Direction? Rotation => null;
+        public override bool Rotate(Direction direction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool SupportsRotation => false;
+
         public override ISetting[] GetSettings()
         {
             return new[] { recipeSetting };
