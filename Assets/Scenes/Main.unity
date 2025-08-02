@@ -158,7 +158,7 @@ MonoBehaviour:
   belt: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
   pulverizer: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
-  trophey: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
+  trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
 Transform:
   m_ObjectHideFlags: 0
@@ -1845,7 +1845,7 @@ MonoBehaviour:
   defaultZoomLevel: 7
   minCamSize: 0.4
   maxCamSize: 31.16
-  panSpeed: 0.1
+  panSpeed: 1
   interpolationEarlyEndPoint: 1
   interpolationTargetEndPoint: 0.1
   doubleClickLockoutTime: 0.1
