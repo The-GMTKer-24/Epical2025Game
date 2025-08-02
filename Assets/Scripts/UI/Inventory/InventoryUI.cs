@@ -76,7 +76,6 @@ namespace UI.Inventory
                 GridSystem.Instance.SetBuildMode(previousBuildMode);
             }
             
-
             inventoryPanel.gameObject.SetActive(false);
             factoryElementPanel.gameObject.SetActive(false);
             

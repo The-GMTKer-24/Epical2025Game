@@ -58,18 +58,18 @@ namespace Factory_Elements.Blocks
                     {
                         var resourceType = resourceQuantity.Type;
                         buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
-                        Debug.Log("Consumed:");
-                        Debug.Log(resourceQuantity.Type.name);
-                        Debug.Log(resourceQuantity.Amount.ToString());
+                        // Debug.Log("Consumed:");
+                        // Debug.Log(resourceQuantity.Type.name);
+                        // Debug.Log(resourceQuantity.Amount.ToString());
                     }
 
                     foreach (var resourceQuantity in recipeSetting.Value.Outputs)
                     {
                         var resourceType = resourceQuantity.Type;
                         buffers[resourceType].CreateResources(resourceQuantity.Amount);
-                        Debug.Log("Created:");
-                        Debug.Log(resourceQuantity.Type.name);
-                        Debug.Log(resourceQuantity.Amount.ToString());
+                        // Debug.Log("Created:");
+                        // Debug.Log(resourceQuantity.Type.name);
+                        // Debug.Log(resourceQuantity.Amount.ToString());
                     }
                 }
             }
