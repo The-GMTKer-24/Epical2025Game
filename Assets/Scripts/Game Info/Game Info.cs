@@ -25,7 +25,9 @@ namespace Game_Info
             Instance = this;
             ActiveQuests = initialQuests.Quests.ToList();
 
+            
             UnlockedFactoryElements = startingUnlockedFactoryElements.Elements.ToList();
+            Debug.Log(startingFactoryElements.Elements.ToList().Count);
             Money = initialMoney;
         }
     }

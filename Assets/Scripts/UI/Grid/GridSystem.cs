@@ -17,6 +17,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private FactoryElementType itemSource;
+    [SerializeField] private FactoryElementType trophey;
     private PlayerControls playerControls;
 
     private LineRenderer lineRenderer;
@@ -36,6 +37,7 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.SelectBelt.performed += SelectBelt;
         playerControls.Player.SelectItemSource.performed += SelectItemSource;
         playerControls.Player.SelectPulverizer.performed += SelectPulverizer;
+        playerControls.Player.SelectItemTrophey.performed += SelectTrophey;
     }
 
     private void SelectBelt(InputAction.CallbackContext ctx)
@@ -51,6 +53,11 @@ public class GridSystem : MonoBehaviour
     private void SelectPulverizer(InputAction.CallbackContext ctx)
     {
         selectedElement = pulverizer;
+    }
+    
+    private void SelectTrophey(InputAction.CallbackContext ctx)
+    {
+        selectedElement = trophey;
     }
     
     private void OnEnable()
