@@ -1,4 +1,5 @@
 using System;
+using Factory_Elements;
 using Game_Info;
 using Scriptable_Objects;
 using TMPro;
@@ -18,12 +19,14 @@ public class GameplayStandardUI : MonoBehaviour
     private GameInfo gameInfo;
     private Image uiImage;
     private FactoryElementType previousFrameSelectedElement;
+    private bool supportsRotation;
 
     private void Start()
     {
         uiImage = selectedItem.GetComponent<Image>();
         gridSystemClass = gridSystem.GetComponent<GridSystem>();
         gameInfo = GameInfo.Instance;
+        supportsRotation = false;
     }
 
     // Update is called once per frame
@@ -41,6 +44,16 @@ public class GameplayStandardUI : MonoBehaviour
         if (gridSystemClass.selectedElement != previousFrameSelectedElement)
         {
             uiImage.sprite = gridSystemClass.selectedElement.Prefab.GetComponent<SpriteRenderer>().sprite;
+            supportsRotation = gridSystemClass.selectedElement.Prefab.GetComponent<IFactoryElement>().SupportsRotation;
+        }
+
+        if (supportsRotation)
+        {
+            uiImage.transform.rotation  = Quaternion.Euler(0,0,-90*(int)gridSystemClass.placeDirection);
+        }
+        else
+        {
+            uiImage.transform.rotation  = Quaternion.Euler(0,0,0);
         }
 
         previousFrameSelectedElement = gridSystemClass.selectedElement;

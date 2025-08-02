@@ -17,6 +17,8 @@ namespace UI.Inventory
         private RectTransform factoryElementPanel;
         [SerializeField]
         private InventorySlot inventorySlotPrefab;
+
+        private bool previousBuildMode;
         
         public void Awake()
         {
@@ -27,7 +29,8 @@ namespace UI.Inventory
 
         public void Show()
         {
-            GridSystem.Instance.SetCanPlace(false);
+            previousBuildMode = GridSystem.Instance.buildMode;
+            GridSystem.Instance.SetBuildMode(false);
             inventoryPanel.gameObject.SetActive(true);
             foreach (Transform child in inventoryPanel.transform)
             {
@@ -68,7 +71,11 @@ namespace UI.Inventory
 
         public void Hide()
         {
-            GridSystem.Instance.SetCanPlace(true);
+            if (inventoryPanel.gameObject.activeInHierarchy)
+            {
+                GridSystem.Instance.SetBuildMode(previousBuildMode);
+            }
+            
 
             inventoryPanel.gameObject.SetActive(false);
             factoryElementPanel.gameObject.SetActive(false);
