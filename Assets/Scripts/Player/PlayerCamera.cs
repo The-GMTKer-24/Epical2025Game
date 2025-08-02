@@ -69,7 +69,7 @@ namespace Player
             }
             else
             {
-                var scaledZoom = zoomInput.y * (zoomPercentPerSecond * Time.deltaTime) * -1;
+                var scaledZoom = zoomInput.y * zoomPercentPerSecond * -1;
                 var newScale = scaledZoom * viewCamera.orthographicSize;
 
                 var screenPosition = playerControls.Player.MousePosition.ReadValue<Vector2>();

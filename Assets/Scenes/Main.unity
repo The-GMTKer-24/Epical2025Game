@@ -1838,7 +1838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b75d17108d60c40b14c5fe5dea19c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomPercentPerSecond: 20
+  zoomPercentPerSecond: 0.25
   clickMoveSpeed: 12
   clickZoomSpeed: 12
   playerFollowSpeed: 9
