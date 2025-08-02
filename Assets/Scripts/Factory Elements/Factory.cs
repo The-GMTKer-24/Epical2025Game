@@ -48,14 +48,12 @@ namespace Factory_Elements
             factoryElements.Insert(factoryElement,
                 new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
                     factoryElement.FactoryElementType.Size.y));
-            IntRect suroundingsToCHeck = new IntRect(location.x - 1, location.y - 1,
-                factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2);
-            
+
             var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
                 factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2));
 
             foreach (var e in nearby)
-                if (FromFactoryElement(factoryElement).Overlaps(FromFactoryElement(e)) && e != factoryElement)
+                if (e != factoryElement)
                 {
                     e.OnNeighborUpdate(factoryElement, true);
                     factoryElement.OnNeighborUpdate(e, true);
