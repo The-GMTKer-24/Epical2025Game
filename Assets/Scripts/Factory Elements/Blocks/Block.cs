@@ -23,7 +23,6 @@ namespace Factory_Elements.Blocks
 
         public virtual void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
         {
-            Debug.Log("New neighbor");
             if (added)
                 neighbors.Add(newNeighbor);
             else

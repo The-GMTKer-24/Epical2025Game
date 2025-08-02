@@ -48,6 +48,7 @@ namespace Factory_Elements
             factoryElements.Insert(factoryElement,
                 new IntRect(location.x, location.y, factoryElement.FactoryElementType.Size.x,
                     factoryElement.FactoryElementType.Size.y));
+            factoryElement.Position = location;
 
             var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
                 factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2));

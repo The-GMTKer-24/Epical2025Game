@@ -15,8 +15,8 @@ namespace Factory_Elements.Blocks
         [SerializeField] public int capacity = 4;
 
         [SerializeField] public float speed = 1.5f;
+        [SerializeField] public GameObject bottleAsset;
 
-        private ConveyorBelt aheadBelt;
         private IFactoryElement aheadNeighbor;
         protected ElementSettings<Direction> directionSetting;
 
@@ -29,7 +29,6 @@ namespace Factory_Elements.Blocks
         {
             minDistance = 1.0f / capacity;
             items = new LinkedList<BeltItem>();
-            aheadBelt = null;
             aheadNeighbor = null;
             directionSetting =
                 new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.");
@@ -37,13 +36,23 @@ namespace Factory_Elements.Blocks
 
         private void Update()
         {
-            // TODO: Move all belt items on this conveyor (child objects) to where their progress would indicate
+            foreach (BeltItem beltItem in items)
+            {
+                if (directionSetting.Value is Direction.North or Direction.South)
+                {
+                    beltItem.LinkedObject.transform.position = new Vector3(transform.position.x + .5f,
+                        transform.position.y + beltItem.Progress, 0);
+                }
+                else
+                {
+                    beltItem.LinkedObject.transform.position = new Vector3(transform.position.x + beltItem.Progress, transform.position.y + .5f, 0);
+                }
+            }
         }
 
         private void FixedUpdate()
         {
             var aheadProgress = 1.0f;
-            if (aheadBelt && aheadBelt.items.Count != 0) aheadProgress = aheadBelt.items.First.Value.Progress;
 
             var deltaDistance = Time.fixedDeltaTime * speed;
 
@@ -75,8 +84,12 @@ namespace Factory_Elements.Blocks
 
             items = new LinkedList<BeltItem>(itemList);
 
-            foreach (var beltItem in markedForRemoval) items.Remove(beltItem);
-            // TODO: Kill item game object
+            foreach (var beltItem in markedForRemoval)
+            {
+                Destroy(beltItem.LinkedObject);
+                items.Remove(beltItem);
+                
+            }
         }
 
         public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
@@ -93,13 +106,8 @@ namespace Factory_Elements.Blocks
                 default: throw new Exception("Invalid direction");
             }
 
+            print(position);
             aheadNeighbor = Factory.Instance.FromLocation(Position + direction);
-            if (aheadNeighbor == null)
-                aheadBelt = null;
-            else if (aheadNeighbor is ConveyorBelt belt)
-                aheadBelt = belt;
-            else
-                aheadBelt = null;
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
@@ -116,8 +124,8 @@ namespace Factory_Elements.Blocks
         {
             if (!AcceptsResource(sender, resource)) return false;
             if (resource is not Item) return false;
-            items.AddFirst(new BeltItem((Item)resource, 0.0f));
-            // TODO: Create item game object (possibly modify BeltItem constructor)
+            items.AddFirst(new BeltItem((Item)resource, 0.0f, bottleAsset));
+            
             return true;
         }
 
@@ -143,13 +151,14 @@ namespace Factory_Elements.Blocks
 internal class BeltItem
 {
     public Item Item;
+    public GameObject LinkedObject;
 
     public float Progress; // 0-1
-    // TODO: Paired with a child object of the conveyor belt
 
-    public BeltItem(Item item, float progress)
+    public BeltItem(Item item, float progress, GameObject asset)
     {
         Item = item;
         Progress = progress;
+        LinkedObject = GameObject.Instantiate(asset);
     }
 }
