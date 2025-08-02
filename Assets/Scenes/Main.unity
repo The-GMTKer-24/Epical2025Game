@@ -1795,7 +1795,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1841,9 +1841,9 @@ MonoBehaviour:
   zoomPercentPerSecond: 20
   clickMoveSpeed: 12
   clickZoomSpeed: 12
-  playerFollowSpeed: 5
-  defaultZoomLevel: 7
-  minCamSize: 0.4
+  playerFollowSpeed: 9
+  defaultZoomLevel: 5
+  minCamSize: 2
   maxCamSize: 31.16
   panSpeed: 1
   interpolationEarlyEndPoint: 1
@@ -2074,7 +2074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04955d5e16124bb7aed977cf9460bc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
   maxInventorySize: 0
 --- !u!212 &1157949482
 SpriteRenderer:
