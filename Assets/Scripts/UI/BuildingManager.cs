@@ -52,7 +52,7 @@ namespace Game_Info
         /// Attempts to build a building, consuming the requisite resources along the way.
         /// </summary>
         /// <returns>Whether the construction was successful</returns>
-        public static bool TryBuild(FactoryElementType building, int2 location)
+        public static bool TryBuild(FactoryElementType building, int2 location, Direction rotation)
         {
             if (!CanBuild(building, location)) return false;
             Tuple<List<ResourceQuantity>, int> fullCost = EvaluateCost(building.Cost);
@@ -63,7 +63,7 @@ namespace Game_Info
                 Player.Player.Instance.ConsumeResource(itemCost);
             }
             // Build the building
-            Factory.Instance.TryPlace(building, location, out _);
+            Factory.Instance.TryPlace(building, location, rotation,out _);
             return true;
         }
 

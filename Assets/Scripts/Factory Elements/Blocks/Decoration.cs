@@ -9,7 +9,12 @@ using UnityEngine;
 
 public class Decoration : Block
 {
-    public override Direction? Rotation => null;
+    public override Direction? Rotation
+    {
+        get => null;
+        set => throw new NotImplementedException();
+    }
+
     public override bool Rotate(Direction direction)
     {
         throw new NotImplementedException();

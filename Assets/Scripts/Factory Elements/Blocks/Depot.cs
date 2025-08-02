@@ -8,7 +8,12 @@ namespace Factory_Elements.Blocks
         [SerializeField] public float equalizationRate = 0.05f;
         public const int STORAGE = 500;
 
-        public override Direction? Rotation => null;
+        public override Direction? Rotation
+        {
+            get => null;
+            set => throw new System.NotImplementedException();
+        }
+
         public override bool Rotate(Direction direction)
         {
             throw new System.NotImplementedException();
