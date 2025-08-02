@@ -46,7 +46,7 @@ namespace Factory_Elements.Blocks
             {
                 foreach (var neighbor in neighbors)
                 {
-                    if (neighbor.TryInsertResource(this, resources.Peek()) && resources.Count > 0)
+                    if (resources.Count > 0 && neighbor.TryInsertResource(this, resources.Peek()))
                     {
                         resources.Dequeue();
                     }

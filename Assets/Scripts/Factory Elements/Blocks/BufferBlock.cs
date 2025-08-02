@@ -18,8 +18,8 @@ namespace Factory_Elements.Blocks
         private int currentOutputNeighborIndex;
         [SerializeField]
         private List<int> resourceTypeIndexPerNeighbor = new();
-        
-        
+
+        public Dictionary<ResourceType, Buffer> Buffers => buffers;
 
         // this code is EVIL. I'm so sorry
         protected virtual void FixedUpdate()
