@@ -59,7 +59,6 @@ public class HoverMaterialSwap : MonoBehaviour
             }
             hit.collider.gameObject.GetComponent<SpriteRenderer>().material = hoverMaterial;
             previousHit = hit.collider.gameObject;
-            print("Hit a factory object");
         }
         else
         {
