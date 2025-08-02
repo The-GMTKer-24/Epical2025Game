@@ -4,16 +4,22 @@ namespace Factory_Elements.Blocks
 {
     public class Depot : BufferBlock
     {
-        private const int STORAGE = 500;
+        public const int STORAGE = 500;
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
+            if (resource is Fluid) return false;
             if (!buffers.ContainsKey(resource.ResourceType)) return true;
             return buffers[resource.ResourceType].Capacity > buffers[resource.ResourceType].Quantity;
         }
 
         public override bool TryInsertResource(IFactoryElement sender, Resource resource)
         {
+            if (resource is Fluid)
+            {
+                return false;
+            }
+            
             if (!buffers.ContainsKey(resource.ResourceType))
             {
                 buffers.Add(resource.ResourceType, new Buffer(STORAGE, resource.ResourceType, true, true));
