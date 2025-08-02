@@ -13,8 +13,8 @@ namespace Factory_Elements.Blocks
     public class ConveyorBelt : Block
     {
         [SerializeField] public int capacity = 4;
-
         [SerializeField] public float speed = 1.5f;
+        [SerializeField] public float equalizationRate = 0.15f;
         [SerializeField] public GameObject bottleAsset;
 
         private IFactoryElement aheadNeighbor;
@@ -123,10 +123,14 @@ namespace Factory_Elements.Blocks
         public override bool TryInsertResource(IFactoryElement sender, Resource resource)
         {
             if (!AcceptsResource(sender, resource)) return false;
-            if (resource is not Item) return false;
-            items.AddFirst(new BeltItem((Item)resource, 0.0f, bottleAsset));
-            
-            return true;
+            if (resource is Item item)
+            {
+                item.EqualizationRate = equalizationRate;
+                items.AddFirst(new BeltItem(item, 0.0f, bottleAsset));
+                return true;
+            }
+
+            return false;
         }
 
         public override ISetting[] GetSettings()

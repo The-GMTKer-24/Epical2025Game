@@ -10,6 +10,8 @@ namespace Factory_Elements.Blocks
     /// </summary>
     public abstract class BufferBlock : Block
     {
+        [SerializeField] public float equalizationRate = 0.025f;
+        
         protected readonly List<ResourceType> inputtableResourceTypes = new();
         protected readonly List<ResourceType> outputtableResourceTypes = new();
         protected readonly List<ResourceType> resourceTypes = new();
@@ -91,6 +93,10 @@ namespace Factory_Elements.Blocks
             if (AcceptsResource(sender, resource))
             {
                 buffers[resource.ResourceType].AddResource(resource);
+                if (resource is Item item)
+                {
+                    item.EqualizationRate = equalizationRate;
+                }
                 Debug.Log("got item" + resource.ResourceType.name);
                 return true;
             }

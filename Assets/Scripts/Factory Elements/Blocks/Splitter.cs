@@ -12,6 +12,8 @@ namespace Factory_Elements.Blocks
 {
     public class Splitter : Block
     {
+        [SerializeField] public float equalizationRate = 0.10f;
+        
         protected Dictionary<Direction, ElementSettings<DirectionConfig>> configuration;
         protected Dictionary<Direction, Item> heldItems;
         protected Dictionary<Direction, IFactoryElement> directionalNeighbors;
@@ -128,8 +130,14 @@ namespace Factory_Elements.Blocks
         {
             if (!AcceptsResource(sender, resource)) return false;
             Direction direction = neighboralDirections[sender];
-            heldItems[direction] = (Item)resource;
-            return true;
+            if (resource is Item item)
+            {
+                item.EqualizationRate = equalizationRate;
+                heldItems[direction] = item;
+                return true;
+            }
+
+            throw new Exception("what");
         }
 
         public override ISetting[] GetSettings()
