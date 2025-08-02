@@ -23,8 +23,8 @@ public class GridSystem : MonoBehaviour
     private LineRenderer lineRenderer;
     private int gridSystemWidth;
     private int gridSystemHeight;
-    private FactoryElementType selectedElement;
-    
+    public FactoryElementType selectedElement { get; private set; }
+
     private void Start()
     {
         gridSystemHeight = cellHeight * gridHeight;

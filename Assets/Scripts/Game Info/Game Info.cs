@@ -11,7 +11,6 @@ namespace Game_Info
         [SerializeField] private QuestSet initialQuests;
         [SerializeField] private QuestSet questList;
         [SerializeField] private FactoryElementSet startingUnlockedFactoryElements;
-        [SerializeField] private FactoryElementSet startingFactoryElements;
         public static GameInfo Instance { get; private set; }
 
         public List<Quest> ActiveQuests { get; private set; }
@@ -27,7 +26,6 @@ namespace Game_Info
 
             
             UnlockedFactoryElements = startingUnlockedFactoryElements.Elements.ToList();
-            Debug.Log(startingFactoryElements.Elements.ToList().Count);
             Money = initialMoney;
         }
     }

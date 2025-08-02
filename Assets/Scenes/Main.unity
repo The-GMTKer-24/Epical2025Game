@@ -1341,6 +1341,81 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &175162472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 175162473}
+  - component: {fileID: 175162475}
+  - component: {fileID: 175162474}
+  m_Layer: 5
+  m_Name: Currently Selected Item
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &175162473
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175162472}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.42549, y: 0.42549, z: 0.42549}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1115256425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 28.1, y: -60}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &175162474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175162472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 570985690507859175, guid: 8d81be4a47d3f190ca23b71472880575, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &175162475
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175162472}
+  m_CullTransparentMesh: 1
 --- !u!1 &426439192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,7 +1885,6 @@ MonoBehaviour:
   initialQuests: {fileID: 11400000, guid: c5cfb1366e93ef04899c6d18a811a947, type: 2}
   questList: {fileID: 11400000, guid: 572db3dd719b258459dfda6ee9d8ac2d, type: 2}
   startingUnlockedFactoryElements: {fileID: 11400000, guid: 59698fb70e670d04d93a77babb513167, type: 2}
-  startingFactoryElements: {fileID: 11400000, guid: 96185ab0e96398943ba1caea5cc574fd, type: 2}
 --- !u!114 &1106256256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,6 +1955,8 @@ MonoBehaviour:
   money: 0
   moneytext: {fileID: 426439193}
   unlockedItems: {fileID: 788465477}
+  gridSystem: {fileID: 75410822}
+  selectedItem: {fileID: 175162472}
 --- !u!114 &1115256422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1958,6 +2034,7 @@ RectTransform:
   m_Children:
   - {fileID: 426439195}
   - {fileID: 788465476}
+  - {fileID: 175162473}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2042,7 +2119,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 1305847185194394691, guid: ad2c7b6ad67072e41baf885a05d52038, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

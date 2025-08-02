@@ -2,17 +2,23 @@ using System;
 using Game_Info;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Money : MonoBehaviour
 {
-    [SerializeField] private int money = 0;
+    [SerializeField] private int money;
     [SerializeField] private TextMeshProUGUI moneytext;
     [SerializeField] private TextMeshProUGUI unlockedItems;
+    [SerializeField] private GameObject gridSystem;
+    [SerializeField] GameObject selectedItem;
+
+
+    private GridSystem gridSystemClass;
     private GameInfo gameInfo;
 
     private void Start()
     {
+        gridSystemClass = gridSystem.GetComponent<GridSystem>();
         gameInfo = GameInfo.Instance;
     }
 
@@ -21,15 +27,13 @@ public class Money : MonoBehaviour
     {
         moneytext.text = $"Money: {gameInfo.Money}";
         String unlockedThings = "Unlocked Items:\n";
-        // Debug.Log(gameInfo.UnlockedFactoryElements.Count);
         foreach (var unlockedElement in gameInfo.UnlockedFactoryElements)
         {
-            // Debug.Log(unlockedElement);
-            unlockedThings += $"{unlockedElement}\n";
+            unlockedThings += $"{unlockedElement.name}\n";
         }
         
-        // Debug.Log(unlockedThings);
-        
         unlockedItems.text = unlockedThings;
+
+        selectedItem.GetComponent<Image>().sprite =  gridSystemClass.selectedElement.Prefab.GetComponent<SpriteRenderer>().sprite;
     }
 }
