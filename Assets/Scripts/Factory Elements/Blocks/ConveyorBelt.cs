@@ -47,6 +47,11 @@ namespace Factory_Elements.Blocks
         {
             var aheadProgress = 1.0f;
 
+            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt)
+            {
+                aheadProgress = belt.items[0].Progress;
+            }
+
             var deltaDistance = Time.fixedDeltaTime * speed;
 
             var markedForRemoval = new BeltItem[items.Count];
