@@ -213,7 +213,7 @@ MonoBehaviour:
   removeSoundLifetime: 0.5
   marketType: {fileID: 11400000, guid: 8e718260c1f019a2395d5bbd4bd0109b, type: 2}
   itemGeneratorType: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
-  waterGeneratorType: {fileID: 11400000, guid: 404aa2f1ff1c6486399b7a63fcebac61, type: 2}
+  waterGeneratorType: {fileID: 0}
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
@@ -18946,7 +18946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7dfaeeb53e0674d83fd38401be754f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMoney: 10000000
+  initialMoney: 7500
   initialQuests: {fileID: 11400000, guid: c5cfb1366e93ef04899c6d18a811a947, type: 2}
   questList: {fileID: 11400000, guid: 572db3dd719b258459dfda6ee9d8ac2d, type: 2}
   startingUnlockedFactoryElements: {fileID: 11400000, guid: 59698fb70e670d04d93a77babb513167, type: 2}
@@ -22788,7 +22788,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1778358348}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

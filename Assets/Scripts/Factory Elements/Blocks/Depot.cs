@@ -5,7 +5,7 @@ namespace Factory_Elements.Blocks
 {
     public class Depot : BufferBlock
     {
-        public float equalizationRate = 0.05f;
+        //public float equalizationRate = 0.05f;
         public const int STORAGE = 500;
 
         public override Direction? Rotation
