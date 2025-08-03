@@ -163,7 +163,7 @@ namespace Factory_Elements.Blocks
 
             currentOutputNeighborIndex = 0;
 
-            if (configuration.Value.PipeSettingsFromLocation == null)
+            if (configuration.Value == null || configuration.Value.PipeSettingsFromLocation == null)
             {
                 return;
             }
