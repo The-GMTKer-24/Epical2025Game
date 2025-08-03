@@ -1,4 +1,5 @@
 ﻿using System;
+using Game_Info;
 using Scriptable_Objects;
 using Unity.Mathematics;
 using UnityEngine;
