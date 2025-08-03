@@ -31,6 +31,7 @@ namespace Factory_Elements.Blocks
             {
                 lastGenerationAt = ticksBetweenGenerations;
                 var toCreate = resourcePool.Resources[Random.Range(0, resourcePool.Resources.Length)];
+                print(toCreate);
                 switch (toCreate)
                 {
                     case ItemType item:
