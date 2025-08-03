@@ -45,6 +45,7 @@ public class GridSystem : MonoBehaviour
     private bool isPlacing;
     private GameObject placementGhost;
     private FactoryElementType previousPlacementGhostType;
+    private IFactoryElement placementGhostElement;
     public BuildMode buildMode { get; private set; }
     public Direction placeDirection { get; private set; }
     public static GridSystem Instance { get; private set; }
@@ -227,22 +228,23 @@ public class GridSystem : MonoBehaviour
             {
                 if (placementGhost is null)
                 {
-                    placementGhost = Instantiate(selectedElement.Prefab);
-                    placementGhost.AddComponent<OpacityBlinking>();
+                    placementGhost = setupPlacementGhost();
                 }
-            
-        
+                
                 if (previousPlacementGhostType != selectedElement)
                 {
                     Destroy(placementGhost);
-                    placementGhost = Instantiate(selectedElement.Prefab);
-                    placementGhost.AddComponent<OpacityBlinking>();
+                    placementGhost = setupPlacementGhost();
                 }
                 previousPlacementGhostType = selectedElement;
 
                 Vector2 position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
 
                 placementGhost.transform.position = position + new Vector2( (float)selectedElement.Size.x /2 , (float)selectedElement.Size.y/2 );
+                if (placementGhostElement.SupportsRotation)
+                {
+                    placementGhost.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection);
+                }
             }
         }
         else
@@ -324,6 +326,22 @@ public class GridSystem : MonoBehaviour
     {
         isPlacing = false;
         placedInBatch = false;
+    }
+
+    private GameObject setupPlacementGhost()
+    {
+        GameObject newPlacementGhost = Instantiate(selectedElement.Prefab);
+        newPlacementGhost.AddComponent<OpacityBlinking>();
+        
+        BoxCollider2D boxCollider = newPlacementGhost.GetComponent<BoxCollider2D>();
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = false;
+        }
+        
+        placementGhostElement = newPlacementGhost.GetComponent<IFactoryElement>();
+        
+        return newPlacementGhost;
     }
 
     /// <summary>
