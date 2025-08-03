@@ -12,6 +12,7 @@ namespace UI.Inventory
         [SerializeField] private GameObject contentPanel;
 
         [SerializeField] private GameObject directionSettingPrefab;
+        [SerializeField] private GameObject recipeSettingPrefab;
         public bool Showing { get; private set; }
 
         public void Awake()
@@ -51,12 +52,13 @@ namespace UI.Inventory
             {
                 case SettingType.Direction:
                     return directionSettingPrefab;
-
                 case SettingType.Bool:
                     break;
                 case SettingType.DirectionalFlow:
                     break;
                 case SettingType.Recipe:
+                    return recipeSettingPrefab;
+                case SettingType.PipeSettings:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
