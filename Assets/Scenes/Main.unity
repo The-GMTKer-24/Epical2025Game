@@ -207,10 +207,10 @@ MonoBehaviour:
   rippleController: {fileID: 1709309342}
   placeSoundPrefab: {fileID: 1837076573663676744, guid: ebaa9716b76c89544b5135ef874e4efc, type: 3}
   rejectionSoundPrefab: {fileID: 1837076573663676744, guid: 3b182bb727a9689479cc3ba74f82cb70, type: 3}
-  removalSoundPrefab: {fileID: 0}
+  removalSoundPrefab: {fileID: 1837076573663676744, guid: e933c2c1bcf916850902cf1bc23cd896, type: 3}
   placeSoundLifetime: 0.5
   rejectionSoundLifetime: 0.5
-  removeSoundLifetime: 0
+  removeSoundLifetime: 0.5
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
@@ -701,7 +701,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0.78, y: 0.78, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
