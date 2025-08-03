@@ -15,7 +15,7 @@ namespace Factory_Elements.Blocks
         protected ElementSettings<RecipeSetting> RecipeSetting;
         private bool running;
 
-        public override void Awake()
+        public void Awake()
         {
             base.Awake();
             RecipeSetting = new ElementSettings<RecipeSetting>(new RecipeSetting(defaultRecipe, factoryElementType as Machine), "Active Recipe",
