@@ -41,6 +41,9 @@ namespace UI.Inventory
         private BufferBlock bufferBlock;
         
         private bool showing;
+        public bool ShowingFactory => factoryInventoryPanel.gameObject.activeInHierarchy;
+        public bool Showing => showing;
+
         public void Awake()
         {
             previousBuildMode = BuildMode.None;

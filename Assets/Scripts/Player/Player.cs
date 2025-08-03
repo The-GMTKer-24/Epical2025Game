@@ -60,7 +60,14 @@ namespace Player
                 BufferBlock block = hit.collider.GetComponent<BufferBlock>();
                 if (block)
                 {
-                    InventoryUI.Instance.Show(hit.collider.GetComponent<BufferBlock>());
+                    if (InventoryUI.Instance.Showing && InventoryUI.Instance.ShowingFactory)
+                    {
+                        InventoryUI.Instance.Hide();
+                    }
+                    else
+                    {
+                        InventoryUI.Instance.Show(hit.collider.GetComponent<BufferBlock>());
+                    }
                     return;
                 }
                 // Opening market
@@ -70,7 +77,15 @@ namespace Player
                     return;
                 }
             }
-            InventoryUI.Instance.Show();
+
+            if (InventoryUI.Instance.Showing && !InventoryUI.Instance.ShowingFactory)
+            {
+                InventoryUI.Instance.Hide();
+            }
+            else
+            {
+                InventoryUI.Instance.Show();
+            }
         }
 
         private void OnEscapePressed(InputAction.CallbackContext ctx)
