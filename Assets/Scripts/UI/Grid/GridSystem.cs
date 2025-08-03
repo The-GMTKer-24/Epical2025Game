@@ -215,7 +215,6 @@ public class GridSystem : MonoBehaviour
                     placementGhost.AddComponent<OpacityBlinking>();
                 }
             
-                previousPlacementGhostType = selectedElement;
         
                 if (previousPlacementGhostType != selectedElement)
                 {
@@ -223,10 +222,20 @@ public class GridSystem : MonoBehaviour
                     placementGhost = Instantiate(selectedElement.Prefab);
                     placementGhost.AddComponent<OpacityBlinking>();
                 }
+                previousPlacementGhostType = selectedElement;
 
                 Vector2 position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
 
                 placementGhost.transform.position = position + new Vector2( (float)selectedElement.Size.x /2 , (float)selectedElement.Size.y/2 );
+            }
+        }
+        else
+        {
+            if (placementGhost is not null)
+            {
+                Destroy(placementGhost);
+                placementGhost = null;
+                previousPlacementGhostType = null;
             }
         }
         
