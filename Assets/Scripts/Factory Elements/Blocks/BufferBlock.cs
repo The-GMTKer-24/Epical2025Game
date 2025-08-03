@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using Factory_Elements.Settings;
 using Scriptable_Objects;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Factory_Elements.Blocks
@@ -11,15 +14,17 @@ namespace Factory_Elements.Blocks
     public abstract class BufferBlock : Block
     {
         [SerializeField] public float equalizationRate = 0.025f;
-        
+
+        [SerializeField] protected ElementSettings<OutputPipeSetting> configuration;
+
         protected readonly List<ResourceType> inputtableResourceTypes = new();
         protected readonly List<ResourceType> outputtableResourceTypes = new();
         protected readonly List<ResourceType> resourceTypes = new();
         protected Dictionary<ResourceType, Buffer> buffers = new();
+        protected Dictionary<IFactoryElement, List<OutputLocation>> outputs = new();
 
         private int currentOutputNeighborIndex;
-        [SerializeField]
-        private List<int> resourceTypeIndexPerNeighbor = new();
+        [SerializeField] private List<int> resourceTypeIndexPerNeighbor = new();
 
         public Dictionary<ResourceType, Buffer> Buffers => buffers;
 
@@ -49,7 +54,12 @@ namespace Factory_Elements.Blocks
                     {
                         var resourceType = outputtableResourceTypes[resourceIndex];
                         var buffer = buffers[resourceType];
-                        if (buffer.Quantity != 0)
+                        bool canAccept = resourceType is not FluidType;
+                        foreach (OutputLocation location in outputs[neighbor])
+                        {
+                            if (configuration.Value.PipeSettingsFromLocation[location] == resourceType) canAccept = true;
+                        }
+                        if (buffer.Quantity != 0 && canAccept)
                             if (neighbor.AcceptsResource(this, buffer.QueryResource()))
                             {
                                 neighbor.TryInsertResource(this, buffer.TakeResource());
@@ -72,13 +82,49 @@ namespace Factory_Elements.Blocks
             inputtableResourceTypes.Clear();
             outputtableResourceTypes.Clear();
             this.buffers.Clear();
+            
+            Dictionary<OutputLocation, FluidType> pipeSettings = new();
+            List<FluidType> fluidTypes = new();
+            FluidType defaultType = null;
+            
             foreach (var buffer in buffers)
             {
                 this.buffers.Add(buffer.ResourceType, buffer);
                 resourceTypes.Add(buffer.ResourceType);
                 if (buffer.CanAcceptInput) inputtableResourceTypes.Add(buffer.ResourceType);
+                if (buffer.CanGiveOutput)
+                {
+                    outputtableResourceTypes.Add(buffer.ResourceType);
+                    if (buffer.ResourceType is FluidType fluidType)
+                    {
+                        fluidTypes.Add(fluidType);
+                    }
+                }
+            }
 
-                if (buffer.CanGiveOutput) outputtableResourceTypes.Add(buffer.ResourceType);
+            if (fluidTypes.Count == 0)
+            {
+                configuration = new ElementSettings<OutputPipeSetting>(null, "Pipe Settings", "Sets which fluid types output from which sides");
+            }
+            else
+            {
+                if (fluidTypes.Count == 1)
+                {
+                    defaultType = fluidTypes[0];
+                }
+
+                foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+                {
+                    int dimension = factoryElementType.Size.x;
+                    if (direction == Direction.East || direction == Direction.West) dimension = factoryElementType.Size.y;
+                    for (int i = 0; i < dimension; i++)
+                    {
+                        pipeSettings.Add(new OutputLocation(direction, i), defaultType);
+                    }
+                }
+
+                configuration = new ElementSettings<OutputPipeSetting>(new OutputPipeSetting(pipeSettings, fluidTypes),
+                    "Pipe Settings", "Sets which fluid types output from which sides");
             }
         }
 
@@ -97,6 +143,7 @@ namespace Factory_Elements.Blocks
                 {
                     item.EqualizationRate = equalizationRate;
                 }
+
                 Debug.Log("got item" + resource.ResourceType.name);
                 return true;
             }
@@ -113,8 +160,37 @@ namespace Factory_Elements.Blocks
             {
                 resourceTypeIndexPerNeighbor.Add(0);
             }
-            
+
             currentOutputNeighborIndex = 0;
+
+            if (added)
+            {
+                outputs.Add(newNeighbor, new List<OutputLocation>());
+                for (int x = newNeighbor.Position.x;
+                     x < newNeighbor.Position.x + newNeighbor.FactoryElementType.Size.x;
+                     x++)
+                {
+                    for (int y = newNeighbor.Position.y;
+                         y < newNeighbor.Position.y + newNeighbor.FactoryElementType.Size.y;
+                         y++)
+                    {
+                        foreach (OutputLocation location in configuration.Value.PipeSettingsFromLocation.Keys)
+                        {
+                            if (location.GetLocation(this).Equals(new int2(x, y)))
+                            {
+                                if (added)
+                                {
+                                    outputs[newNeighbor].Add(location);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                outputs.Remove(newNeighbor);
+            }
         }
 
         public override Dictionary<ResourceType, int> GetHeldResources()
@@ -124,7 +200,13 @@ namespace Factory_Elements.Blocks
             {
                 heldResources.Add(buffer.ResourceType, buffer.Quantity);
             }
+
             return heldResources;
+        }
+        
+        public override ISetting[] GetSettings()
+        {
+            return new ISetting[] { configuration };
         }
     }
 
@@ -183,6 +265,47 @@ namespace Factory_Elements.Blocks
         public void Empty()
         {
             Stack = ResourceStack.Create(ResourceType);
+        }
+    }
+
+    public class OutputPipeSetting
+    {
+        [SerializeField] public Dictionary<OutputLocation, FluidType> PipeSettingsFromLocation;
+        public List<FluidType> AllowedFluidTypes;
+
+        public OutputPipeSetting(Dictionary<OutputLocation, FluidType> fluidTypes, List<FluidType> allowedFluidTypes)
+        {
+            PipeSettingsFromLocation = fluidTypes;
+            AllowedFluidTypes = allowedFluidTypes;
+        }
+    }
+
+    public class OutputLocation
+    {
+        public readonly Direction Direction;
+        public readonly int Index; // increasing x and y
+
+        public OutputLocation(Direction direction, int index)
+        {
+            Direction = direction;
+            Index = index;
+        }
+
+        public int2 GetLocation(IFactoryElement building)
+        {
+            switch (Direction)
+            {
+                case Direction.North:
+                    return building.Position + new int2(Index, building.FactoryElementType.Size.y);
+                case Direction.East:
+                    return building.Position + new int2(building.FactoryElementType.Size.x, Index);
+                case Direction.South:
+                    return building.Position + new int2(-1, Index);
+                case Direction.West:
+                    return building.Position + new int2(Index, -1);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
