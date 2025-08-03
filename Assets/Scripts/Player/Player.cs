@@ -70,6 +70,11 @@ namespace Player
                     return;
                 }
             }
+
+            if (InventoryUI.Instance.Showing && InventoryUI.Instance.ShowingFactory)
+            {
+                
+            }
             InventoryUI.Instance.Show();
         }
 
