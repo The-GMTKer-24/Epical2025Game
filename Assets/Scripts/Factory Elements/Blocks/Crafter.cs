@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Factory_Elements.Blocks
 {
     public class Crafter : BufferBlock
     {
+        
         [SerializeField] private Recipe defaultRecipe;
         private float recipeProgress; // In seconds
         protected ElementSettings<Recipe> recipeSetting;
@@ -21,11 +23,19 @@ namespace Factory_Elements.Blocks
             recipeSetting.SettingUpdated += RecipeUpdate;
             recipeProgress = 0;
             running = false;
+            equalizationRate = 0.0f; // Allowing items to cool and clog the machine would SUCK
         }
 
         public void Start()
         {
             RecipeUpdate();
+        }
+
+        public override bool AcceptsResource(IFactoryElement sender, Resource resource)
+        {
+            // Ensure the crafter only accepts items with high enough temperature
+            if (resource is Item item && item.Temperature < recipeSetting.Value.MinimumTemperature) return false;
+            return base.AcceptsResource(sender, resource);
         }
 
         protected override void FixedUpdate()
@@ -105,7 +115,8 @@ namespace Factory_Elements.Blocks
 
         public override ISetting[] GetSettings()
         {
-            return new[] { recipeSetting };
+            ISetting[] settings = base.GetSettings();
+            return settings.Append(recipeSetting).ToArray();
         }
     }
 }
