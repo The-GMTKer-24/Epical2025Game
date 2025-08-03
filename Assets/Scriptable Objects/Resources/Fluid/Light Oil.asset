@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28a5e121dcc44599ae201ca46940126, type: 3}
   m_Name: Light Oil
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
+  icon: {fileID: 6151574200695090063, guid: 91c06c381aa8feb4eaac9b7faed5bb68, type: 3}
   color: {r: 0, g: 0, b: 0, a: 0}
