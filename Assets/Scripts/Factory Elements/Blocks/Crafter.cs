@@ -9,9 +9,9 @@ namespace Factory_Elements.Blocks
 {
     public class Crafter : BufferBlock
     {
-        
+        [SerializeField] private float thermalLoss = 0; // 0-1, 0 is perfect, 1 is back to room temp
         [SerializeField] private Recipe defaultRecipe;
-        private float recipeProgress; // In seconds
+        protected float recipeProgress; // In seconds
         protected ElementSettings<Recipe> recipeSetting;
         private bool running;
 
@@ -39,20 +39,48 @@ namespace Factory_Elements.Blocks
             return base.AcceptsResource(sender, resource);
         }
 
-        public void Craft()
+        public virtual void Craft()
         {
             recipeProgress = 0;
             Debug.Log("Crafted!");
-            foreach (var resourceQuantity in recipeSetting.Value.Inputs)
+            float sumTemperature = 0;
+            float samples = 0;
+            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Inputs)
             {
-                var resourceType = resourceQuantity.Type;
-                buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
+                ResourceType resourceType = resourceQuantity.Type;
+                for (int i = 0; i < resourceQuantity.Amount; i++)
+                {
+                    Resource resource = buffers[resourceType].TakeResource();
+                    if (resource is Item item)
+                    {
+                        sumTemperature += item.Temperature;
+                        samples++;
+                    }
+                }
             }
 
-            foreach (var resourceQuantity in recipeSetting.Value.Outputs)
+            float averageTemperature = Factory.Instance.roomTemperature;
+            if (samples != 0)
             {
-                var resourceType = resourceQuantity.Type;
-                buffers[resourceType].CreateResources(resourceQuantity.Amount);
+                averageTemperature = sumTemperature / samples;
+            }
+            float displacement = averageTemperature - Factory.Instance.roomTemperature;
+            float newTemperature = displacement * (1 - thermalLoss) + Factory.Instance.roomTemperature;
+
+            
+            foreach (ResourceQuantity resourceQuantity in recipeSetting.Value.Outputs)
+            {
+                ResourceType resourceType = resourceQuantity.Type;
+                int resourceAmount = resourceQuantity.Amount;
+                for (int i = 0; i < resourceQuantity.Amount; i++)
+                {
+                    Resource resource = Resource.fromType(resourceType);
+                    if (resource is Item item)
+                    {
+                        item.Temperature = newTemperature;
+                    }
+                    buffers[resourceType].AddResource(resource);
+                }
             }
         }
 

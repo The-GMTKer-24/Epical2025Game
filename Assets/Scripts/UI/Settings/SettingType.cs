@@ -6,6 +6,7 @@ namespace UI.Inventory
         Direction,
         DirectionalFlow,
         Recipe,
-        PipeSettings
+        PipeSettings,
+        Float
     }
 }

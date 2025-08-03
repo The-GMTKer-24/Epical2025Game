@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factoryElementType: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
   equalizationRate: 0.025
-  resourceTypeIndexPerNeighbor: 
+  thermalLoss: 0.65
   defaultRecipe: {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
 --- !u!61 &-8204550962486569524
 BoxCollider2D:

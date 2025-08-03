@@ -41,6 +41,7 @@ namespace Factory_Elements
         {
             previousTemperature = temperature;
             lastTemperatureSetTimestamp = Time.time;
+            currentEqualizationRate = 0.0f; // Temperature doesn't change until it has to (This must have been spawned inside a crafter anyways!)
         }
     }
 }

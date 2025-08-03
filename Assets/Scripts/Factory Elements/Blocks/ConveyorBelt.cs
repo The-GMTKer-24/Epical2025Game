@@ -147,6 +147,7 @@ namespace Factory_Elements.Blocks
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
+            // TODO: do not accept from outputting end
             if (items.Count == 0)
             {
                 return true;

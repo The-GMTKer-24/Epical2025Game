@@ -25,7 +25,7 @@ namespace Factory_Elements.Blocks
         protected Dictionary<IFactoryElement, List<OutputLocation>> outputs = new();
 
         private int currentOutputNeighborIndex;
-        [SerializeField] private List<int> resourceTypeIndexPerNeighbor = new();
+        private List<int> resourceTypeIndexPerNeighbor = new();
 
         public Dictionary<ResourceType, Buffer> Buffers => buffers;
 

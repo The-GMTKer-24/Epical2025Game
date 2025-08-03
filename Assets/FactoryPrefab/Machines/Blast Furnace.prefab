@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5608614131228641592}
   - component: {fileID: 9054450959081098509}
-  - component: {fileID: -2430176591442116342}
   - component: {fileID: -8204550962486569524}
+  - component: {fileID: 212637542713149380}
   m_Layer: 0
-  m_Name: Furnace
+  m_Name: Blast Furnace
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -89,22 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-2430176591442116342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8729464739455396551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bd2efaa6edc4f32a26bd6489637fdfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  factoryElementType: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
-  equalizationRate: 0.025
-  resourceTypeIndexPerNeighbor: 
-  defaultRecipe: {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
 --- !u!61 &-8204550962486569524
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -151,3 +135,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &212637542713149380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729464739455396551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdb7cdbf4b044e9b12b31d1b7dce93f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factoryElementType: {fileID: 11400000, guid: ae8f278ce0174eee0b3c511303e13476, type: 2}
+  capacity: 10
