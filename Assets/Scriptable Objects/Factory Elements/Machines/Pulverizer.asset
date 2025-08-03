@@ -12,11 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
   m_Name: Pulverizer
   m_EditorClassIdentifier: 
-  cost: 10
+  cost:
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 20
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 10
+  - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
+    amount: 30
+  - type: {fileID: 11400000, guid: 7c9b6233e40e6f8b388c7afe3781b386, type: 2}
+    amount: 4
   prefab: {fileID: 8729464739455396551, guid: ed8ceaf57f9e7a145b1cf11f6e413191, type: 3}
   size:
     x: 1
     y: 1
+  isPermanent: 0
   recipes:
+  - {fileID: 11400000, guid: 676e0b7d77a181a9bab61f27a95f4444, type: 2}
+  - {fileID: 11400000, guid: 4c689326286e416fbbeac15fd6d6f006, type: 2}
   - {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
-  capacity: 10
+  - {fileID: 11400000, guid: 4af60166c9b2509938d0bcb9d159abfa, type: 2}
+  - {fileID: 11400000, guid: 3fe93700cc819a562adfe11c13bd6ab2, type: 2}
+  - {fileID: 11400000, guid: b492592db0cc095fa882f71c17697e1c, type: 2}

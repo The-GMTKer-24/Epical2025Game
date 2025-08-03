@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Make Circuit Board
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: a6c61b3dbacd022cd8fead67c6bf947c, type: 2}
+    amount: 1
+  - type: {fileID: 11400000, guid: 6c8617c04b820347199590b91b2b5313, type: 2}
+    amount: 3
+  outputs:
+  - type: {fileID: 11400000, guid: 8c4fb1cdbe98aba4a982f5a595668359, type: 2}
+    amount: 2
+  processingTime: 5
+  minimumTemperature: 0

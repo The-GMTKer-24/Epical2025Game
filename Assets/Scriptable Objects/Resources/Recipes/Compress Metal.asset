@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Compress Metal
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 439f78a911eb5642a8ad15e680c49d5a, type: 2}
+    amount: 6
+  outputs:
+  - type: {fileID: 11400000, guid: 4e3c4f90d067b5527aabc7f53d912850, type: 2}
+    amount: 1
+  processingTime: 1
+  minimumTemperature: 0

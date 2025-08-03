@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Cast Metal Ingot
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 4e3c4f90d067b5527aabc7f53d912850, type: 2}
+    amount: 3
+  outputs:
+  - type: {fileID: 11400000, guid: e8ba921e8e1f7483fa875efed3dc1d0d, type: 2}
+    amount: 2
+  processingTime: 2
+  minimumTemperature: 1500

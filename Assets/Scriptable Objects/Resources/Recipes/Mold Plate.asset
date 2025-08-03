@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
-  m_Name: Mold Heavy Paper
+  m_Name: Mold Plate
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
-  minimumTemperature: 0
+  inputs:
+  - type: {fileID: 11400000, guid: d5be1abe0aeac49b1ba9d64ec7c44f2a, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: 947f05db7936f53d68fdd5635d4ed517, type: 2}
+    amount: 2
+  processingTime: 4
+  minimumTemperature: 1000

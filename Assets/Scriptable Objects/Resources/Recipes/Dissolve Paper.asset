@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Dissolve Paper
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 1b55ea98ec87512d4abb8999c8074830, type: 2}
+    amount: 6
+  - type: {fileID: 11400000, guid: b86d4ae14581f384c8d655e183e5ca8a, type: 2}
+    amount: 10
+  outputs:
+  - type: {fileID: 11400000, guid: 503062dede0b570479cc96125921879b, type: 2}
+    amount: 12
+  processingTime: 6
+  minimumTemperature: 0

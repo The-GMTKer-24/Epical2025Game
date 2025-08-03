@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Pulverize Glass
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: e9909de94ceb11f17858b9fc9d112658, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: 6bb5b718c8885ea3fba1fe8c8f91d89e, type: 2}
+    amount: 4
+  processingTime: 0.5
+  minimumTemperature: 0

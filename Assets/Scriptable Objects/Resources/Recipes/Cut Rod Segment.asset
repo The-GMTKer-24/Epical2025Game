@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Cut Rod Segment
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: f1ec252ee1e62b2ecb375880ef8f7c81, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: ed7a3cf989683c2b78304f751965c586, type: 2}
+    amount: 4
+  processingTime: 1
+  minimumTemperature: 500

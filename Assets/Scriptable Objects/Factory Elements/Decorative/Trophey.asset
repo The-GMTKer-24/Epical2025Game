@@ -12,8 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a3552612144eef99ca106e34f03d60, type: 3}
   m_Name: Trophey
   m_EditorClassIdentifier: 
-  cost: 0
+  cost:
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 50
+  - type: {fileID: 11400000, guid: a6c61b3dbacd022cd8fead67c6bf947c, type: 2}
+    amount: 50
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 10
+  - type: {fileID: 11400000, guid: 7009fe82ea6389a40a5ae4a06106a17e, type: 2}
+    amount: 1
   prefab: {fileID: 8048979007967150254, guid: 6878ebeafe18b4d7fb1a866004033506, type: 3}
   size:
     x: 1
     y: 1
+  isPermanent: 0

@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Distill Oil
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
+  inputs:
+  - type: {fileID: 11400000, guid: e588996d1dd7f451094c1a2b97209ba4, type: 2}
+    amount: 5
+  outputs:
+  - type: {fileID: 11400000, guid: f9a3045f7268efd09a7da7dfddfd1762, type: 2}
+    amount: 2
+  - type: {fileID: 11400000, guid: 037ce7a6aeab9dae79402f030374af6e, type: 2}
+    amount: 2
   processingTime: 0
+  minimumTemperature: 0

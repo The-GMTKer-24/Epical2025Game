@@ -19,12 +19,10 @@ MonoBehaviour:
     amount: 10
   - type: {fileID: 11400000, guid: 4533524fe4d7fe7328c8d17c65f16bbd, type: 2}
     amount: 4
-  - type: {fileID: 11400000, guid: 9b1e4824a38ee0686a7565670c312d6f, type: 2}
-    amount: 1
-  - type: {fileID: 11400000, guid: 9b1e4824a38ee0686a7565670c312d6f, type: 2}
-    amount: 1
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 4
   outputs:
   - type: {fileID: 11400000, guid: a178a4ccc97a2a64fa6c668af460015d, type: 2}
     amount: 1
-  processingTime: 0
+  processingTime: 10
   minimumTemperature: 0

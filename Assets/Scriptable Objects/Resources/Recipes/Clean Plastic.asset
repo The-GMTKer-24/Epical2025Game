@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Clean Plastic
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: f6784957baeacfa45862d2d1188b404d, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: bc6adbadd22b67546ab5f2a636ec17e6, type: 2}
+    amount: 1
+  processingTime: 2
+  minimumTemperature: 0

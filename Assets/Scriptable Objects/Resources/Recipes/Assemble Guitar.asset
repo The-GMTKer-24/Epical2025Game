@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Assemble Guitar
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 6c8617c04b820347199590b91b2b5313, type: 2}
+    amount: 6
+  - type: {fileID: 11400000, guid: e8ba921e8e1f7483fa875efed3dc1d0d, type: 2}
+    amount: 3
+  - type: {fileID: 11400000, guid: 8c4fb1cdbe98aba4a982f5a595668359, type: 2}
+    amount: 1
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 4
+  outputs:
+  - type: {fileID: 11400000, guid: 7009fe82ea6389a40a5ae4a06106a17e, type: 2}
+    amount: 1
+  processingTime: 10
   minimumTemperature: 0
