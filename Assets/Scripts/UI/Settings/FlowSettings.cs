@@ -17,10 +17,12 @@ namespace UI.Inventory
         [SerializeField]
         private TextMeshProUGUI settingDescriptionText;
         [SerializeField]
-        private TMP_Dropdown pipeLocationDropdown;
+        private TMP_Dropdown direcationDropDown;
         [SerializeField]
-        private TMP_Dropdown pipeFluidDropdown;
-
+        private RectTransform toggleInput;
+        [SerializeField]
+        private TMP_Dropdown sortMode;
+        
         private ISetting flowSettings;
         private DirectionConfig flow;
         public void SetSetting(ISetting setting)
@@ -32,15 +34,13 @@ namespace UI.Inventory
         public void UpdateText()
         {
             flow = flowSettings.ValueUntyped as DirectionConfig;
-            /*
             if (flow == null)
             {
-                settingNameText.text = "Pipe settings";
-                settingDescriptionText.text = "No pipe settings exist for the current pipe settings";
-                pipeLocationDropdown.gameObject.SetActive(false);
-                pipeFluidDropdown.gameObject.SetActive(false);
+                settingNameText.text = "Flow Settings";
+                settingDescriptionText.text = "No flow options are available";
                 return;
             }
+            /*
             pipeLocationDropdown.gameObject.SetActive(true);
             pipeFluidDropdown.gameObject.SetActive(true);
             settingNameText.text = flowSettings.Name;

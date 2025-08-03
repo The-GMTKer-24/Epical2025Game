@@ -148,7 +148,9 @@ namespace Factory_Elements.Blocks
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
             Direction towardsDirection = OppositeDirection(directionSetting.Value);
-            if (neighboralDirections[sender].Equals(towardsDirection)) return false;
+            if (!neighboralDirections.ContainsKey(sender))
+                return false;
+            if (neighboralDirections[sender].Equals(towardsDirection.Invert())) return false;
             if (items.Count == 0)
             {
                 return true;
