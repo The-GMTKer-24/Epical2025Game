@@ -278,6 +278,10 @@ MonoBehaviour:
   requirementContent: {fileID: 7594269704309175883}
   rewardText: {fileID: 1131463608656573785}
   counterPrefab: {fileID: 744384254079538051, guid: 6f0d3e4e6b6f26adfa80b93e8b7112aa, type: 3}
+  backgroundImage: {fileID: 8269118267385535055}
+  unclaimableColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
+  claimableColor: {r: 0.22076362, g: 0.38679248, b: 0.29107052, a: 1}
+  claimHoverColor: {r: 0.29009435, g: 0.5, b: 0.3779618, a: 1}
 --- !u!1 &4704997134814681252
 GameObject:
   m_ObjectHideFlags: 0

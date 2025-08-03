@@ -10,14 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b54a0a437e2d4b87a0fd32f069b1a086, type: 3}
-  m_Name: A third quest
+  m_Name: ALongQuest
   m_EditorClassIdentifier: 
   prerequisites: []
   requirements:
   - type: {fileID: 11400000, guid: 83e4300fe373a9e779bc09eacc5f6c8d, type: 2}
     amount: 55
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 55
+  - type: {fileID: 11400000, guid: 6bb5b718c8885ea3fba1fe8c8f91d89e, type: 2}
+    amount: 55
+  - type: {fileID: 11400000, guid: a178a4ccc97a2a64fa6c668af460015d, type: 2}
+    amount: 55
   rewards:
   - type: {fileID: 11400000, guid: 7009fe82ea6389a40a5ae4a06106a17e, type: 2}
+    amount: 1
+  - type: {fileID: 11400000, guid: f89a8c72ba3315a73b05976c09f94872, type: 2}
     amount: 1
   moneyReward: 20
   unlocks: []

@@ -17906,7 +17906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -54.7, y: 191.8}
+  m_AnchoredPosition: {x: 55.4, y: 191.8}
   m_SizeDelta: {x: 90, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470902767
@@ -17952,7 +17952,9 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 470902768}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls: [{m_Target: {fileID: 922997449}, m_TargetAssemblyTypeName: 'UI.Inventory.InventoryUI,
+            Assembly-CSharp', m_MethodName: QuestsButton, m_Mode: 1, m_Arguments: {m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object,
+              UnityEngine', m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '', m_BoolArgument: 0}, m_CallState: 2}]
 --- !u!114 &470902768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18744,6 +18746,7 @@ MonoBehaviour:
   failSoundPrefab: {fileID: 1837076573663676744, guid: 3b182bb727a9689479cc3ba74f82cb70, type: 3}
   chchingSoundPrefab: {fileID: 1837076573663676744, guid: b8047b5f2ba944bed9e5ecc76a329fb3, type: 3}
   allQuests: {fileID: 11400000, guid: 572db3dd719b258459dfda6ee9d8ac2d, type: 2}
+  questMode: 0
 --- !u!1 &997193164
 GameObject:
   m_ObjectHideFlags: 0
@@ -20335,7 +20338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 56.4, y: 192}
+  m_AnchoredPosition: {x: -56.1, y: 192}
   m_SizeDelta: {x: 90, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728798661
@@ -20381,7 +20384,9 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1728798662}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls: [{m_Target: {fileID: 922997449}, m_TargetAssemblyTypeName: 'UI.Inventory.InventoryUI,
+            Assembly-CSharp', m_MethodName: MarketButton, m_Mode: 1, m_Arguments: {m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object,
+              UnityEngine', m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '', m_BoolArgument: 0}, m_CallState: 2}]
 --- !u!114 &1728798662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20578,7 +20583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8364906543545892459, guid: 4cba3497bab6081d9b048eb4fe1f50a2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.099921
       objectReference: {fileID: 0}
     - target: {fileID: 8364906543545892459, guid: 4cba3497bab6081d9b048eb4fe1f50a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

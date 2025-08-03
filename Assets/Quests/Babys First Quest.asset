@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Babys First Quest
   m_EditorClassIdentifier: 
   prerequisites: []
-  requirements: []
+  requirements:
+  - type: {fileID: 11400000, guid: f6784957baeacfa45862d2d1188b404d, type: 2}
+    amount: 17
   rewards: []
   moneyReward: 10
   unlocks:

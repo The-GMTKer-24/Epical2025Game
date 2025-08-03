@@ -82,7 +82,10 @@ namespace Player
                     {
                         if (block is BufferBlock bufferBlock)
                             InventoryUI.Instance.Show(bufferBlock);
-                        else
+                        else if (hit.transform.tag == "Market")
+                        {
+                            InventoryUI.Instance.ShowMarket();
+                        } else 
                             InventoryUI.Instance.Show();
                         SettingUI.Instance.Show(block);
                     }

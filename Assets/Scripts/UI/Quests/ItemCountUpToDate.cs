@@ -16,18 +16,26 @@ public class ItemCountUpToDate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        icon.sprite = targetItem.Icon;
-
         if (targetItem is not null)
         {
-        bool success = GameInfo.Instance.SubmittedItems.TryGetValue(targetItem, out var value);
-        if (success)
-        {
-            countText.text = value.ToString();
-        }
-        else
-        {
-            countText.text = "0";
-        }}
+            icon.sprite = targetItem.Icon;
+        
+        
+            bool success = GameInfo.Instance.SubmittedItems.TryGetValue(targetItem, out var value);
+            targetText.text = targetCount.ToString();
+            if (success)
+            {
+                countText.text = value.ToString();
+            }
+            else
+            {
+                countText.text = "0";
+            }}
+    }
+
+    public bool HasCompleted()
+    {
+        GameInfo.Instance.SubmittedItems.TryGetValue(targetItem, out var value);
+        return (value >= targetCount);
     }
 }

@@ -53,13 +53,13 @@ namespace UI.Inventory
         public bool ShowingFactory => factoryInventoryPanel.gameObject.activeInHierarchy;
         public bool Showing => showing;
 
-        private bool questMode;
+        public bool questMode;
 
         public void Awake()
         {
             previousBuildMode = BuildMode.None;
             Instance = this;
-            questMode = true;
+            questMode = false;
         }
 
         public void Start()
@@ -191,16 +191,8 @@ namespace UI.Inventory
                 new Vector2(0, 70 * MathF.Ceiling(factoryInventoryInstanceCount/4f) );
         }
 
-        private int marketInstanceCount;
-        private int inventoryInstanceCount;
-        private int factoryInventoryInstanceCount;
-        
-        public void ShowMarket()
+        public void RefreshQuestsPlusMarket()
         {
-            if (showing)
-            {
-                return;
-            }
             ResetPanel();
             Show();
 
@@ -251,13 +243,37 @@ namespace UI.Inventory
                 int instanceCount = 0;
                 foreach (var quest in allQuests.Quests)
                 {
+                    if (GameInfo.Instance.completedQuests.Contains(quest.name))
+                    {
+                        continue;
+                    }
                     instanceCount++;
                     QuestElement questElement = Instantiate(questElementPrefab, marketContent);
                     questElement.SetRewardText(quest.Unlocks,quest.Rewards, quest.MoneyReward);
                     questElement.SpawnItemTrackers(quest.Requirements);
+                    questElement.quest = quest;
                 }
                 marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 160 * instanceCount);
             }
+            
+        }
+
+        private int marketInstanceCount;
+        private int inventoryInstanceCount;
+        private int factoryInventoryInstanceCount;
+        
+        public void ShowMarket()
+        {
+            if (showing)
+            {
+                return;
+            }
+            
+            foreach (Transform child in marketContent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            RefreshQuestsPlusMarket();
         }
 
         public void Hide()
@@ -295,6 +311,18 @@ namespace UI.Inventory
                 Destroy(child.gameObject);
             }
             showing = false;
+        }
+
+        public void QuestsButton()
+        {
+            questMode = true;
+            RefreshQuestsPlusMarket();
+        }
+
+        public void MarketButton()
+        {
+            questMode = false;
+            RefreshQuestsPlusMarket();
         }
 
         public void Refresh()
