@@ -24,7 +24,13 @@ namespace UI.Inventory
         [SerializeField]
         private RectTransform factoryInventoryContent;
         [SerializeField]
+        private RectTransform marketPanel;
+        [SerializeField]
+        private RectTransform marketContent;
+        [SerializeField]
         private InventorySlot inventorySlotPrefab;
+        [SerializeField]
+        private MarketSlot marketSlotPrefab;
 
         private bool previousBuildMode;
 
@@ -60,6 +66,7 @@ namespace UI.Inventory
 
             foreach (KeyValuePair<ResourceType, ResourceStack> resources in playerInv)
             {
+                inventoryInstanceCount++;
                 InventorySlot slot = Instantiate(inventorySlotPrefab, inventoryContent);
                 if (resources.Key != null)
                 {
@@ -106,6 +113,9 @@ namespace UI.Inventory
                     previousSlotType = resources.Value?.ResourceType;
                 };
             }
+            
+            inventoryContent.GetComponent<RectTransform>().sizeDelta =
+                new Vector2(0, 70 * MathF.Ceiling(inventoryInstanceCount/4f) );
         }
 
         public void Show(BufferBlock bufferBlock)
@@ -117,6 +127,7 @@ namespace UI.Inventory
             factoryInventoryPanel.gameObject.SetActive(true);
             foreach (KeyValuePair<ResourceType, Buffer> bufferBlockBuffer in bufferBlock.Buffers)
             {
+                factoryInventoryInstanceCount++;
                 InventorySlot slot = Instantiate(inventorySlotPrefab, factoryInventoryContent);
                 slot.SetAmount(bufferBlockBuffer.Value.Quantity);
                 slot.SetHoverText(bufferBlockBuffer.Value.ResourceType.name);
@@ -158,7 +169,28 @@ namespace UI.Inventory
                     previousSlotType = bufferBlockBuffer.Value.ResourceType;
                 };
             }
-            
+
+            factoryInventoryContent.GetComponent<RectTransform>().sizeDelta =
+                new Vector2(0, 70 * MathF.Ceiling(factoryInventoryInstanceCount/4f) );
+        }
+
+        private int marketInstanceCount=0;
+        private int inventoryInstanceCount=0;
+        private int factoryInventoryInstanceCount=0;
+        
+        public void ShowMarket()
+        {
+            if (showing)
+            {
+                return;
+            }
+            ResetPanel();
+            Show();
+            MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
+            marketInstanceCount++;
+            marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
+            slot.SetName("Lighty weather cut copper stairs");
+            slot.SetPrice(300);
         }
 
         public void Hide()
@@ -174,6 +206,9 @@ namespace UI.Inventory
 
         private void ResetPanel()
         {
+            // marketInstanceCount = 0;
+            inventoryInstanceCount = 0;
+            factoryInventoryInstanceCount = 0;
             lastSelectedInventory = null;
             previousSlot = null;
             previousSlotType = null;

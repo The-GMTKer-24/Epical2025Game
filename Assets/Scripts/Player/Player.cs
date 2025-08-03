@@ -61,6 +61,12 @@ namespace Player
                     InventoryUI.Instance.Show(hit.collider.GetComponent<BufferBlock>());
                     return;
                 }
+                // Opening market
+                if (hit.collider.CompareTag("Market"))
+                {
+                    InventoryUI.Instance.ShowMarket();
+                    return;
+                }
             }
             InventoryUI.Instance.Show();
         }
