@@ -235,6 +235,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""67f6f162-56bb-4a2d-bd33-b6edf6f33d72"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -587,6 +596,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Delete Mode Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fd199a1-2f87-4d4a-be51-fd30bdeab8b1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;XR"",
+                    ""action"": ""Pause Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4600110d-e24f-407b-9714-24a7bdaf3303"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;XR"",
+                    ""action"": ""Pause Toggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1190,6 +1221,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_BuildModeToggle = m_Player.FindAction("Build Mode Toggle", throwIfNotFound: true);
         m_Player_DeleteModeToggle = m_Player.FindAction("Delete Mode Toggle", throwIfNotFound: true);
+        m_Player_PauseToggle = m_Player.FindAction("Pause Toggle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1299,6 +1331,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_BuildModeToggle;
     private readonly InputAction m_Player_DeleteModeToggle;
+    private readonly InputAction m_Player_PauseToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1375,6 +1408,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @DeleteModeToggle => m_Wrapper.m_Player_DeleteModeToggle;
         /// <summary>
+        /// Provides access to the underlying input action "Player/PauseToggle".
+        /// </summary>
+        public InputAction @PauseToggle => m_Wrapper.m_Player_PauseToggle;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1448,6 +1485,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeleteModeToggle.started += instance.OnDeleteModeToggle;
             @DeleteModeToggle.performed += instance.OnDeleteModeToggle;
             @DeleteModeToggle.canceled += instance.OnDeleteModeToggle;
+            @PauseToggle.started += instance.OnPauseToggle;
+            @PauseToggle.performed += instance.OnPauseToggle;
+            @PauseToggle.canceled += instance.OnPauseToggle;
         }
 
         /// <summary>
@@ -1507,6 +1547,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeleteModeToggle.started -= instance.OnDeleteModeToggle;
             @DeleteModeToggle.performed -= instance.OnDeleteModeToggle;
             @DeleteModeToggle.canceled -= instance.OnDeleteModeToggle;
+            @PauseToggle.started -= instance.OnPauseToggle;
+            @PauseToggle.performed -= instance.OnPauseToggle;
+            @PauseToggle.canceled -= instance.OnPauseToggle;
         }
 
         /// <summary>
@@ -1919,6 +1962,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDeleteModeToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause Toggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPauseToggle(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

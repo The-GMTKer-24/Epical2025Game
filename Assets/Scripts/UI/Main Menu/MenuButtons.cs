@@ -19,12 +19,16 @@ namespace UI.MainMenu
         
         public void PlayGame()
         {
+            PlayerPrefs.Save();
+            
             Debug.Log("The system will play game now!");
             SceneManager.LoadScene(sceneToLoad);
         }
         
         public void QuitGame()
         {
+            PlayerPrefs.Save();
+            
             Debug.Log("The system will shut down now!");
             #if UNITY_EDITOR
                 EditorApplication.isPlaying = false;
@@ -35,6 +39,8 @@ namespace UI.MainMenu
 
         public void Credits()
         {
+            PlayerPrefs.Save();
+            
             Debug.Log("The system will credits now!");
             
             mainMenuObjects.SetActive(false);

@@ -149,6 +149,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause Toggle",
+                    "type": "Button",
+                    "id": "67f6f162-56bb-4a2d-bd33-b6edf6f33d72",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -501,6 +510,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Delete Mode Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6fd199a1-2f87-4d4a-be51-fd30bdeab8b1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;XR",
+                    "action": "Pause Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4600110d-e24f-407b-9714-24a7bdaf3303",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;XR",
+                    "action": "Pause Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
