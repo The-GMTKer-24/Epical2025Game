@@ -206,7 +206,9 @@ MonoBehaviour:
   pulverizer: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
   rippleController: {fileID: 1709309342}
   placeSoundPrefab: {fileID: 1837076573663676744, guid: ebaa9716b76c89544b5135ef874e4efc, type: 3}
+  rejectionSoundPrefab: {fileID: 1837076573663676744, guid: 3b182bb727a9689479cc3ba74f82cb70, type: 3}
   placeSoundLifetime: 0.5
+  rejectionSoundLifetime: 0.5
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
@@ -268,7 +270,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -280,7 +282,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.16234398
+        value: 0.02321434
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -292,9 +294,9 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 0.3647059, g: 0.09803922, b: 0.21568628, a: 1}
+      key1: {r: 0.3647059, g: 0.09803922, b: 0.21568628, a: 1}
+      key2: {r: 0.1509434, g: 0.017799927, b: 0.112024516, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -302,7 +304,7 @@ LineRenderer:
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 65535
-      ctime2: 0
+      ctime2: 65535
       ctime3: 0
       ctime4: 0
       ctime5: 0
@@ -317,7 +319,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0

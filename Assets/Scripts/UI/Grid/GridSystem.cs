@@ -20,7 +20,9 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private RippleEffect rippleController;
     [SerializeField] private GameObject placeSoundPrefab;
+    [SerializeField] private GameObject rejectionSoundPrefab;
     [SerializeField] private float placeSoundLifetime = 0.5f;
+    [SerializeField] private float rejectionSoundLifetime = 0.5f;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -32,11 +34,14 @@ public class GridSystem : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
+    private bool rejectSoundPlayed = false;
     private GameInfo gameInfo;
     private int gridSystemWidth;
     private int gridSystemHeight;
     private int selectedIndex;
     private bool isPlacing;
+    private GameObject placementGhost;
+    private FactoryElementType previousPlacementGhostType;
     public bool buildMode { get; private set; }
     public Direction placeDirection { get; private set; }
     public static GridSystem Instance { get; private set; }
@@ -54,6 +59,7 @@ public class GridSystem : MonoBehaviour
     {
         buildMode = mode;
         rippleController.SetActive(buildMode);
+        renderGrid = mode;
     }
 
     private void ToggleBuildMode(InputAction.CallbackContext ctx)
@@ -67,6 +73,7 @@ public class GridSystem : MonoBehaviour
         gridSystemWidth = cellWidth * gridWidth;
         gameInfo = GameInfo.Instance;
         selectedElement = gameInfo.UnlockedFactoryElements[selectedIndex];
+        placementGhost = null;
         
 
         InitializeGridRender(out var lr);
@@ -184,6 +191,45 @@ public class GridSystem : MonoBehaviour
     {
         lineRenderer.enabled = renderGrid;
 
+        if (buildMode)
+        {
+            var mouseWorldPoint =
+                camera.ScreenToWorldPoint(playerControls.Player.MousePosition.ReadValue<Vector2>());
+        
+            var gridSpace = WorldToGridSpace( new Vector2( mouseWorldPoint.x,mouseWorldPoint.y));
+            
+        
+            if (Mathf.Approximately(gridSpace.x, -1f))
+            {
+                if (previousPlacementGhostType is not null)
+                {
+                    Destroy(placementGhost);
+                    placementGhost = null;
+                }
+            }
+            else
+            {
+                if (placementGhost is null)
+                {
+                    placementGhost = Instantiate(selectedElement.Prefab);
+                    placementGhost.AddComponent<OpacityBlinking>();
+                }
+            
+                previousPlacementGhostType = selectedElement;
+        
+                if (previousPlacementGhostType != selectedElement)
+                {
+                    Destroy(placementGhost);
+                    placementGhost = Instantiate(selectedElement.Prefab);
+                    placementGhost.AddComponent<OpacityBlinking>();
+                }
+
+                Vector2 position = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
+
+                placementGhost.transform.position = position + new Vector2( (float)selectedElement.Size.x /2 , (float)selectedElement.Size.y/2 );
+            }
+        }
+        
         if (isPlacing && buildMode)
         {
             var mouseWorldPoint =
@@ -214,6 +260,16 @@ public class GridSystem : MonoBehaviour
                 GameObject placeSound = Instantiate(placeSoundPrefab);
                 Destroy(placeSound, placeSoundLifetime);
             }
+            else
+            {
+                // It'd be better to just detect if you're holding, but this works
+                if (!rejectSoundPlayed)
+                {
+                    GameObject placeSound = Instantiate(rejectionSoundPrefab);
+                    Destroy(placeSound, rejectionSoundLifetime);
+                    rejectSoundPlayed = true;
+                }
+            }
         }
     }
 
@@ -225,6 +281,7 @@ public class GridSystem : MonoBehaviour
     private void stopPlacing(InputAction.CallbackContext ctx)
     {
         isPlacing = false;
+        rejectSoundPlayed = false;
     }
 
     /// <summary>
