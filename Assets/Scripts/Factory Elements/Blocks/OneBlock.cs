@@ -34,7 +34,8 @@ namespace Factory_Elements.Blocks
                 int2 checkPosition = position + relatives[direction];
                 IFactoryElement neighbor = Factory.Instance.FromLocation(checkPosition);
                 directionalNeighbors.Add(direction, neighbor);
-                neighboralDirections.Add(neighbor, direction);
+                if (neighbor != null)
+                    neighboralDirections.Add(neighbor, direction);
             }
         }
         
