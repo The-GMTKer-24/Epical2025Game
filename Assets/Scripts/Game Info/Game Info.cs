@@ -15,6 +15,8 @@ namespace Game_Info
 
         public List<Quest> ActiveQuests { get; private set; }
 
+        public Dictionary<ResourceType, int> SubmittedItems;
+
         public List<FactoryElementType> UnlockedFactoryElements { get; private set; }
 
         public int Money { get; private set; }
@@ -23,6 +25,7 @@ namespace Game_Info
         {
             Instance = this;
             ActiveQuests = initialQuests.Quests.ToList();
+            SubmittedItems = new Dictionary<ResourceType, int>();
 
             
             UnlockedFactoryElements = startingUnlockedFactoryElements.Elements.ToList();

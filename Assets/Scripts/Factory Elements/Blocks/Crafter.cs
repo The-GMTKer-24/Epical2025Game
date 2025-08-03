@@ -39,8 +39,27 @@ namespace Factory_Elements.Blocks
             return base.AcceptsResource(sender, resource);
         }
 
+        public void Craft()
+        {
+            recipeProgress = 0;
+            Debug.Log("Crafted!");
+            foreach (var resourceQuantity in recipeSetting.Value.Inputs)
+            {
+                var resourceType = resourceQuantity.Type;
+                buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
+            }
+
+            foreach (var resourceQuantity in recipeSetting.Value.Outputs)
+            {
+                var resourceType = resourceQuantity.Type;
+                buffers[resourceType].CreateResources(resourceQuantity.Amount);
+            }
+        }
+
         protected override void FixedUpdate()
         {
+            base.FixedUpdate();
+            
             var canRun = true;
             foreach (var resourceQuantity in recipeSetting.Value.Inputs)
             {
@@ -63,26 +82,7 @@ namespace Factory_Elements.Blocks
                 var recipe = recipeSetting.Value;
                 if (recipeProgress >= recipe.ProcessingTime)
                 {
-                    recipeProgress = 0;
-                    // Recipe finished!
-                    Debug.Log("Crafted!");
-                    foreach (var resourceQuantity in recipeSetting.Value.Inputs)
-                    {
-                        var resourceType = resourceQuantity.Type;
-                        buffers[resourceType].ConsumeResources(resourceQuantity.Amount);
-                        // Debug.Log("Consumed:");
-                        // Debug.Log(resourceQuantity.Type.name);
-                        // Debug.Log(resourceQuantity.Amount.ToString());
-                    }
-
-                    foreach (var resourceQuantity in recipeSetting.Value.Outputs)
-                    {
-                        var resourceType = resourceQuantity.Type;
-                        buffers[resourceType].CreateResources(resourceQuantity.Amount);
-                        // Debug.Log("Created:");
-                        // Debug.Log(resourceQuantity.Type.name);
-                        // Debug.Log(resourceQuantity.Amount.ToString());
-                    }
+                    Craft();
                 }
             }
             else

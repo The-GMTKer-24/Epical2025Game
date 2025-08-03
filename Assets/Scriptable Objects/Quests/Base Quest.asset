@@ -15,4 +15,5 @@ MonoBehaviour:
   prerequisites: []
   requirements: []
   rewards: []
+  moneyReward: 0
   unlocks: []

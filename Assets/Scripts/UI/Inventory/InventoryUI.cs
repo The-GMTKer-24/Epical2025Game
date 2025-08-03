@@ -34,10 +34,13 @@ namespace UI.Inventory
         private InventorySlot inventorySlotPrefab;
         [SerializeField]
         private MarketSlot marketSlotPrefab;
+        [SerializeField]
+        private QuestElement questElementPrefab;
         [SerializeField] private ResourceSet sellables;
         
         [SerializeField] private GameObject failSoundPrefab;
         [SerializeField] private GameObject chchingSoundPrefab;
+        [SerializeField] private QuestSet allQuests;
 
         private BuildMode previousBuildMode;
 
@@ -50,10 +53,13 @@ namespace UI.Inventory
         public bool ShowingFactory => factoryInventoryPanel.gameObject.activeInHierarchy;
         public bool Showing => showing;
 
+        private bool questMode;
+
         public void Awake()
         {
             previousBuildMode = BuildMode.None;
             Instance = this;
+            questMode = true;
         }
 
         public void Start()
@@ -199,43 +205,58 @@ namespace UI.Inventory
             Show();
 
             marketPanel.gameObject.SetActive(true);
-            foreach (var sellableResource in sellables.Resources)
+            if (!questMode)
             {
-                ItemType sellableItem =  (ItemType)sellableResource;
-                MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
-                marketInstanceCount++;
-                marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
-                slot.SetName(sellableResource.name);
-                slot.SetSprite(sellableResource.Icon);
-                slot.SetPrice(sellableItem.MarketBehaviour.MaxPrice);
-
-                if (!Player.Player.Instance.HasItem(sellableResource))
+                foreach (var sellableResource in sellables.Resources)
                 {
-                    print($"Disabling slot {sellableResource.name}");
-                    slot.SetDisabled(true);
-                }
+                    ItemType sellableItem =  (ItemType)sellableResource;
+                    MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
+                    marketInstanceCount++;
+                    marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
+                    slot.SetName(sellableResource.name);
+                    slot.SetSprite(sellableResource.Icon);
+                    slot.SetPrice(sellableItem.MarketBehaviour.MaxPrice);
 
-                slot.OnSelect += (iSlot) =>
-                {
-                    if (slot.disabled)
+                    if (!Player.Player.Instance.HasItem(sellableResource))
                     {
-                        Object failSound= Instantiate(failSoundPrefab);
-                        Destroy(failSound, 0.5f);
-                        return;
+                        print($"Disabling slot {sellableResource.name}");
+                        slot.SetDisabled(true);
                     }
+
+                    slot.OnSelect += (iSlot) =>
+                    {
+                        if (slot.disabled)
+                        {
+                            Object failSound= Instantiate(failSoundPrefab);
+                            Destroy(failSound, 0.5f);
+                            return;
+                        }
                     
-                    print(sellableItem.MarketBehaviour.MaxPrice);
-                    if (Player.Player.Instance.GetResourceAmount(sellableResource) > 0)
-                    {
-                        ResourceStack stack = Player.Player.Instance.RemoveStack(sellableResource);
-                        print(stack.Quantity);
+                        print(sellableItem.MarketBehaviour.MaxPrice);
+                        if (Player.Player.Instance.GetResourceAmount(sellableResource) > 0)
+                        {
+                            ResourceStack stack = Player.Player.Instance.RemoveStack(sellableResource);
+                            print(stack.Quantity);
 
-                        GameInfo.Instance.GainMoney((int)(stack.Quantity * sellableItem.MarketBehaviour.MaxPrice));
+                            GameInfo.Instance.GainMoney((int)(stack.Quantity * sellableItem.MarketBehaviour.MaxPrice));
                         
-                        GameObject rejectionSound = Instantiate(failSoundPrefab);
-                        Destroy(rejectionSound, 0.5f);
-                    }
-                };
+                            GameObject rejectionSound = Instantiate(failSoundPrefab);
+                            Destroy(rejectionSound, 0.5f);
+                        }
+                    };
+                }
+            }
+            else
+            {
+                int instanceCount = 0;
+                foreach (var quest in allQuests.Quests)
+                {
+                    instanceCount++;
+                    QuestElement questElement = Instantiate(questElementPrefab, marketContent);
+                    questElement.SetRewardText(quest.Unlocks,quest.Rewards, quest.MoneyReward);
+                    questElement.SpawnItemTrackers(quest.Requirements);
+                }
+                marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 160 * instanceCount);
             }
         }
 
