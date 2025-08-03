@@ -3,6 +3,7 @@ using System.Linq;
 using Factory_Elements;
 using Factory_Elements.Blocks;
 using Factory_Elements.Settings;
+using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -17,12 +18,13 @@ namespace UI.Inventory
         [SerializeField]
         private TextMeshProUGUI settingDescriptionText;
         [SerializeField]
-        private TMP_Dropdown direcationDropDown;
-        [SerializeField]
         private RectTransform toggleInput;
         [SerializeField]
         private TMP_Dropdown sortMode;
-        
+
+        [SerializeField] private TextMeshProUGUI inputEnabled;
+
+        [SerializeField] private ResourceSet allItems;
         private ISetting flowSettings;
         private DirectionConfig flow;
         public void SetSetting(ISetting setting)
@@ -31,6 +33,7 @@ namespace UI.Inventory
             flow = flowSettings.ValueUntyped as DirectionConfig;
             UpdateText();
         }
+
         public void UpdateText()
         {
             flow = flowSettings.ValueUntyped as DirectionConfig;
@@ -40,53 +43,44 @@ namespace UI.Inventory
                 settingDescriptionText.text = "No flow options are available";
                 return;
             }
-            /*
-            pipeLocationDropdown.gameObject.SetActive(true);
-            pipeFluidDropdown.gameObject.SetActive(true);
+
+            sortMode.gameObject.SetActive(true);
             settingNameText.text = flowSettings.Name;
             settingDescriptionText.text = flowSettings.Description;
-
-            pipeLocationDropdown.ClearOptions();
-            pipeFluidDropdown.ClearOptions();
-            foreach (var location in flow.PipeSettingsFromLocation.ToList().OrderBy(x => x.Key))
+            if (flow.Input)
             {
-                pipeLocationDropdown.options.Add(
-                    new TMP_Dropdown.OptionData($"{location.Key.Direction.ToString()}#{location.Key.Index.ToString()} - {(location.Value == null ? "None" : location.Value.name)}"));
+                sortMode.gameObject.SetActive(false);
             }
-            pipeLocationDropdown.onValueChanged.RemoveAllListeners();
-            pipeLocationDropdown.onValueChanged.AddListener(delegate
+            else
             {
-                OutputLocation location =
-                    flow.PipeSettingsFromLocation.ToList().OrderBy(x => x.Key).ToList()[pipeLocationDropdown.value].Key;
-                pipeFluidDropdown.ClearOptions();
-                for (var i = 0; i < flow.AllowedFluidTypes.Count; i++)
+                sortMode.gameObject.SetActive(true);
+                sortMode.ClearOptions();
+                for (var index = 0; index < allItems.Resources.Length; index++)
                 {
-                    var fluidType = flow.AllowedFluidTypes[i];
-                    string text = (fluidType != null ? fluidType.name : "None");
-                    pipeFluidDropdown.options.Add(new TMP_Dropdown.OptionData(text));
-                    Debug.Log(text);
-                    Debug.Log(fluidType);
-                    if ((fluidType == null && flow.PipeSettingsFromLocation[location] == null) || (fluidType?.name == flow.PipeSettingsFromLocation[location]?.name))
+                    var item = allItems.Resources[index];
+                    sortMode.options.Add(new TMP_Dropdown.OptionData(item.name));
+                    if ((item == null && flow.SortType == null) || (item?.name == flow.SortType?.name))
                     {
-                        pipeFluidDropdown.SetValueWithoutNotify(i);
+                        sortMode.SetValueWithoutNotify(index);
                     }
                 }
-                pipeFluidDropdown.onValueChanged.RemoveAllListeners();
-                pipeFluidDropdown.onValueChanged.AddListener((call) =>
+                sortMode.RefreshShownValue();
+                sortMode.onValueChanged.RemoveAllListeners();
+                sortMode.onValueChanged.AddListener(delegate
                 {
-                    flow.PipeSettingsFromLocation[location] = flow.AllowedFluidTypes[pipeFluidDropdown.value];
+                    flow.SortType = allItems.Resources[sortMode.value];
                     flowSettings.ValueUntyped = flow;
-                    flow = null;
                     UpdateText();
                 });
-                pipeFluidDropdown.value = 0;
-                pipeFluidDropdown.RefreshShownValue();
-            });
-            pipeLocationDropdown.value = 1;
-            pipeLocationDropdown.value = 0;
-            pipeLocationDropdown.RefreshShownValue();
-            */
+            }
         }
-        
+
+        public void OnButtonPress()
+        {
+            flow.Input = !flow.Input;
+            inputEnabled.text = flow.Input ? "Input" : "Output";
+            flowSettings.ValueUntyped = flow;
+            UpdateText();
+        }
     }
 }
