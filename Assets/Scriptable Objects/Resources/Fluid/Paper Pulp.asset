@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28a5e121dcc44599ae201ca46940126, type: 3}
   m_Name: Paper Pulp
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
+  icon: {fileID: 1270889474927620504, guid: 904d77be40ae0154a8a9c1111138c15b, type: 3}
   color: {r: 0, g: 0, b: 0, a: 0}

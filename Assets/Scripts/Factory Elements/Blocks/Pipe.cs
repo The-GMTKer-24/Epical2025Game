@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Factory_Elements.Blocks
@@ -8,6 +10,10 @@ namespace Factory_Elements.Blocks
     public class Pipe : BufferBlock
     {
         [SerializeField] public int capacity = 10;
+        [SerializeField] Sprite[] pipeSprites; // bitwise, 1 represents a connection and digits from North clockwise
+        // 0000 (0): No connections
+        // 1000 (8): North connection
+        // 0100 (4): East connection
 
         // TODO: (not strictly necessary) replace with a generated singular pipe graph object, such that all pipes have equal pressure across a network
         private readonly FluidType type = null;
@@ -43,6 +49,38 @@ namespace Factory_Elements.Blocks
                     while (pipe.buffer.Quantity < averageVolume)
                         if (pipe.TryInsertResource(this, buffer.QueryResource()))
                             buffer.TakeResource();
+        }
+
+        public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
+        {
+            base.OnNeighborUpdate(newNeighbor, added);
+            
+            Dictionary<Direction, int2> relatives = new();
+            relatives.Add(Direction.North, new int2(0, 1));
+            relatives.Add(Direction.East, new int2(1, 0));
+            relatives.Add(Direction.South, new int2(0, -1));
+            relatives.Add(Direction.West, new int2(-1, 0));
+
+            int spriteID = 0;
+            
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                int2 checkPosition = position + relatives[direction];
+                IFactoryElement neighbor = Factory.Instance.FromLocation(checkPosition);
+                if (neighbor is not null)
+                {
+                    switch (direction)
+                    {
+                        case Direction.North: spriteID += 8; break;
+                        case Direction.East: spriteID += 4; break;
+                        case Direction.South: spriteID += 2; break;
+                        case Direction.West: spriteID += 1; break;
+                    }
+                }
+            }
+            
+            Sprite sprite = pipeSprites[spriteID];
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
         }
 
         public void Flush()
