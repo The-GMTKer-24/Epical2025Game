@@ -191,6 +191,7 @@ namespace UI.Inventory
             }
             ResetPanel();
             Show();
+            marketPanel.gameObject.SetActive(true);
             MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
             marketInstanceCount++;
             marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
@@ -219,6 +220,7 @@ namespace UI.Inventory
             previousSlotType = null;
             inventoryPanel.gameObject.SetActive(false);
             factoryInventoryPanel.gameObject.SetActive(false);
+            marketPanel.gameObject.SetActive(false);
             foreach (Transform child in inventoryContent.transform)
             {
                 Destroy(child.gameObject);
