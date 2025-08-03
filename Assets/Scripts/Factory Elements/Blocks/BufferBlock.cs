@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using UI.Inventory;
@@ -23,6 +24,7 @@ namespace Factory_Elements.Blocks
         protected readonly List<ResourceType> resourceTypes = new();
         protected Dictionary<ResourceType, Buffer> buffers = new();
         protected Dictionary<IFactoryElement, List<OutputLocation>> outputs = new();
+        protected List<OutputLocation> outputLocations = new();
 
         //private int currentOutputNeighborIndex;
         //private List<int> resourceTypeIndexPerNeighbor = new();
@@ -31,8 +33,8 @@ namespace Factory_Elements.Blocks
 
         public override void Awake()
         {
-            base.Awake();
             setBuffers(new List<Buffer>());
+            base.Awake();
         }
 
         // this code is EVIL. I'm so sorry
@@ -129,6 +131,14 @@ namespace Factory_Elements.Blocks
                         fluidTypes.Add(fluidType);
                 }
             }
+            
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                int dimension = factoryElementType.Size.x;
+                if (direction == Direction.East || direction == Direction.West)
+                    dimension = factoryElementType.Size.y;
+                for (int i = 0; i < dimension; i++) outputLocations.Add(new OutputLocation(direction, i));
+            }
 
             if (fluidTypes.Count == 0)
             {
@@ -197,7 +207,7 @@ namespace Factory_Elements.Blocks
                          y < newNeighbor.Position.y + newNeighbor.FactoryElementType.Size.y;
                          y++)
                     {
-                        foreach (OutputLocation location in configuration.Value.PipeSettingsFromLocation.Keys)
+                        foreach (OutputLocation location in outputLocations)
                         {
                             if (location.GetLocation(this).Equals(new int2(x, y)))
                             {
