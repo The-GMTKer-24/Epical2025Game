@@ -21,4 +21,4 @@ MonoBehaviour:
     priceAddedFluctuationAverage: 0
     priceFluctuationStandardDeviation: 0
     supplyDecayRate: 0
-  inWorldSprite: {fileID: 21300000, guid: 51fb6a0c5c09a9dbc830785621a15a4f, type: 3}
+  inWorldSprite: {fileID: 0}

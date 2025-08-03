@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
   m_Name: Glass Ingot
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 48d4e0108d9eb7868b819b53791e019e, type: 3}
+  icon: {fileID: 21300000, guid: f9ed8b06e883acd35858706e2d94daac, type: 3}
   cost: 0
   marketBehaviour:
     maxPrice: 40
