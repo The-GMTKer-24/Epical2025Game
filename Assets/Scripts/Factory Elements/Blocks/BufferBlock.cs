@@ -96,7 +96,7 @@ namespace Factory_Elements.Blocks
                 if (buffer.CanGiveOutput)
                 {
                     outputtableResourceTypes.Add(buffer.ResourceType);
-                    if (buffer.ResourceType is FluidType fluidType)
+                    if (buffer.ResourceType is FluidType fluidType && !fluidTypes.Contains(fluidType))
                     {
                         fluidTypes.Add(fluidType);
                     }
@@ -109,10 +109,7 @@ namespace Factory_Elements.Blocks
             }
             else
             {
-                if (fluidTypes.Count == 1)
-                {
-                    defaultType = fluidTypes[0];
-                }
+                fluidTypes.Insert(0, null);
 
                 foreach (Direction direction in Enum.GetValues(typeof(Direction)))
                 {
@@ -286,7 +283,7 @@ namespace Factory_Elements.Blocks
         }
     }
 
-    public class OutputLocation
+    public class OutputLocation : IComparable
     {
         public readonly Direction Direction;
         public readonly int Index; // increasing x and y
@@ -312,6 +309,14 @@ namespace Factory_Elements.Blocks
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+            if (obj is OutputLocation other1 && other1.Direction == this.Direction) return Index.CompareTo(other1.Index);
+            if (obj is OutputLocation other) return Direction.CompareTo(other.Direction);
+            return 0;
         }
     }
 }

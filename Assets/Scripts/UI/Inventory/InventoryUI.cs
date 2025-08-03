@@ -296,5 +296,20 @@ namespace UI.Inventory
             }
             showing = false;
         }
+
+        public void Refresh()
+        {
+            if (ShowingFactory)
+            {
+                var temp = bufferBlock;
+                Hide();
+                Show(temp);
+            }
+            else
+            {
+                Hide();
+                Show();
+            }
+        }
     }
 }

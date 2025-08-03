@@ -14,29 +14,29 @@ namespace UI.Inventory
         [SerializeField]
         private TextMeshProUGUI settingDescriptionText;
         
-        private ISetting directionSetting;
+        private ISetting recipeSetting;
         public void SetSetting(ISetting setting)
         {
-            directionSetting = setting;
+            recipeSetting = setting;
             UpdateText();
         }
 
         public void UpdateText()
         {
-            directionText.text = ((Direction)directionSetting.ValueUntyped).ToString();
-            settingNameText.text = directionSetting.Name;
-            settingDescriptionText.text = directionSetting.Description;
+            directionText.text = ((Direction)recipeSetting.ValueUntyped).ToString();
+            settingNameText.text = recipeSetting.Name;
+            settingDescriptionText.text = recipeSetting.Description;
         }
         
         public void OnClickButton()
         {
-            Direction activeDirection = (Direction)directionSetting.ValueUntyped;
+            Direction activeDirection = (Direction)recipeSetting.ValueUntyped;
             activeDirection++;
             if (activeDirection > Direction.West)
             {
                 activeDirection = Direction.North;
             }
-            directionSetting.ValueUntyped = activeDirection;
+            recipeSetting.ValueUntyped = activeDirection;
             UpdateText();
         }
     }

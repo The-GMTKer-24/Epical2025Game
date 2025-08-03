@@ -101,10 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd2efaa6edc4f32a26bd6489637fdfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factoryElementType: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
+  factoryElementType: {fileID: 11400000, guid: 1e386e0e34dc7cbb8a4889c549a138b6, type: 2}
   equalizationRate: 0.025
   thermalLoss: 0.5
-  defaultRecipe: {fileID: 11400000, guid: eaa0641c37be22c4f8b51c1273178586, type: 2}
+  defaultRecipe: {fileID: 11400000, guid: 63d30cb0ce6ef5bf2882142163ada4c2, type: 2}
 --- !u!61 &-8204550962486569524
 BoxCollider2D:
   m_ObjectHideFlags: 0

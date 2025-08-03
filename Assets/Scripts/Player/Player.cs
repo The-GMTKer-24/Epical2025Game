@@ -67,6 +67,10 @@ namespace Player
             {
                 Debug.Log("Opening inventory window");
                 IFactoryElement block = hit.collider.GetComponent<IFactoryElement>();
+                if (fromClick && SettingUI.Instance.Showing)
+                {
+                    return;
+                }
                 if (block != null)
                 {
                     if (InventoryUI.Instance.Showing && InventoryUI.Instance.ShowingFactory)
@@ -80,10 +84,7 @@ namespace Player
                             InventoryUI.Instance.Show(bufferBlock);
                         else
                             InventoryUI.Instance.Show();
-                        if (!fromClick || !SettingUI.Instance.Showing)
-                        {
-                            SettingUI.Instance.Show(block);
-                        }
+                        SettingUI.Instance.Show(block);
                     }
                     return;
                 }
@@ -95,13 +96,10 @@ namespace Player
                 }
             }
 
-            if (InventoryUI.Instance.Showing && !InventoryUI.Instance.ShowingFactory) 
+            if (InventoryUI.Instance.Showing && !fromClick) 
             {
-                if (!fromClick)
-                {
-                    InventoryUI.Instance.Hide();
-                    SettingUI.Instance.Hide();
-                }
+                InventoryUI.Instance.Hide();
+                SettingUI.Instance.Hide();
 
             }
             else if (!fromClick)

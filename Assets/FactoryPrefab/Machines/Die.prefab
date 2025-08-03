@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd2efaa6edc4f32a26bd6489637fdfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factoryElementType: {fileID: 11400000, guid: 8ae4d97c57035b44eb5de5653c7d82e1, type: 2}
+  factoryElementType: {fileID: 11400000, guid: c2b60b6db5987a2e0af651502e0faa1a, type: 2}
   equalizationRate: 0.025
   thermalLoss: 0.2
   defaultRecipe: {fileID: 11400000, guid: 870d1f612ad33e1c08debcc6d0dc14e9, type: 2}

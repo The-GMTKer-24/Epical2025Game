@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 350, y: 0}
-  m_SizeDelta: {x: -700, y: 500}
+  m_AnchoredPosition: {x: 213.75, y: 0}
+  m_SizeDelta: {x: -427.5, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1039781409828371212
 MonoBehaviour:
@@ -52,6 +52,8 @@ MonoBehaviour:
   settingsPanel: {fileID: 5183359458918128482}
   contentPanel: {fileID: 3241588254120418117}
   directionSettingPrefab: {fileID: 9180718291088727523, guid: baf834973c55654b4bcefb6cd72ad967, type: 3}
+  recipeSettingPrefab: {fileID: 9180718291088727523, guid: 3ceff6fead6a58280a3ae9db12faf265, type: 3}
+  directionalPipeSettingsPrefab: {fileID: 9180718291088727523, guid: 358a71ca3c08c8dbd9ea47e0496d011c, type: 3}
 --- !u!1 &3241588254120418117
 GameObject:
   m_ObjectHideFlags: 0
