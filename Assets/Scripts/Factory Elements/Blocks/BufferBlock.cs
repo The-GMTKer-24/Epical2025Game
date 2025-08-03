@@ -163,6 +163,11 @@ namespace Factory_Elements.Blocks
 
             currentOutputNeighborIndex = 0;
 
+            if (configuration.Value.PipeSettingsFromLocation == null)
+            {
+                return;
+            }
+
             if (added)
             {
                 outputs.Add(newNeighbor, new List<OutputLocation>());
