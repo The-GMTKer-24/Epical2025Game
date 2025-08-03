@@ -24,20 +24,23 @@ namespace Factory_Elements.Blocks
         protected Dictionary<ResourceType, Buffer> buffers = new();
         protected Dictionary<IFactoryElement, List<OutputLocation>> outputs = new();
 
-        private int currentOutputNeighborIndex;
-        private List<int> resourceTypeIndexPerNeighbor = new();
+        //private int currentOutputNeighborIndex;
+        //private List<int> resourceTypeIndexPerNeighbor = new();
 
         public Dictionary<ResourceType, Buffer> Buffers => buffers;
 
         // this code is EVIL. I'm so sorry
         protected virtual void FixedUpdate()
         {
+            /*
             // Try to output to neighbors if possible
             var previousOutputNeighborIndex = currentOutputNeighborIndex;
             currentOutputNeighborIndex++;
             if (currentOutputNeighborIndex >= neighbors.Count) currentOutputNeighborIndex = 0;
             while (currentOutputNeighborIndex != previousOutputNeighborIndex)
             {
+                Debug.Log("Neighbor Index");
+                Debug.Log(currentOutputNeighborIndex);
                 var neighbor = neighbors[currentOutputNeighborIndex];
 
                 // Trying this neighbor, either a resource can be output or cycle to the next
@@ -53,6 +56,8 @@ namespace Factory_Elements.Blocks
 
                     while (resourceIndex != resourceTypeIndexPerNeighbor[currentOutputNeighborIndex])
                     {
+                        Debug.Log("Resource Index");
+                        Debug.Log(resourceIndex);
                         var resourceType = outputtableResourceTypes[resourceIndex];
                         var buffer = buffers[resourceType];
                         bool canAccept = resourceType is not FluidType;
@@ -74,6 +79,24 @@ namespace Factory_Elements.Blocks
 
                 currentOutputNeighborIndex++;
                 if (currentOutputNeighborIndex >= neighbors.Count) currentOutputNeighborIndex = 0;
+            }*/
+
+            foreach (IFactoryElement neighbor in neighbors)
+            foreach (ResourceType resourceType in outputtableResourceTypes)
+            {
+                Buffer buffer = buffers[resourceType];
+                bool canAccept = resourceType is not FluidType;
+                Debug.Log(neighbor);
+                Debug.Log(outputs);
+                foreach (OutputLocation location in outputs[neighbor])
+                    if (configuration.Value.PipeSettingsFromLocation[location] == resourceType)
+                        canAccept = true;
+                if (buffer.Quantity != 0 && canAccept)
+                    if (neighbor.AcceptsResource(this, buffer.QueryResource()))
+                    {
+                        neighbor.TryInsertResource(this, buffer.TakeResource());
+                        return;
+                    }
             }
         }
 
@@ -83,12 +106,12 @@ namespace Factory_Elements.Blocks
             inputtableResourceTypes.Clear();
             outputtableResourceTypes.Clear();
             this.buffers.Clear();
-            
+
             Dictionary<OutputLocation, FluidType> pipeSettings = new();
             List<FluidType> fluidTypes = new();
             FluidType defaultType = null;
-            
-            foreach (var buffer in buffers)
+
+            foreach (Buffer buffer in buffers)
             {
                 this.buffers.Add(buffer.ResourceType, buffer);
                 resourceTypes.Add(buffer.ResourceType);
@@ -97,15 +120,14 @@ namespace Factory_Elements.Blocks
                 {
                     outputtableResourceTypes.Add(buffer.ResourceType);
                     if (buffer.ResourceType is FluidType fluidType && !fluidTypes.Contains(fluidType))
-                    {
                         fluidTypes.Add(fluidType);
-                    }
                 }
             }
 
             if (fluidTypes.Count == 0)
             {
-                configuration = new ElementSettings<OutputPipeSetting>(null, "Pipe Settings", "Sets which fluid types output from which sides", SettingType.PipeSettings);
+                configuration = new ElementSettings<OutputPipeSetting>(null, "Pipe Settings",
+                    "Sets which fluid types output from which sides", SettingType.PipeSettings);
             }
             else
             {
@@ -114,21 +136,19 @@ namespace Factory_Elements.Blocks
                 foreach (Direction direction in Enum.GetValues(typeof(Direction)))
                 {
                     int dimension = factoryElementType.Size.x;
-                    if (direction == Direction.East || direction == Direction.West) dimension = factoryElementType.Size.y;
-                    for (int i = 0; i < dimension; i++)
-                    {
-                        pipeSettings.Add(new OutputLocation(direction, i), defaultType);
-                    }
+                    if (direction == Direction.East || direction == Direction.West)
+                        dimension = factoryElementType.Size.y;
+                    for (int i = 0; i < dimension; i++) pipeSettings.Add(new OutputLocation(direction, i), defaultType);
                 }
 
                 configuration = new ElementSettings<OutputPipeSetting>(new OutputPipeSetting(pipeSettings, fluidTypes),
-                    "Pipe Settings", "Sets which fluid types output from which sides", SettingType.PipeSettings );
+                    "Pipe Settings", "Sets which fluid types output from which sides", SettingType.PipeSettings);
             }
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
-            if (!buffers.TryGetValue(resource.ResourceType, out var buffer)) return false;
+            if (!buffers.TryGetValue(resource.ResourceType, out Buffer buffer)) return false;
             return buffer.CanAcceptInput && buffer.Quantity < buffer.Capacity;
         }
 
@@ -137,10 +157,7 @@ namespace Factory_Elements.Blocks
             if (AcceptsResource(sender, resource))
             {
                 buffers[resource.ResourceType].AddResource(resource);
-                if (resource is Item item)
-                {
-                    item.EqualizationRate = equalizationRate;
-                }
+                if (resource is Item item) item.EqualizationRate = equalizationRate;
 
                 Debug.Log("got item" + resource.ResourceType.name);
                 return true;
@@ -153,18 +170,15 @@ namespace Factory_Elements.Blocks
         {
             base.OnNeighborUpdate(newNeighbor, added);
             // resourceTypeIndexPerNeighbor = new List<int>(neighbors.Count);
-            resourceTypeIndexPerNeighbor = new List<int>();
+            /*resourceTypeIndexPerNeighbor = new List<int>();
             for (int i = 0; i < neighbors.Count; i++)
             {
                 resourceTypeIndexPerNeighbor.Add(0);
             }
 
-            currentOutputNeighborIndex = 0;
+            currentOutputNeighborIndex = 0;*/
 
-            if (configuration?.Value?.PipeSettingsFromLocation == null)
-            {
-                return;
-            }
+            //if (configuration?.Value?.PipeSettingsFromLocation == null) return;
 
             if (added)
             {
@@ -181,10 +195,7 @@ namespace Factory_Elements.Blocks
                         {
                             if (location.GetLocation(this).Equals(new int2(x, y)))
                             {
-                                if (added)
-                                {
-                                    outputs[newNeighbor].Add(location);
-                                }
+                                outputs[newNeighbor].Add(location);
                             }
                         }
                     }
@@ -252,9 +263,9 @@ namespace Factory_Elements.Blocks
 
         public void CreateResources(int quantity)
         {
-            for (var i = 0; i < quantity; i++)
+            for (int i = 0; i < quantity; i++)
             {
-                var newResource = Resource.fromType(ResourceType);
+                Resource newResource = Resource.fromType(ResourceType);
                 AddResource(newResource);
             }
         }
@@ -262,7 +273,7 @@ namespace Factory_Elements.Blocks
         public void ConsumeResources(int quantity)
         {
             if (quantity > Quantity) throw new Exception("Not enough resources");
-            for (var i = 0; i < quantity; i++) TakeResource();
+            for (int i = 0; i < quantity; i++) TakeResource();
         }
 
         public void Empty()
