@@ -19,8 +19,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private FactoryElementType belt;
     [SerializeField] private FactoryElementType pulverizer;
     [SerializeField] private RippleEffect rippleController;
-    [SerializeField] private GameObject placeSoundPrefab;
-    [SerializeField] private float placeSoundLifetime = 0.5f;
+    [SerializeField] private AudioSource placeSound;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -211,8 +210,7 @@ public class GridSystem : MonoBehaviour
                     placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
                 }
 
-                GameObject placeSound = Instantiate(placeSoundPrefab);
-                Destroy(placeSound, placeSoundLifetime);
+                placeSound.Play();
             }
         }
     }

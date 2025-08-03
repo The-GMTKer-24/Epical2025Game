@@ -18,6 +18,7 @@ namespace Player
         private PlayerControls playerControls;
         public static Player Instance { get; private set; }
 
+        private Rigidbody2D rigidbody;
 
         public int MaxInventorySize => maxInventorySize;
 
@@ -26,17 +27,19 @@ namespace Player
         private void Awake()
         {
             Instance = this;
+            rigidbody = GetComponent<Rigidbody2D>();
             playerControls = new PlayerControls();
             playerControls.Player.Interact.performed += OpenInventoryWindow;
             playerControls.Player.Cancel.performed += OnEscapePressed;
         }
 
         // Update is called once per frame
-        private void Update()
+        private void FixedUpdate()
         {
-            var scaledInput = playerControls.Player.Move.ReadValue<Vector2>() * (Time.deltaTime * speed);
+            var scaledInput = playerControls.Player.Move.ReadValue<Vector2>() * speed;
             if (MathF.Abs(scaledInput.x) > 0) transform.localScale = new Vector3(-MathF.Sign(scaledInput.x), 1, 1);
-            transform.transform.position += new Vector3(scaledInput.x, scaledInput.y, 0);
+            //transform.transform.position += new Vector3(scaledInput.x, scaledInput.y, 0);
+            rigidbody.AddRelativeForce(scaledInput, ForceMode2D.Impulse);
         }
 
         private void OnEnable()
