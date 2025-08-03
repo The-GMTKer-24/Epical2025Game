@@ -28,7 +28,8 @@ namespace Factory_Elements.Blocks
             base.FixedUpdate();
 
             if (buffer != null && buffer.Quantity == 0) buffers.Remove(buffer.ResourceType);
-
+            else
+                return;
             foreach (var neighbor in neighbors)
                 if (neighbor is not Pipe)
                     while (neighbor.TryInsertResource(this, buffer.QueryResource()))
