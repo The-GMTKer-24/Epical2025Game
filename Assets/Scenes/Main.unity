@@ -207,7 +207,7 @@ MonoBehaviour:
   rippleController: {fileID: 1709309342}
   placeSoundPrefab: {fileID: 1837076573663676744, guid: ebaa9716b76c89544b5135ef874e4efc, type: 3}
   rejectionSoundPrefab: {fileID: 1837076573663676744, guid: 3b182bb727a9689479cc3ba74f82cb70, type: 3}
-  removalSoundPrefab: {fileID: 1837076573663676744, guid: e933c2c1bcf916850902cf1bc23cd896, type: 3}
+  removalSoundPrefab: {fileID: 0}
   placeSoundLifetime: 0.5
   rejectionSoundLifetime: 0.5
   removeSoundLifetime: 0
@@ -1914,7 +1914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4727413212828716169, guid: b0025752d4b2f7aa5a2383da1f8d7f2b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 6432289789218147353, guid: b0025752d4b2f7aa5a2383da1f8d7f2b, type: 3}
       propertyPath: m_Value
@@ -2535,6 +2535,7 @@ MonoBehaviour:
     height: 512
   maxDepth: 7
   maxItemsPerNode: 16
+  sellRefundRate: 0
 --- !u!4 &1106256257
 Transform:
   m_ObjectHideFlags: 0
@@ -3481,7 +3482,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -4206,7 +4207,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1778358349}
   m_HandleRect: {fileID: 1778358348}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4312,7 +4313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4727413212828716169, guid: b0025752d4b2f7aa5a2383da1f8d7f2b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 6432289789218147353, guid: b0025752d4b2f7aa5a2383da1f8d7f2b, type: 3}
       propertyPath: m_Value

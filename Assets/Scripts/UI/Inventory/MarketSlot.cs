@@ -102,11 +102,13 @@ namespace UI.Inventory
         public void OnPointerEnter(PointerEventData eventData)
         {
             mouseEnterAt = Time.time;
+            background.color = hoverColor;
             mouseOver = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            background.color = backgroundColor;
             mouseOver = false;
         }
         
