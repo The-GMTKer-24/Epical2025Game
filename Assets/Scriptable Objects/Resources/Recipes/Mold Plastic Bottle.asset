@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
+  m_Name: Mold Plastic Bottle
+  m_EditorClassIdentifier: 
+  inputs:
+  - type: {fileID: 11400000, guid: ff22a37f694bd292eb8ba2f865530010, type: 2}
+    amount: 4
+  outputs:
+  - type: {fileID: 11400000, guid: 4978ee9da5c3560d68f96db5b8090764, type: 2}
+    amount: 1
+  processingTime: 1
+  minimumTemperature: 300

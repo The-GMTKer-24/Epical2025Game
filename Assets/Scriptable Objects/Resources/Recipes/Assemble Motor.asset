@@ -12,7 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Assemble Motor
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 9b1e4824a38ee0686a7565670c312d6f, type: 2}
+    amount: 4
+  - type: {fileID: 11400000, guid: ed7a3cf989683c2b78304f751965c586, type: 2}
+    amount: 4
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 2
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 10
+  - type: {fileID: 11400000, guid: a6c61b3dbacd022cd8fead67c6bf947c, type: 2}
+    amount: 2
+  - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
+    amount: 3
+  outputs:
+  - type: {fileID: 11400000, guid: 7c9b6233e40e6f8b388c7afe3781b386, type: 2}
+    amount: 1
+  processingTime: 10
   minimumTemperature: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Coil Wire
   m_EditorClassIdentifier: 
   inputs:
-  - type: {fileID: 11400000, guid: 6c8617c04b820347199590b91b2b5313, type: 2}
+  - type: {fileID: 11400000, guid: 4533524fe4d7fe7328c8d17c65f16bbd, type: 2}
     amount: 4
   outputs:
   - type: {fileID: 11400000, guid: 9b1e4824a38ee0686a7565670c312d6f, type: 2}

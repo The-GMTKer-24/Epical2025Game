@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Metal Bolt
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
-  cost: 0
+  cost: 20
   marketBehaviour:
-    maxPrice: 10
+    maxPrice: 12
     priceDeltaPerUnit: 0
     minPrice: 0
     priceAddedFluctuationAverage: 0

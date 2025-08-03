@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a3552612144eef99ca106e34f03d60, type: 3}
   m_Name: Belt
   m_EditorClassIdentifier: 
-  cost: 0
+  cost:
+  - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
+    amount: 4
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 6
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 4
   prefab: {fileID: 8729464739455396551, guid: 3a626eba3b2f4ea5489faa304f0d57ae, type: 3}
   size:
     x: 1
     y: 1
+  isPermanent: 0

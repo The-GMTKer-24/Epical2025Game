@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Assemble Metal Gear
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 81811d08a4a3e415194c1c34fffa0c59, type: 2}
+    amount: 5
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 2
+  outputs:
+  - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
+    amount: 1
+  processingTime: 5
   minimumTemperature: 0

@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Cast Glass Ingot
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 6bb5b718c8885ea3fba1fe8c8f91d89e, type: 2}
+    amount: 12
+  outputs:
+  - type: {fileID: 11400000, guid: d5be1abe0aeac49b1ba9d64ec7c44f2a, type: 2}
+    amount: 1
+  processingTime: 2
+  minimumTemperature: 1500

@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Punch Metal Blank
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: 81811d08a4a3e415194c1c34fffa0c59, type: 2}
+    amount: 2
+  processingTime: 1
+  minimumTemperature: 500

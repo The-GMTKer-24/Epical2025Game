@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
+  m_Name: Printer
+  m_EditorClassIdentifier: 
+  cost:
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 20
+  - type: {fileID: 11400000, guid: 7c9b6233e40e6f8b388c7afe3781b386, type: 2}
+    amount: 2
+  - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
+    amount: 10
+  - type: {fileID: 11400000, guid: a6c61b3dbacd022cd8fead67c6bf947c, type: 2}
+    amount: 15
+  - type: {fileID: 11400000, guid: 8c4fb1cdbe98aba4a982f5a595668359, type: 2}
+    amount: 15
+  prefab: {fileID: 0}
+  size:
+    x: 1
+    y: 1
+  isPermanent: 0
+  recipes:
+  - {fileID: 11400000, guid: 0103097c6e7a0c1afa9858ef5a41f9a8, type: 2}
+  - {fileID: 11400000, guid: 128feec2e8b0bba528ed0966642649c7, type: 2}

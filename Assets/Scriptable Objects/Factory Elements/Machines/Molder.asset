@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180a104bf50e41718e24efaf18869072, type: 3}
+  m_Name: Molder
+  m_EditorClassIdentifier: 
+  cost:
+  - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
+    amount: 15
+  - type: {fileID: 11400000, guid: a6c61b3dbacd022cd8fead67c6bf947c, type: 2}
+    amount: 15
+  - type: {fileID: 11400000, guid: 7c9b6233e40e6f8b388c7afe3781b386, type: 2}
+    amount: 2
+  - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
+    amount: 5
+  prefab: {fileID: 0}
+  size:
+    x: 2
+    y: 2
+  isPermanent: 0
+  recipes:
+  - {fileID: 11400000, guid: 396ee1b8f99c1368eba5ecb3c8770efd, type: 2}
+  - {fileID: 11400000, guid: b35a579de8b291706be2dc0d49bf05cc, type: 2}
+  - {fileID: 11400000, guid: 423078f4c06d8fda8ac4bfcf41c9b507, type: 2}
+  - {fileID: 11400000, guid: a1db9def263f08f95b460ee39ef038a5, type: 2}
+  - {fileID: 11400000, guid: 284e423fb3b9244b297160a9021bc2a7, type: 2}
+  - {fileID: 11400000, guid: d1bf5e3dee40ad6e7a2562a4bdd8ac88, type: 2}
+  - {fileID: 11400000, guid: cc51be5ce88e585ec84308c4b9b2f464, type: 2}
+  - {fileID: 11400000, guid: a9ffacc8be95ab0589a8cb32b4eb7791, type: 2}
+  - {fileID: 11400000, guid: f482f68d089523796806b6393b554dac, type: 2}
+  - {fileID: 11400000, guid: 1a4336b186ea358b29487d9596b00914, type: 2}
+  - {fileID: 11400000, guid: d202a31d88bf9d5bba09f497c8ef33b3, type: 2}

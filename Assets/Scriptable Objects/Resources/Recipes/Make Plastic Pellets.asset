@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Make Plastic Pellets
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: 3f07bf5f6f17ad14eb32ee0459c98ee9, type: 2}
+    amount: 3
+  - type: {fileID: 11400000, guid: ace797cf7ec0cddf1a00ba781af63398, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: ff22a37f694bd292eb8ba2f865530010, type: 2}
+    amount: 4
+  processingTime: 1
+  minimumTemperature: 0

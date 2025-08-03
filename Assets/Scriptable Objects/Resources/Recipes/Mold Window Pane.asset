@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
-  m_Name: Tire
+  m_Name: Mold Window Pane
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
-  minimumTemperature: 0
+  inputs:
+  - type: {fileID: 11400000, guid: d5be1abe0aeac49b1ba9d64ec7c44f2a, type: 2}
+    amount: 2
+  outputs:
+  - type: {fileID: 11400000, guid: 67b7002ecac233d7ba673f42f1b9a592, type: 2}
+    amount: 1
+  processingTime: 3
+  minimumTemperature: 1000

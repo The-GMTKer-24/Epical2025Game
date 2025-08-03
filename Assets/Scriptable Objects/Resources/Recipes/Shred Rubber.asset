@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
   m_Name: Shred Rubber
   m_EditorClassIdentifier: 
-  inputs: []
-  outputs: []
-  processingTime: 0
+  inputs:
+  - type: {fileID: 11400000, guid: ae7bb8dbda45a82fa96a13c4e8c2fd50, type: 2}
+    amount: 1
+  outputs:
+  - type: {fileID: 11400000, guid: bce38b8ecc6e6ad88ba0b43f0e8927b6, type: 2}
+    amount: 4
+  processingTime: 1
+  minimumTemperature: 0
