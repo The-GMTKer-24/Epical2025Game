@@ -17,7 +17,7 @@ public class RippleEffect : MonoBehaviour
     private float currentTime = 0f;
     private bool isActive = false;
     private bool expanding = true;
-
+    private bool switching = false;
     private void Start()
     {
         if (rippleMaterial != null)
@@ -51,36 +51,36 @@ public class RippleEffect : MonoBehaviour
 
             if (currentTime <= 0)
             {
-                isActive = false;
+                if (switching)
+                {
+                    Expand();
+                    expanding = true;
+                    switching = false;
+                }
+                else
+                {
+                    isActive = false;
+                }
             }
             
         }
 
     }
 
-    public void SetActive(bool active)
+    public void SetActive(BuildMode active)
     {
         soundWhenSwitching.Play();
         
-        if (active)
+        if (active != BuildMode.None)
         {
             if (currentTime >= duration)
             {
+                switching = true;
+                expanding = false;
+                isActive = true;
                 return;
             }
-            currentTime = 0f;
-            expanding = true;
-            
-            rippleMaterial.SetFloat(Radius, currentTime);
-            switch (GridSystem.Instance.buildMode)
-            {
-                case BuildMode.Building:
-                    rippleMaterial.SetColor(TintColor, buildColor);
-                    break;
-                case BuildMode.Removing:
-                    rippleMaterial.SetColor(TintColor, deleteColor);
-                    break;
-            }
+            Expand();
             // You can change the center dynamically if needed:
             // rippleMaterial.SetVector("_RippleCenter", new Vector2(0.5f, 0.5f));
 
@@ -95,6 +95,23 @@ public class RippleEffect : MonoBehaviour
             expanding = false;
             currentTime = duration;
             isActive = true;
+        }
+    }
+
+    private void Expand()
+    {
+        currentTime = 0f;
+        expanding = true;
+            
+        rippleMaterial.SetFloat(Radius, currentTime);
+        switch (GridSystem.Instance.buildMode)
+        {
+            case BuildMode.Building:
+                rippleMaterial.SetColor(TintColor, buildColor);
+                break;
+            case BuildMode.Removing:
+                rippleMaterial.SetColor(TintColor, deleteColor);
+                break;
         }
     }
 }

@@ -62,7 +62,7 @@ public class GridSystem : MonoBehaviour
     public void SetBuildMode(BuildMode mode)
     {
         buildMode = mode;
-        rippleController.SetActive(mode is BuildMode.Building or BuildMode.Removing);
+        rippleController.SetActive(buildMode);
         renderGrid = mode is BuildMode.Building or BuildMode.Removing;
     }
 
@@ -72,7 +72,6 @@ public class GridSystem : MonoBehaviour
     }
     private void ToggleRemoveMode(InputAction.CallbackContext ctx)
     {
-        SetBuildMode(BuildMode.None);
         SetBuildMode(buildMode != BuildMode.Removing ? BuildMode.Removing : BuildMode.None);
     }
     private void CancelPressed(InputAction.CallbackContext obj)
