@@ -53,7 +53,7 @@ public class HoverMaterialSwap : MonoBehaviour
             }
             
             // New hit
-            if (previousHit is not null)
+            if (previousHit)
             {
                 previousHit.GetComponent<SpriteRenderer>().material = normalMaterial;
             }
@@ -62,7 +62,7 @@ public class HoverMaterialSwap : MonoBehaviour
         }
         else
         {
-            if (previousHit is not null)
+            if (previousHit)
             {
                 previousHit.GetComponent<SpriteRenderer>().material = normalMaterial;
                 previousHit = null;

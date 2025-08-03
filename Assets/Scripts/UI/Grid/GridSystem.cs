@@ -34,7 +34,7 @@ public class GridSystem : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
-    private bool rejectSoundPlayed = false;
+    private bool placedInBatch = false;
     private GameInfo gameInfo;
     private int gridSystemWidth;
     private int gridSystemHeight;
@@ -266,17 +266,19 @@ public class GridSystem : MonoBehaviour
                     placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
                 }
 
+                placedInBatch = true;
+                
                 GameObject placeSound = Instantiate(placeSoundPrefab);
                 Destroy(placeSound, placeSoundLifetime);
             }
             else
             {
                 // It'd be better to just detect if you're holding, but this works
-                if (!rejectSoundPlayed)
+                if (!placedInBatch)
                 {
-                    GameObject placeSound = Instantiate(rejectionSoundPrefab);
-                    Destroy(placeSound, rejectionSoundLifetime);
-                    rejectSoundPlayed = true;
+                    GameObject rejectionSound = Instantiate(rejectionSoundPrefab);
+                    Destroy(rejectionSound, rejectionSoundLifetime);
+                    placedInBatch = true;
                 }
             }
         }
@@ -290,7 +292,7 @@ public class GridSystem : MonoBehaviour
     private void stopPlacing(InputAction.CallbackContext ctx)
     {
         isPlacing = false;
-        rejectSoundPlayed = false;
+        placedInBatch = false;
     }
 
     /// <summary>
