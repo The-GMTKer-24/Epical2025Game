@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
   m_Name: Plastic Bottle
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 93c6924598b6e7de7a395a40db842e2a, type: 3}
+  icon: {fileID: 21300000, guid: 122c70af3ce04535894cbcccee49b79d, type: 3}
   cost: 0
   marketBehaviour:
     maxPrice: 8
@@ -21,4 +21,4 @@ MonoBehaviour:
     priceAddedFluctuationAverage: 0
     priceFluctuationStandardDeviation: 0
     supplyDecayRate: 0
-  inWorldSprite: {fileID: 21300000, guid: 93c6924598b6e7de7a395a40db842e2a, type: 3}
+  inWorldSprite: {fileID: 21300000, guid: 122c70af3ce04535894cbcccee49b79d, type: 3}
