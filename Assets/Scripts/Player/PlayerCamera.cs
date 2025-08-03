@@ -6,6 +6,10 @@ namespace Player
 {
     public class PlayerCamera : MonoBehaviour
     {
+        public static PlayerCamera Instance {get; private set; }
+        
+        
+        
         [SerializeField] private float zoomPercentPerSecond;
         [SerializeField] private float clickMoveSpeed;
         [SerializeField] private float clickZoomSpeed;
@@ -30,10 +34,17 @@ namespace Player
 
         private Camera viewCamera;
         private bool wasPlayerInMotion;
+        private bool canDoubleClickToMove;
 
+        public void EnableQuickMove(bool canMove)
+        {
+            canDoubleClickToMove = canMove;
+        }
+        
         private void Awake()
         {
             playerControls = new PlayerControls();
+            Instance = this;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -124,6 +135,8 @@ namespace Player
 
         private void OnQuickFocus(InputAction.CallbackContext obj)
         {
+            if (!canDoubleClickToMove)
+                return;
             isInterpolating = true;
             wasPlayerInMotion = false;
             playerControls.Player.Pan.Disable();

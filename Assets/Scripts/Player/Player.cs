@@ -13,16 +13,12 @@ namespace Player
     public class Player : MonoBehaviour
     {
         [SerializeField] private float speed;
-        [SerializeField] private int maxInventorySize;
         private readonly Dictionary<ResourceType, ResourceStack> inventory = new();
         private PlayerControls playerControls;
         public static Player Instance { get; private set; }
-
+        
+        public Dictionary<ResourceType, ResourceStack> Inventory => inventory;
         private Rigidbody2D rigidbody;
-
-        public int MaxInventorySize => maxInventorySize;
-
-        public List<ResourceStack> Inventory => inventory.Values.ToList();
 
         private void Awake()
         {
@@ -56,9 +52,9 @@ namespace Player
         {
             Ray ray = Camera.main.ScreenPointToRay(playerControls.Player.MousePosition.ReadValue<Vector2>());
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            
             if (hit && hit.collider != null)
             {
+                Debug.Log("Opening inventory window");
                 BufferBlock block = hit.collider.GetComponent<BufferBlock>();
                 if (block)
                 {
@@ -77,32 +73,33 @@ namespace Player
 
         public bool AddResource(Resource resource)
         {
-            if (inventory.Count < maxInventorySize)
-                inventory.Add(resource.ResourceType, ResourceStack.Create(resource.ResourceType));
+            if (inventory.TryGetValue(resource.ResourceType, out var slot)) 
+                slot.AddResource(resource);
             else
-                return false;
-            inventory[resource.ResourceType].AddResource(resource);
+                inventory.Add(resource.ResourceType, ResourceStack.Create(resource.ResourceType));
             return true;
         }
-        
-        // TODO: Allow for the either insertion or complete failure of a quantity of resources
-
         public int GetResourceAmount(ResourceType resourceType)
         {
-            // TODO: implement for fluids and whateverrr
             if (!inventory.ContainsKey(resourceType)) return 0;
             return inventory[resourceType].Quantity;
         }
 
-        public void ConsumeResource(ResourceQuantity resourceQuantity)
+        public ResourceStack RemoveStack(ResourceType resourceType)
         {
-            // TODO: implement for fluids and whatever if inventory can take fluids maybe it already can idk
-            // TODO: also needs overhauling if inventory system changes
-            if (!inventory.ContainsKey(resourceQuantity.Type)) throw new Exception("Not enough resources to consume");
-            if (inventory[resourceQuantity.Type].Quantity < resourceQuantity.Amount) throw new Exception("Not enough resources to consume");
-            for (int i = 0; i < resourceQuantity.Amount; i++)
+            ResourceStack stack = inventory[resourceType];
+            inventory.Remove(resourceType);
+            return stack;
+        }
+
+        public void AddStack(ResourceStack resourceStack)
+        {
+            if (!inventory.TryAdd(resourceStack.ResourceType, resourceStack))
             {
-                inventory[resourceQuantity.Type].TakeResource();
+                while (resourceStack.Quantity > 0)
+                {
+                    inventory[resourceStack.ResourceType].AddResource(resourceStack.TakeResource());
+                }
             }
         }
     }
