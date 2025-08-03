@@ -104,5 +104,22 @@ namespace Player
                 }
             }
         }
+
+        public Resource RemoveItem(ResourceType resourceType)
+        {
+            if (!inventory.ContainsKey(resourceType))
+            {
+                return null;
+            }
+
+            if (inventory[resourceType].Quantity > 0)
+            {
+                return inventory[resourceType].TakeResource();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
