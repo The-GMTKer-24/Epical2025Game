@@ -17,6 +17,8 @@ namespace Scriptable_Objects
         public float ProcessingTime => processingTime;
 
         public ResourceQuantity[] Outputs => outputs;
+        
+        public float MinimumTemperature => minimumTemperature;
     }
 }
 

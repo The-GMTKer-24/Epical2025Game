@@ -18,6 +18,12 @@ namespace Factory_Elements
                 float newDeviation = previousDeviation * Mathf.Pow(1.0f - currentEqualizationRate, elapsedTime);
                 return newDeviation + Factory.Instance.roomTemperature;
             }
+
+            set
+            {
+                previousTemperature = value;
+                lastTemperatureSetTimestamp = Time.time;
+            }
         }
 
         public float EqualizationRate
