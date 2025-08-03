@@ -14,6 +14,7 @@ namespace UI.Inventory
         [SerializeField] private GameObject directionSettingPrefab;
         [SerializeField] private GameObject recipeSettingPrefab;
         [SerializeField] private GameObject directionalPipeSettingsPrefab;
+        [SerializeField] private GameObject floatSettingsPrefab;
         public bool Showing { get; private set; }
 
         public void Awake()
@@ -57,9 +58,10 @@ namespace UI.Inventory
                     return recipeSettingPrefab;
                 case SettingType.PipeSettings:
                     return directionalPipeSettingsPrefab;
-                case SettingType.Bool:
                 case SettingType.DirectionalFlow:
                 case SettingType.Float:
+                    return floatSettingsPrefab;
+                case SettingType.Bool:
                 default:
                     throw new ArgumentOutOfRangeException();
             }

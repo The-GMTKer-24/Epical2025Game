@@ -49,7 +49,6 @@ namespace UI.Inventory
             pipeFluidDropdown.ClearOptions();
             foreach (var location in flow.PipeSettingsFromLocation.ToList().OrderBy(x => x.Key))
             {
-                Debug.Log(location);
                 pipeLocationDropdown.options.Add(
                     new TMP_Dropdown.OptionData($"{location.Key.Direction.ToString()}#{location.Key.Index.ToString()} - {(location.Value == null ? "None" : location.Value.name)}"));
             }
@@ -74,10 +73,9 @@ namespace UI.Inventory
                 pipeFluidDropdown.onValueChanged.RemoveAllListeners();
                 pipeFluidDropdown.onValueChanged.AddListener((call) =>
                 {
-                    flow.PipeSettingsFromLocation[
-                        flow.PipeSettingsFromLocation.ToList().OrderBy(x => x.Key).ToList()[pipeLocationDropdown.value]
-                            .Key] = flow.AllowedFluidTypes[pipeFluidDropdown.value];
+                    flow.PipeSettingsFromLocation[location] = flow.AllowedFluidTypes[pipeFluidDropdown.value];
                     flowSettings.ValueUntyped = flow;
+                    flow = null;
                     UpdateText();
                 });
                 pipeFluidDropdown.value = 0;
