@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Factory_Elements.Blocks
 {
     // TODO: Implement running belts into the side of other belts (Low priority input)
-    public class ConveyorBelt : Block
+    public class ConveyorBelt : OneBlock
     {
         [SerializeField] public int capacity = 4; // items
         [SerializeField] public float rate = 5; // items/sec
@@ -147,7 +147,8 @@ namespace Factory_Elements.Blocks
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)
         {
-            // TODO: do not accept from outputting end
+            Direction towardsDirection = OppositeDirection(directionSetting.Value);
+            if (neighboralDirections[sender].Equals(towardsDirection)) return false;
             if (items.Count == 0)
             {
                 return true;

@@ -11,20 +11,20 @@ using UnityEngine.UI;
 
 namespace Factory_Elements.Blocks
 {
-    public class Splitter : Block
+    public class Splitter : OneBlock
     {
         [SerializeField] public float equalizationRate = 0.10f;
         
         protected Dictionary<Direction, ElementSettings<DirectionConfig>> configuration;
         protected Dictionary<Direction, Item> heldItems;
-        protected Dictionary<Direction, IFactoryElement> directionalNeighbors;
-        protected Dictionary<IFactoryElement, Direction> neighboralDirections; // lol
         
         private List<Direction> inputDirections = new List<Direction>();
         private List<Direction> outputDirections = new List<Direction>();
 
         public void Awake()
         {
+            base.Awake();
+            
             configuration = new Dictionary<Direction, ElementSettings<DirectionConfig>>();
             heldItems = new Dictionary<Direction, Item>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
@@ -33,8 +33,6 @@ namespace Factory_Elements.Blocks
                 heldItems.Add(direction, null);
                 configuration[direction].SettingUpdated += onSettingUpdate;
             }
-            directionalNeighbors = new Dictionary<Direction, IFactoryElement>();
-            neighboralDirections = new Dictionary<IFactoryElement, Direction>();
         }
 
         public override Direction? Rotation
@@ -49,28 +47,6 @@ namespace Factory_Elements.Blocks
         }
 
         public override bool SupportsRotation => false;
-
-        public override void OnNeighborUpdate(IFactoryElement newNeighbor, bool added)
-        {
-            base.OnNeighborUpdate(newNeighbor, added);
-            
-            Dictionary<Direction, int2> relatives = new();
-            relatives.Add(Direction.North, new int2(0, 1));
-            relatives.Add(Direction.East, new int2(1, 0));
-            relatives.Add(Direction.South, new int2(0, -1));
-            relatives.Add(Direction.West, new int2(-1, 0));
-            
-            directionalNeighbors.Clear();
-            neighboralDirections.Clear();
-
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-            {
-                int2 checkPosition = position + relatives[direction];
-                IFactoryElement neighbor = Factory.Instance.FromLocation(checkPosition);
-                directionalNeighbors.Add(direction, neighbor);
-                neighboralDirections.Add(neighbor, direction);
-            }
-        }
 
         private void onSettingUpdate()
         {
