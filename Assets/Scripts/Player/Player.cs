@@ -104,8 +104,8 @@ namespace Player
         }
         public int GetResourceAmount(ResourceType resourceType)
         {
-            if (!inventory.ContainsKey(resourceType)) return 0;
-            return inventory[resourceType].Quantity;
+            if (!inventory.TryGetValue(resourceType, out var value)) return 0;
+            return value.Quantity;
         }
 
         public ResourceStack RemoveStack(ResourceType resourceType)
@@ -113,6 +113,11 @@ namespace Player
             ResourceStack stack = inventory[resourceType];
             inventory.Remove(resourceType);
             return stack;
+        }
+
+        public bool HasItem(ResourceType resourceType)
+        {
+            return inventory.Keys.ToArray().Contains(resourceType);
         }
 
         public void AddStack(ResourceStack resourceStack)

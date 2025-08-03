@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Object = System.Object;
 
 namespace UI.Inventory
 {
@@ -14,6 +15,7 @@ namespace UI.Inventory
         [SerializeField] Image border;
         [SerializeField] Color backgroundColor;
         [SerializeField] Color hoverColor;
+        [SerializeField] Color disabledColor;
         [SerializeField] TextMeshProUGUI priceText;
         [SerializeField] TextMeshProUGUI nameText;
 
@@ -26,6 +28,7 @@ namespace UI.Inventory
         private float mouseEnterAt;
         private bool mouseOver;
         private bool selected;
+        public bool disabled { get; private set; }
 
         public int ClicksSinceSelected { get; private set; }
 
@@ -38,6 +41,7 @@ namespace UI.Inventory
         private void Awake()
         {
             selected = false;
+            disabled = false;
             controls = new PlayerControls();
             controls.UI.Click.performed += OnPlayerClick;
             border.color = borderColor;
@@ -64,18 +68,29 @@ namespace UI.Inventory
                 image.gameObject.SetActive(false);
         }
 
+        public void SetDisabled(bool value)
+        {
+            disabled = value;
+        }
+
         public void SetName(string name)
         {
             nameText.text = name;
         }
         
-        public void SetPrice(int price)
+        public void SetPrice(float price)
         {
             priceText.text = $"${price}";
         }
         
         public void Update()
         {
+            if (disabled)
+            {
+                backgroundColor = disabledColor;
+                return;
+            }
+            
             if (mouseOver)
             {
                 if (mouseEnterAt + showHoveredAfter <= Time.time && !selected)
@@ -96,19 +111,28 @@ namespace UI.Inventory
             if (selected)
             {
                 if (OnSelect != null) OnSelect.Invoke(this);
+                return;
                 ClicksSinceSelected = 0;
             }
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            mouseEnterAt = Time.time;
-            background.color = hoverColor;
-            mouseOver = true;
+  
+                mouseEnterAt = Time.time;
+                if (!disabled)
+                {
+                    background.color = hoverColor;
+                }
+
+                mouseOver = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            background.color = backgroundColor;
+            if (!disabled)
+            {
+                background.color = backgroundColor;
+            }
             mouseOver = false;
         }
         

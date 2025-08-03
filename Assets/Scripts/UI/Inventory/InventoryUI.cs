@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements;
 using Factory_Elements.Blocks;
+using Game_Info;
 using Player;
 using Scriptable_Objects;
 using UI.Grid;
@@ -10,6 +11,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
 using Buffer = Factory_Elements.Blocks.Buffer;
+using Object = UnityEngine.Object;
 
 namespace UI.Inventory
 {
@@ -32,6 +34,10 @@ namespace UI.Inventory
         private InventorySlot inventorySlotPrefab;
         [SerializeField]
         private MarketSlot marketSlotPrefab;
+        [SerializeField] private ResourceSet sellables;
+        
+        [SerializeField] private GameObject failSoundPrefab;
+        [SerializeField] private GameObject chchingSoundPrefab;
 
         private BuildMode previousBuildMode;
 
@@ -179,9 +185,9 @@ namespace UI.Inventory
                 new Vector2(0, 70 * MathF.Ceiling(factoryInventoryInstanceCount/4f) );
         }
 
-        private int marketInstanceCount=0;
-        private int inventoryInstanceCount=0;
-        private int factoryInventoryInstanceCount=0;
+        private int marketInstanceCount;
+        private int inventoryInstanceCount;
+        private int factoryInventoryInstanceCount;
         
         public void ShowMarket()
         {
@@ -191,12 +197,46 @@ namespace UI.Inventory
             }
             ResetPanel();
             Show();
+
             marketPanel.gameObject.SetActive(true);
-            MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
-            marketInstanceCount++;
-            marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
-            slot.SetName("Lighty weather cut copper stairs");
-            slot.SetPrice(300);
+            foreach (var sellableResource in sellables.Resources)
+            {
+                ItemType sellableItem =  (ItemType)sellableResource;
+                MarketSlot slot = Instantiate(marketSlotPrefab, marketContent);
+                marketInstanceCount++;
+                marketContent.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 70 * marketInstanceCount);
+                slot.SetName(sellableResource.name);
+                slot.SetSprite(sellableResource.Icon);
+                slot.SetPrice(sellableItem.MarketBehaviour.MaxPrice);
+
+                if (!Player.Player.Instance.HasItem(sellableResource))
+                {
+                    print($"Disabling slot {sellableResource.name}");
+                    slot.SetDisabled(true);
+                }
+
+                slot.OnSelect += (iSlot) =>
+                {
+                    if (slot.disabled)
+                    {
+                        Object failSound= Instantiate(failSoundPrefab);
+                        Destroy(failSound, 0.5f);
+                        return;
+                    }
+                    
+                    print(sellableItem.MarketBehaviour.MaxPrice);
+                    if (Player.Player.Instance.GetResourceAmount(sellableResource) > 0)
+                    {
+                        ResourceStack stack = Player.Player.Instance.RemoveStack(sellableResource);
+                        print(stack.Quantity);
+
+                        GameInfo.Instance.GainMoney((int)(stack.Quantity * sellableItem.MarketBehaviour.MaxPrice));
+                        
+                        GameObject rejectionSound = Instantiate(failSoundPrefab);
+                        Destroy(rejectionSound, 0.5f);
+                    }
+                };
+            }
         }
 
         public void Hide()
@@ -212,7 +252,7 @@ namespace UI.Inventory
 
         private void ResetPanel()
         {
-            // marketInstanceCount = 0;
+            marketInstanceCount = 0;
             inventoryInstanceCount = 0;
             factoryInventoryInstanceCount = 0;
             lastSelectedInventory = null;
@@ -226,6 +266,10 @@ namespace UI.Inventory
                 Destroy(child.gameObject);
             }
             foreach (Transform child in factoryInventoryContent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in marketContent.transform)
             {
                 Destroy(child.gameObject);
             }
