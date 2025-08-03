@@ -1,9 +1,15 @@
+using UI.Grid;
 using UnityEngine;
 
 public class RippleEffect : MonoBehaviour
 {
+    private static readonly int Radius = Shader.PropertyToID("_Radius");
+    private static readonly int TintColor = Shader.PropertyToID("_TintColor");
+
     [Header("Material & Settings")]
     public Material rippleMaterial;
+    public Color buildColor;
+    public Color deleteColor;
     public float duration = 1.0f;
     [SerializeField]
     private AudioSource soundWhenSwitching;
@@ -16,7 +22,7 @@ public class RippleEffect : MonoBehaviour
     {
         if (rippleMaterial != null)
         {
-            rippleMaterial.SetFloat("_Radius", 0f);
+            rippleMaterial.SetFloat(Radius, 0f);
         }
         
         soundWhenSwitching = GetComponent<AudioSource>();
@@ -30,7 +36,7 @@ public class RippleEffect : MonoBehaviour
         {
             currentTime += Time.deltaTime;
             float radius = Mathf.Clamp01(currentTime / duration) *2;
-            rippleMaterial.SetFloat("_Radius", radius);
+            rippleMaterial.SetFloat(Radius, radius);
 
             if (currentTime >= duration)
             {
@@ -41,7 +47,7 @@ public class RippleEffect : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             float radius = Mathf.Clamp01(currentTime / duration) *2;
-            rippleMaterial.SetFloat("_Radius", radius);
+            rippleMaterial.SetFloat(Radius, radius);
 
             if (currentTime <= 0)
             {
@@ -65,8 +71,16 @@ public class RippleEffect : MonoBehaviour
             currentTime = 0f;
             expanding = true;
             
-            rippleMaterial.SetFloat("_Radius", currentTime);
-
+            rippleMaterial.SetFloat(Radius, currentTime);
+            switch (GridSystem.Instance.buildMode)
+            {
+                case BuildMode.Building:
+                    rippleMaterial.SetColor(TintColor, buildColor);
+                    break;
+                case BuildMode.Removing:
+                    rippleMaterial.SetColor(TintColor, deleteColor);
+                    break;
+            }
             // You can change the center dynamically if needed:
             // rippleMaterial.SetVector("_RippleCenter", new Vector2(0.5f, 0.5f));
 
