@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Factory_Elements;
+using Factory_Elements.Blocks;
 using Game_Info;
 using Scriptable_Objects;
 using UI.Grid;
@@ -26,6 +27,8 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private float placeSoundLifetime = 0.5f;
     [SerializeField] private float rejectionSoundLifetime = 0.5f;
     [SerializeField] private float removeSoundLifetime;
+    [SerializeField] private FactoryElementType marketType;
+    [SerializeField] private FactoryElementType itemGeneratorType;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -79,6 +82,52 @@ public class GridSystem : MonoBehaviour
         SetBuildMode(BuildMode.None);
     }
 
+    private void PlaceStarterObjects()
+    {
+        Factory factory = Factory.Instance;
+
+        int2 stockMarketPosition = new int2(gridWidth / 2, gridHeight - 3);
+        
+            
+        GameObject placedElement = factory.TryPlace(marketType, stockMarketPosition, Direction.North, out bool placed);
+        if (placed)
+        {
+            IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
+            Vector2 worldPoint = GridToWorldSpace(stockMarketPosition);
+
+            placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
+            if (element.SupportsRotation)
+            {
+                placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
+            }
+
+            placedInBatch = true;
+        }
+        else
+        {
+            Debug.LogError("UNABLE TO PLACE MARKET");
+        }
+        
+        int2 trashPosition = new int2(0, gridHeight - 2);
+        placedElement = factory.TryPlace(itemGeneratorType, trashPosition, Direction.North, out placed);
+        if (placed)
+        {
+            IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
+            Vector2 worldPoint = GridToWorldSpace(trashPosition);
+
+            placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
+            if (element.SupportsRotation)
+            {
+                placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
+            }
+
+            placedInBatch = true;
+        }
+        else
+        {
+            Debug.LogError("UNABLE TO PLACE TRASH");
+        }
+    }
 
     private void Start()
     {
@@ -101,6 +150,8 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.BuildModeToggle.performed += ToggleBuildMode;
         playerControls.Player.DeleteModeToggle.performed += ToggleRemoveMode;
         playerControls.Player.Cancel.performed += CancelPressed;
+        
+        PlaceStarterObjects();
     }
 
 

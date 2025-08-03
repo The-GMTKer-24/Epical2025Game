@@ -10,7 +10,7 @@ public class GameplayStandardUI : MonoBehaviour
 {
     [SerializeField] private int money;
     [SerializeField] private TextMeshProUGUI moneytext;
-    [SerializeField] private TextMeshProUGUI unlockedItems;
+    // [SerializeField] private TextMeshProUGUI unlockedItems;
     [SerializeField] private GameObject gridSystem;
     [SerializeField] GameObject selectedItem;
 
@@ -39,7 +39,7 @@ public class GameplayStandardUI : MonoBehaviour
             unlockedThings += $"{unlockedElement.name}\n";
         }
         
-        unlockedItems.text = unlockedThings;
+        // unlockedItems.text = unlockedThings;
 
         if (gridSystemClass.selectedElement != previousFrameSelectedElement)
         {

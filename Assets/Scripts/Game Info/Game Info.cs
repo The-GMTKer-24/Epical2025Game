@@ -37,6 +37,8 @@ namespace Game_Info
             Money = initialMoney;
         }
 
+
+
         public void CompleteQuest(Quest questCompleted)
         {
             completedQuests.Add(questCompleted.name);

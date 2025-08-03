@@ -211,6 +211,8 @@ MonoBehaviour:
   placeSoundLifetime: 0.5
   rejectionSoundLifetime: 0.5
   removeSoundLifetime: 0.5
+  marketType: {fileID: 11400000, guid: 8e718260c1f019a2395d5bbd4bd0109b, type: 2}
+  itemGeneratorType: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
@@ -19017,7 +19019,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: 0
   moneytext: {fileID: 426439193}
-  unlockedItems: {fileID: 788465477}
   gridSystem: {fileID: 75410822}
   selectedItem: {fileID: 175162472}
 --- !u!114 &1115256422
