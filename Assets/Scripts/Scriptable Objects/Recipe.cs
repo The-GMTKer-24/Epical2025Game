@@ -10,7 +10,8 @@ namespace Scriptable_Objects
         [SerializeField] private ResourceQuantity[] inputs;
         [SerializeField] private ResourceQuantity[] outputs;
         [SerializeField] private float processingTime;
-
+        [SerializeField] private float minimumTemperature = 0.0f;
+            
         public ResourceQuantity[] Inputs => inputs;
 
         public float ProcessingTime => processingTime;

@@ -10,12 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b679f918b0e34e53a144721760fca13a, type: 3}
-  m_Name: Plastic Bottle to Chunk
+  m_Name: Assemble Motor
   m_EditorClassIdentifier: 
-  inputs:
-  - type: {fileID: 11400000, guid: f6784957baeacfa45862d2d1188b404d, type: 2}
-    amount: 1
-  outputs:
-  - type: {fileID: 11400000, guid: 3f07bf5f6f17ad14eb32ee0459c98ee9, type: 2}
-    amount: 4
-  processingTime: 2
+  inputs: []
+  outputs: []
+  processingTime: 0
+  minimumTemperature: 0
