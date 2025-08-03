@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Game_Info;
 using Scriptable_Objects;
 using Unity.Mathematics;
@@ -46,7 +47,7 @@ namespace Factory_Elements
             if (type.Prefab == null)
                 throw new Exception(
                     $"Tried to create a factory element {type.name} that has no associated unity object. ");
-            var cost = BuildingManager.EvaluateCost(type.Cost);
+            Tuple<List<ResourceQuantity>, int> cost = BuildingManager.EvaluateCost(type.Cost);
             if (cost.Item2 <= GameInfo.Instance.Money)
             {
                 GameInfo.Instance.SpendMoney(cost.Item2);
@@ -64,9 +65,9 @@ namespace Factory_Elements
                 return null;
             }
 
-            var newFactoryElement = Instantiate(type.Prefab, transform);
+            GameObject newFactoryElement = Instantiate(type.Prefab, transform);
             newFactoryElement.name =$"{type.name}@({location.x}, {location.y})";
-            var factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
+            IFactoryElement factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
             if (!factoryElement.SupportsRotation)
             {
                 rotation = Direction.North;
@@ -79,10 +80,18 @@ namespace Factory_Elements
                 factoryElement.Rotation = rotation;
             }
 
-            var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
-                factoryElement.FactoryElementType.Size.x + 2, factoryElement.FactoryElementType.Size.y + 2));
+            IntRect up = new IntRect(location.x, location.y + factoryElement.FactoryElementType.Size.y,
+                factoryElement.FactoryElementType.Size.x, 1);
+            IntRect down = new IntRect(location.x, location.y - 1,
+                factoryElement.FactoryElementType.Size.x, 1);
+            IntRect left = new IntRect(location.x - 1, location.y, 1, factoryElement.FactoryElementType.Size.y);
+            IntRect right = new IntRect(location.x + factoryElement.FactoryElementType.Size.x, location.y, 1, factoryElement.FactoryElementType.Size.y);
+            List<IFactoryElement> nearby = factoryElements.ItemsInArea(up);
+            nearby.AddRange(factoryElements.ItemsInArea(down));
+            nearby.AddRange(factoryElements.ItemsInArea(left));
+            nearby.AddRange(factoryElements.ItemsInArea(right));
 
-            foreach (var e in nearby)
+            foreach (IFactoryElement e in nearby)
                 if (e != factoryElement)
                 {
                     e.OnNeighborUpdate(factoryElement, true);
@@ -101,7 +110,7 @@ namespace Factory_Elements
                 if (!toRemove.FactoryElementType.IsPermanent)
                 {
                     factoryElements.Remove(toRemove);
-                    foreach (var heldResource in toRemove.GetHeldResources())
+                    foreach (KeyValuePair<ResourceType, int> heldResource in toRemove.GetHeldResources())
                     {
                         for (int i = 0; i < heldResource.Value; i++)
                         {
@@ -109,11 +118,11 @@ namespace Factory_Elements
                         }
                     }
                     GameInfo.Instance.GainMoney((int)(BuildingManager.EvaluateCost(toRemove.FactoryElementType.Cost).Item2 * sellRefundRate));
-                    var factoryElement = toRemove.FactoryElementType;
-                    var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
+                    FactoryElementType factoryElement = toRemove.FactoryElementType;
+                    List<IFactoryElement> nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
                         factoryElement.Size.x + 2, factoryElement.Size.y + 2));
 
-                    foreach (var e in nearby)
+                    foreach (IFactoryElement e in nearby)
                         e.OnNeighborUpdate(toRemove, false);
                     removed = true;
                     return toRemove;
@@ -161,8 +170,8 @@ namespace Factory_Elements
 
         public IFactoryElement FromLocation(int2 location)
         {
-            var bounds = new IntRect(location.x, location.y, 1, 1);
-            var nearbyElements = factoryElements.ItemsInArea(bounds);
+            IntRect bounds = new IntRect(location.x, location.y, 1, 1);
+            List<IFactoryElement> nearbyElements = factoryElements.ItemsInArea(bounds);
             if (nearbyElements.Count == 0) return null;
 
             if (nearbyElements.Count == 1) return nearbyElements[0];
