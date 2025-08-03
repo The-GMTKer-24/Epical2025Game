@@ -5,7 +5,7 @@ public class RippleEffect : MonoBehaviour
     [Header("Material & Settings")]
     public Material rippleMaterial;
     public float duration = 1.0f;
-
+    [SerializeField]
     private AudioSource soundWhenSwitching;
     
     private float currentTime = 0f;
