@@ -4,6 +4,7 @@ using System.Linq;
 using Factory_Elements;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using UI.Inventory;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -32,7 +33,14 @@ namespace Factory_Elements.Blocks
             items = new List<BeltItem>(capacity);
             aheadNeighbor = null;
             directionSetting =
-                new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.");
+                new ElementSettings<Direction>(Direction.North, "Direction", "The direction of the conveyor.", SettingType.Direction);
+            directionSetting.SettingUpdated += () =>
+            {
+                Debug.Log(directionSetting.Value);
+                gameObject.transform.rotation = Quaternion.Euler(0,0,(int)directionSetting.Value * -90);
+                aheadNeighbor = Factory.Instance.FromLocation(position +GetDirectionAsOffset());
+                Debug.Log(aheadNeighbor);
+            };
         }
 
         private void Update()
@@ -50,7 +58,7 @@ namespace Factory_Elements.Blocks
             
             var aheadProgress = 1.0f;
 
-            if (aheadNeighbor != null && aheadNeighbor is ConveyorBelt belt && belt.items.Count > 0)
+            if (aheadNeighbor is ConveyorBelt belt && belt.items.Count > 0)
             {
                 aheadProgress = belt.items[0].Progress;
             }
@@ -105,7 +113,8 @@ namespace Factory_Elements.Blocks
         public override bool Rotate(Direction direction)
         {
             directionSetting.Value = direction;
-            gameObject.transform.rotation = Quaternion.Euler(0,0,(int)direction * 90);
+            aheadNeighbor = Factory.Instance.FromLocation(position + GetDirectionAsOffset());
+            gameObject.transform.rotation = Quaternion.Euler(0,0,(int)directionSetting.Value * -90);
             return true;
         }
 
@@ -115,6 +124,14 @@ namespace Factory_Elements.Blocks
         {
             base.OnNeighborUpdate(newNeighbor, added);
 
+            var direction = GetDirectionAsOffset();
+
+            print(position);
+            aheadNeighbor = Factory.Instance.FromLocation(Position + direction);
+        }
+
+        private int2 GetDirectionAsOffset()
+        {
             int2 direction;
             switch (directionSetting.Value)
             {
@@ -125,8 +142,7 @@ namespace Factory_Elements.Blocks
                 default: throw new Exception("Invalid direction");
             }
 
-            print(position);
-            aheadNeighbor = Factory.Instance.FromLocation(Position + direction);
+            return direction;
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using UI.Inventory;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -28,7 +29,7 @@ namespace Factory_Elements.Blocks
             heldItems = new Dictionary<Direction, Item>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                configuration.Add(direction, new ElementSettings<DirectionConfig>(new DirectionConfig(direction), direction.ToString() + " face settings", "The direction of flow and priority of the " + direction.ToString() + " face."));
+                configuration.Add(direction, new ElementSettings<DirectionConfig>(new DirectionConfig(direction), direction.ToString() + " face settings", "The direction of flow and priority of the " + direction.ToString() + " face.",SettingType.DirectionalFlow));
                 heldItems.Add(direction, null);
                 configuration[direction].SettingUpdated += onSettingUpdate;
             }

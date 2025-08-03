@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using UI.Inventory;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -104,7 +105,7 @@ namespace Factory_Elements.Blocks
 
             if (fluidTypes.Count == 0)
             {
-                configuration = new ElementSettings<OutputPipeSetting>(null, "Pipe Settings", "Sets which fluid types output from which sides");
+                configuration = new ElementSettings<OutputPipeSetting>(null, "Pipe Settings", "Sets which fluid types output from which sides", SettingType.PipeSettings);
             }
             else
             {
@@ -124,7 +125,7 @@ namespace Factory_Elements.Blocks
                 }
 
                 configuration = new ElementSettings<OutputPipeSetting>(new OutputPipeSetting(pipeSettings, fluidTypes),
-                    "Pipe Settings", "Sets which fluid types output from which sides");
+                    "Pipe Settings", "Sets which fluid types output from which sides", SettingType.PipeSettings );
             }
         }
 
@@ -163,7 +164,7 @@ namespace Factory_Elements.Blocks
 
             currentOutputNeighborIndex = 0;
 
-            if (configuration.Value == null || configuration.Value.PipeSettingsFromLocation == null)
+            if (configuration?.Value?.PipeSettingsFromLocation == null)
             {
                 return;
             }

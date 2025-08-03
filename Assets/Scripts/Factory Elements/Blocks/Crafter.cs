@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
+using UI.Inventory;
 using UnityEngine;
 
 namespace Factory_Elements.Blocks
@@ -18,7 +19,7 @@ namespace Factory_Elements.Blocks
         {
             base.Awake();
             recipeSetting = new ElementSettings<Recipe>(defaultRecipe, "Active Recipe",
-                "The recipe that this machine is currently using");
+                "The recipe that this machine is currently using", SettingType.Recipe);
             RecipeUpdate();
             recipeSetting.SettingUpdated += RecipeUpdate;
             recipeProgress = 0;

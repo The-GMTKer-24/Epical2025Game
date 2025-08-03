@@ -4,6 +4,7 @@ using System.Linq;
 using Factory_Elements;
 using Factory_Elements.Blocks;
 using Scriptable_Objects;
+using UI.Grid;
 using UI.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,11 +26,19 @@ namespace Player
             Instance = this;
             rigidbody = GetComponent<Rigidbody2D>();
             playerControls = new PlayerControls();
-            playerControls.Player.Interact.performed += OpenInventoryWindow;
+            playerControls.Player.Interact.performed += ctx => OpenInventoryWindow(ctx,false);
             playerControls.Player.Cancel.performed += OnEscapePressed;
             playerControls.Player.DeleteModeToggle.performed += OnEscapePressed;
             playerControls.Player.BuildModeToggle.performed += OnEscapePressed;
+            playerControls.Player.PlaceMachine.performed += context =>
+            {
+                if (GridSystem.Instance.buildMode == BuildMode.None)
+                    OpenInventoryWindow(context,true);
+                
+            };
         }
+
+
 
         // Update is called once per frame
         private void FixedUpdate()
@@ -50,23 +59,31 @@ namespace Player
             playerControls.Disable();
         }
 
-        private void OpenInventoryWindow(InputAction.CallbackContext ctx)
+        private void OpenInventoryWindow(InputAction.CallbackContext _, bool fromClick)
         {
             Ray ray = Camera.main.ScreenPointToRay(playerControls.Player.MousePosition.ReadValue<Vector2>());
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             if (hit && hit.collider != null)
             {
                 Debug.Log("Opening inventory window");
-                BufferBlock block = hit.collider.GetComponent<BufferBlock>();
-                if (block)
+                IFactoryElement block = hit.collider.GetComponent<IFactoryElement>();
+                if (block != null)
                 {
                     if (InventoryUI.Instance.Showing && InventoryUI.Instance.ShowingFactory)
                     {
                         InventoryUI.Instance.Hide();
+                        SettingUI.Instance.Hide();
                     }
                     else
                     {
-                        InventoryUI.Instance.Show(hit.collider.GetComponent<BufferBlock>());
+                        if (block is BufferBlock bufferBlock)
+                            InventoryUI.Instance.Show(bufferBlock);
+                        else
+                            InventoryUI.Instance.Show();
+                        if (!fromClick || !SettingUI.Instance.Showing)
+                        {
+                            SettingUI.Instance.Show(block);
+                        }
                     }
                     return;
                 }
@@ -78,21 +95,27 @@ namespace Player
                 }
             }
 
-            if (InventoryUI.Instance.Showing && !InventoryUI.Instance.ShowingFactory)
+            if (InventoryUI.Instance.Showing && !InventoryUI.Instance.ShowingFactory) 
             {
-                InventoryUI.Instance.Hide();
+                if (!fromClick)
+                {
+                    InventoryUI.Instance.Hide();
+                    SettingUI.Instance.Hide();
+                }
+
             }
-            else
+            else if (!fromClick)
             {
                 InventoryUI.Instance.Show();
             }
+            
         }
 
         private void OnEscapePressed(InputAction.CallbackContext ctx)
         {
             InventoryUI.Instance.Hide();
+            SettingUI.Instance.Hide();
         }
-        
 
         public bool AddResource(Resource resource)
         {
