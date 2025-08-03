@@ -29,6 +29,12 @@ namespace Factory_Elements.Blocks
 
         public Dictionary<ResourceType, Buffer> Buffers => buffers;
 
+        public override void Awake()
+        {
+            base.Awake();
+            setBuffers(new List<Buffer>());
+        }
+
         // this code is EVIL. I'm so sorry
         protected virtual void FixedUpdate()
         {
