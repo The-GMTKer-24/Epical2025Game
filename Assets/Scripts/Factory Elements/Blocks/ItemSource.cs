@@ -18,6 +18,7 @@ namespace Factory_Elements.Blocks
 
         private void Awake()
         {
+            base.Awake();
             resources = new Queue<Resource>();
         }
 

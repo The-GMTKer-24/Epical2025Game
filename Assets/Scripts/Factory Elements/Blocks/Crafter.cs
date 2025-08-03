@@ -14,6 +14,7 @@ namespace Factory_Elements.Blocks
 
         public void Awake()
         {
+            base.Awake();
             recipeSetting = new ElementSettings<Recipe>(defaultRecipe, "Active Recipe",
                 "The recipe that this machine is currently using");
             RecipeUpdate();

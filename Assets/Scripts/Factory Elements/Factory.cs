@@ -72,6 +72,42 @@ namespace Factory_Elements
             return newFactoryElement;
         }
 
+        public IFactoryElement TryRemove(int2 location, out bool removed)
+        {
+            IFactoryElement toRemove = FromLocation(location);
+            if (toRemove != null)
+            {
+                if (!toRemove.FactoryElementType.IsPermanent)
+                {
+                    factoryElements.Remove(toRemove);
+                    foreach (var heldResource in toRemove.GetHeldResources())
+                    {
+                        for (int i = 0; i < heldResource.Value; i++)
+                        {
+                            Player.Player.Instance.AddResource(Resource.fromType(heldResource.Key));
+                        }
+                    }
+                    var factoryElement = toRemove.FactoryElementType;
+                    var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
+                        factoryElement.Size.x + 2, factoryElement.Size.y + 2));
+
+                    foreach (var e in nearby)
+                        e.OnNeighborUpdate(toRemove, false);
+                    removed = true;
+                    return toRemove;
+                }
+                else
+                {
+                    removed = false;
+                }
+            }
+            else
+            {
+                removed = false;
+            }
+            return null;
+        }
+
         private IntRect calculateRotatedRectangle(int2 location, int width, int height, Direction rotation)
         {
             // // These functions will work by assuming the rectangle is at 0,0. It will perform the basic rotation and then offset with the real location

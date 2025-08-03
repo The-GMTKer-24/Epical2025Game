@@ -2,6 +2,7 @@
 using Factory_Elements.Settings;
 using Scriptable_Objects;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Factory_Elements
 {
@@ -17,6 +18,10 @@ namespace Factory_Elements
         /// The current rotation of the machine. Null if the machine does not support rotation
         /// </summary>
         public Direction? Rotation { get; set; }
+        /// <summary>
+        ///  Atached Game Object
+        /// </summary>
+        public GameObject GameObject {get; set;}
 
         /// <summary>
         /// Changes the rotation of the machine. Throws a not implemented exception if the machine does not support rotation
@@ -57,7 +62,7 @@ namespace Factory_Elements
         /// </summary>
         /// <returns></returns>
         ISetting[] GetSettings();
-
+        
         /// <summary>
         /// The extra items and liquids (not counting the parts the block comprises) that should be returned to the inventory upon deconstruction
         /// </summary>

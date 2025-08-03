@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Factory_Elements.Settings;
 using Scriptable_Objects;
@@ -20,6 +21,13 @@ namespace Factory_Elements.Blocks
         }
 
         public abstract Direction? Rotation { get; set; }
+        public GameObject GameObject { get; set; }
+
+        public virtual void Awake()
+        {
+            GameObject = gameObject;
+        }
+
         public abstract bool Rotate(Direction direction);
         public abstract bool SupportsRotation { get; }
 

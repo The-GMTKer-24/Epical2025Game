@@ -140,6 +140,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Delete Mode Toggle",
+                    "type": "Button",
+                    "id": "298e1068-9c23-4788-bf8b-598d6f166a4b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -481,6 +490,17 @@
                     "processors": "",
                     "groups": ";XR;Keyboard&Mouse",
                     "action": "Build Mode Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77085f3d-1f3f-4e0b-9a75-c34fe4471c81",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Delete Mode Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

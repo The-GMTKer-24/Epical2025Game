@@ -5,6 +5,7 @@ using Factory_Elements;
 using Factory_Elements.Blocks;
 using Player;
 using Scriptable_Objects;
+using UI.Grid;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
@@ -26,7 +27,7 @@ namespace UI.Inventory
         [SerializeField]
         private InventorySlot inventorySlotPrefab;
 
-        private bool previousBuildMode;
+        private BuildMode previousBuildMode;
 
         private SelectableInventory? lastSelectedInventory;
         private InventorySlot previousSlot;
@@ -36,6 +37,7 @@ namespace UI.Inventory
         private bool showing;
         public void Awake()
         {
+            previousBuildMode = BuildMode.None;
             Instance = this;
         }
 
@@ -47,7 +49,7 @@ namespace UI.Inventory
         public void Show()
         {
             previousBuildMode = GridSystem.Instance.buildMode;
-            GridSystem.Instance.SetBuildMode(false);
+            GridSystem.Instance.SetBuildMode(BuildMode.None);
             PlayerCamera.Instance.EnableQuickMove(false);
             if (showing)
                 return;

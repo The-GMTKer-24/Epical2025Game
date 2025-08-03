@@ -34,16 +34,14 @@ public class HoverMaterialSwap : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(playerControls.Player.MousePosition.ReadValue<Vector2>());
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             
-        if (hit && !(hit.collider is null))
+        if (hit && hit.collider)
         {
             IFactoryElement element = hit.collider.gameObject.GetComponent<IFactoryElement>();
             if (element is null)
             {
-                if (previousHit is not null)
-                {
-                    previousHit.GetComponent<SpriteRenderer>().material = normalMaterial;
-                    previousHit = null;
-                }
+                if (!previousHit) return;
+                previousHit.GetComponent<SpriteRenderer>().material = normalMaterial;
+                previousHit = null;
                 return;
             }
 
