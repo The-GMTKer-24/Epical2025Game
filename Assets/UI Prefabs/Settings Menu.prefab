@@ -55,6 +55,7 @@ MonoBehaviour:
   recipeSettingPrefab: {fileID: 9180718291088727523, guid: 3ceff6fead6a58280a3ae9db12faf265, type: 3}
   directionalPipeSettingsPrefab: {fileID: 9180718291088727523, guid: 358a71ca3c08c8dbd9ea47e0496d011c, type: 3}
   floatSettingsPrefab: {fileID: 9180718291088727523, guid: e664df68b4fee5c15b480f33067ed070, type: 3}
+  directionalFlowSettingsPrefab: {fileID: 9180718291088727523, guid: 8a38dbc23411621ff8250086d01e24a4, type: 3}
 --- !u!1 &3241588254120418117
 GameObject:
   m_ObjectHideFlags: 0
