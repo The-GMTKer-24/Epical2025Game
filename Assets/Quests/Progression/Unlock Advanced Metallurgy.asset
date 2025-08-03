@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54a0a437e2d4b87a0fd32f069b1a086, type: 3}
+  m_Name: Unlock Advanced Metallurgy
+  m_EditorClassIdentifier: 
+  prerequisites:
+  - {fileID: 11400000, guid: cd00d5100a2c099988e689de729383fe, type: 2}
+  requirements:
+  - type: {fileID: 11400000, guid: e8ba921e8e1f7483fa875efed3dc1d0d, type: 2}
+    amount: 40
+  rewards: []
+  moneyReward: 5000
+  unlocks:
+  - {fileID: 11400000, guid: 1e386e0e34dc7cbb8a4889c549a138b6, type: 2}
+  - {fileID: 11400000, guid: 5a57b5d761e258e97890741b0dc69f0a, type: 2}
+  - {fileID: 11400000, guid: c2b60b6db5987a2e0af651502e0faa1a, type: 2}

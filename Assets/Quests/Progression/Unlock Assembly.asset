@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54a0a437e2d4b87a0fd32f069b1a086, type: 3}
+  m_Name: Unlock Assembly
+  m_EditorClassIdentifier: 
+  prerequisites:
+  - {fileID: 11400000, guid: bcaa0a7a29e461c98af2fb05e74d3a9e, type: 2}
+  requirements:
+  - type: {fileID: 11400000, guid: d5be1abe0aeac49b1ba9d64ec7c44f2a, type: 2}
+    amount: 100
+  - type: {fileID: 11400000, guid: e8ba921e8e1f7483fa875efed3dc1d0d, type: 2}
+    amount: 100
+  - type: {fileID: 11400000, guid: ff22a37f694bd292eb8ba2f865530010, type: 2}
+    amount: 100
+  rewards: []
+  moneyReward: 0
+  unlocks:
+  - {fileID: 11400000, guid: 967cf29ffc873c14abe27dff8363dfc2, type: 2}
