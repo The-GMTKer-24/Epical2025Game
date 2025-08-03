@@ -1,4 +1,5 @@
 ﻿using System;
+using Game_Info;
 using Scriptable_Objects;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Factory_Elements
         [SerializeField] private RectInt bounds;
         [SerializeField] private int maxDepth;
         [SerializeField] private int maxItemsPerNode;
+        [SerializeField] private float sellRefundRate;
 
         private Quadtree<IFactoryElement> factoryElements;
 
@@ -40,9 +42,28 @@ namespace Factory_Elements
                 return null;
             }
 
+
             if (type.Prefab == null)
                 throw new Exception(
                     $"Tried to create a factory element {type.name} that has no associated unity object. ");
+            var cost = BuildingManager.EvaluateCost(type.Cost);
+            if (cost.Item2 <= GameInfo.Instance.Money)
+            {
+                GameInfo.Instance.SpendMoney(cost.Item2);
+                foreach (ResourceQuantity quantity in cost.Item1)
+                {
+                    for (int i = 0; i < quantity.Amount; i++)
+                    {
+                        Player.Player.Instance.RemoveItem(quantity.Type);
+                    }
+                }
+            }
+            else
+            {
+                placed = false;
+                return null;
+            }
+
             var newFactoryElement = Instantiate(type.Prefab, transform);
             newFactoryElement.name =$"{type.name}@({location.x}, {location.y})";
             var factoryElement = newFactoryElement.GetComponent<IFactoryElement>();
@@ -70,6 +91,43 @@ namespace Factory_Elements
 
             placed = true;
             return newFactoryElement;
+        }
+
+        public IFactoryElement TryRemove(int2 location, out bool removed)
+        {
+            IFactoryElement toRemove = FromLocation(location);
+            if (toRemove != null)
+            {
+                if (!toRemove.FactoryElementType.IsPermanent)
+                {
+                    factoryElements.Remove(toRemove);
+                    foreach (var heldResource in toRemove.GetHeldResources())
+                    {
+                        for (int i = 0; i < heldResource.Value; i++)
+                        {
+                            Player.Player.Instance.AddResource(Resource.fromType(heldResource.Key));
+                        }
+                    }
+                    GameInfo.Instance.GainMoney((int)(BuildingManager.EvaluateCost(toRemove.FactoryElementType.Cost).Item2 * sellRefundRate));
+                    var factoryElement = toRemove.FactoryElementType;
+                    var nearby = factoryElements.ItemsInArea(new IntRect(location.x - 1, location.y - 1,
+                        factoryElement.Size.x + 2, factoryElement.Size.y + 2));
+
+                    foreach (var e in nearby)
+                        e.OnNeighborUpdate(toRemove, false);
+                    removed = true;
+                    return toRemove;
+                }
+                else
+                {
+                    removed = false;
+                }
+            }
+            else
+            {
+                removed = false;
+            }
+            return null;
         }
 
         private IntRect calculateRotatedRectangle(int2 location, int width, int height, Direction rotation)

@@ -27,6 +27,7 @@ namespace Factory_Elements.Blocks
 
         private void Awake()
         {
+            base.Awake();
             minDistance = 1.0f / capacity;
             items = new List<BeltItem>(capacity);
             aheadNeighbor = null;

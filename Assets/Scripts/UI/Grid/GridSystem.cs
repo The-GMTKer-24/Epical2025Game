@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Factory_Elements;
 using Game_Info;
 using Scriptable_Objects;
+using UI.Grid;
 using Unity.Mathematics;
 using UnityEngine.Serialization;
 
@@ -21,8 +22,10 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private RippleEffect rippleController;
     [SerializeField] private GameObject placeSoundPrefab;
     [SerializeField] private GameObject rejectionSoundPrefab;
+    [SerializeField] private GameObject removalSoundPrefab;
     [SerializeField] private float placeSoundLifetime = 0.5f;
     [SerializeField] private float rejectionSoundLifetime = 0.5f;
+    [SerializeField] private float removeSoundLifetime;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -42,7 +45,7 @@ public class GridSystem : MonoBehaviour
     private bool isPlacing;
     private GameObject placementGhost;
     private FactoryElementType previousPlacementGhostType;
-    public bool buildMode { get; private set; }
+    public BuildMode buildMode { get; private set; }
     public Direction placeDirection { get; private set; }
     public static GridSystem Instance { get; private set; }
     
@@ -55,20 +58,30 @@ public class GridSystem : MonoBehaviour
         placeDirection = Direction.North;
     }
 
-    public void SetBuildMode(bool mode)
+    public void SetBuildMode(BuildMode mode)
     {
         buildMode = mode;
-        rippleController.SetActive(buildMode);
-        renderGrid = mode;
+        rippleController.SetActive(mode is BuildMode.Building or BuildMode.Removing);
+        renderGrid = mode == BuildMode.Building;
     }
 
     private void ToggleBuildMode(InputAction.CallbackContext ctx)
     {
-        SetBuildMode(!buildMode);
+        SetBuildMode(buildMode != BuildMode.Building ? BuildMode.Building : BuildMode.None);
     }
+    private void ToggleRemoveMode(InputAction.CallbackContext ctx)
+    {
+        SetBuildMode(buildMode != BuildMode.Removing ? BuildMode.Removing : BuildMode.None);
+    }
+    private void CancelPressed(InputAction.CallbackContext obj)
+    {
+        SetBuildMode(BuildMode.None);
+    }
+
 
     private void Start()
     {
+        SetBuildMode(BuildMode.None);
         gridSystemHeight = cellHeight * gridHeight;
         gridSystemWidth = cellWidth * gridWidth;
         gameInfo = GameInfo.Instance;
@@ -85,7 +98,10 @@ public class GridSystem : MonoBehaviour
         playerControls.Player.PreviousPlaceableItem.performed += selectPreviousItem;
         playerControls.Player.Rotate.performed += rotateMachine;
         playerControls.Player.BuildModeToggle.performed += ToggleBuildMode;
+        playerControls.Player.DeleteModeToggle.performed += ToggleRemoveMode;
+        playerControls.Player.Cancel.performed += CancelPressed;
     }
+
 
     private void rotateMachine(InputAction.CallbackContext ctx)
     {
@@ -191,7 +207,7 @@ public class GridSystem : MonoBehaviour
     {
         lineRenderer.enabled = renderGrid;
 
-        if (buildMode)
+        if (buildMode == BuildMode.Building)
         {
             var mouseWorldPoint =
                 camera.ScreenToWorldPoint(playerControls.Player.MousePosition.ReadValue<Vector2>());
@@ -239,7 +255,7 @@ public class GridSystem : MonoBehaviour
             }
         }
         
-        if (isPlacing && buildMode)
+        if (isPlacing && buildMode != BuildMode.None)
         {
             var mouseWorldPoint =
                 camera.ScreenToWorldPoint(new Vector2(Mouse.current.position.x.value, Mouse.current.position.y.value));
@@ -253,34 +269,49 @@ public class GridSystem : MonoBehaviour
                 return;
             }
 
-            
-            GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), placeDirection, out bool placed);
-            if (placed)
+            if (buildMode == BuildMode.Building)
             {
-                IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
-                Vector2 worldPoint = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
-
-                placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
-                if (element.SupportsRotation)
+                GameObject placedElement = factory.TryPlace(selectedElement, new int2((int)gridSpace.x, (int)gridSpace.y), placeDirection, out bool placed);
+                if (placed)
                 {
-                    placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
-                }
+                    IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
+                    Vector2 worldPoint = GridToWorldSpace(new int2((int)gridSpace.x, (int)gridSpace.y));
 
-                placedInBatch = true;
-                
-                GameObject placeSound = Instantiate(placeSoundPrefab);
-                Destroy(placeSound, placeSoundLifetime);
-            }
-            else
-            {
-                // It'd be better to just detect if you're holding, but this works
-                if (!placedInBatch)
-                {
-                    GameObject rejectionSound = Instantiate(rejectionSoundPrefab);
-                    Destroy(rejectionSound, rejectionSoundLifetime);
+                    placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
+                    if (element.SupportsRotation)
+                    {
+                        placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
+                    }
+
                     placedInBatch = true;
+                
+                    GameObject placeSound = Instantiate(placeSoundPrefab);
+                    Destroy(placeSound, placeSoundLifetime);
+                }
+                else
+                {
+                    // It'd be better to just detect if you're holding, but this works
+                    if (!placedInBatch)
+                    {
+                        GameObject rejectionSound = Instantiate(rejectionSoundPrefab);
+                        Destroy(rejectionSound, rejectionSoundLifetime);
+                        placedInBatch = true;
+                    }
                 }
             }
+            else if (buildMode == BuildMode.Removing)
+            {
+                IFactoryElement placedElement = factory.TryRemove(new int2((int)gridSpace.x, (int)gridSpace.y), out bool removed);
+                if (removed)
+                {
+                    Destroy(placedElement.GameObject);
+                    
+                    GameObject removeSound = Instantiate(removalSoundPrefab);
+                    Destroy(removeSound, removeSoundLifetime);
+                }
+
+            }
+
         }
     }
 

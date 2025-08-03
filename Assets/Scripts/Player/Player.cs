@@ -27,6 +27,8 @@ namespace Player
             playerControls = new PlayerControls();
             playerControls.Player.Interact.performed += OpenInventoryWindow;
             playerControls.Player.Cancel.performed += OnEscapePressed;
+            playerControls.Player.DeleteModeToggle.performed += OnEscapePressed;
+            playerControls.Player.BuildModeToggle.performed += OnEscapePressed;
         }
 
         // Update is called once per frame
@@ -106,6 +108,23 @@ namespace Player
                 {
                     inventory[resourceStack.ResourceType].AddResource(resourceStack.TakeResource());
                 }
+            }
+        }
+
+        public Resource RemoveItem(ResourceType resourceType)
+        {
+            if (!inventory.ContainsKey(resourceType))
+            {
+                return null;
+            }
+
+            if (inventory[resourceType].Quantity > 0)
+            {
+                return inventory[resourceType].TakeResource();
+            }
+            else
+            {
+                return null;
             }
         }
     }

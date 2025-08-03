@@ -226,6 +226,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete Mode Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""298e1068-9c23-4788-bf8b-598d6f166a4b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -567,6 +576,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";XR;Keyboard&Mouse"",
                     ""action"": ""Build Mode Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77085f3d-1f3f-4e0b-9a75-c34fe4471c81"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Mode Toggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1169,6 +1189,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_BuildModeToggle = m_Player.FindAction("Build Mode Toggle", throwIfNotFound: true);
+        m_Player_DeleteModeToggle = m_Player.FindAction("Delete Mode Toggle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1277,6 +1298,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_BuildModeToggle;
+    private readonly InputAction m_Player_DeleteModeToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1349,6 +1371,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @BuildModeToggle => m_Wrapper.m_Player_BuildModeToggle;
         /// <summary>
+        /// Provides access to the underlying input action "Player/DeleteModeToggle".
+        /// </summary>
+        public InputAction @DeleteModeToggle => m_Wrapper.m_Player_DeleteModeToggle;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1419,6 +1445,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @BuildModeToggle.started += instance.OnBuildModeToggle;
             @BuildModeToggle.performed += instance.OnBuildModeToggle;
             @BuildModeToggle.canceled += instance.OnBuildModeToggle;
+            @DeleteModeToggle.started += instance.OnDeleteModeToggle;
+            @DeleteModeToggle.performed += instance.OnDeleteModeToggle;
+            @DeleteModeToggle.canceled += instance.OnDeleteModeToggle;
         }
 
         /// <summary>
@@ -1475,6 +1504,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @BuildModeToggle.started -= instance.OnBuildModeToggle;
             @BuildModeToggle.performed -= instance.OnBuildModeToggle;
             @BuildModeToggle.canceled -= instance.OnBuildModeToggle;
+            @DeleteModeToggle.started -= instance.OnDeleteModeToggle;
+            @DeleteModeToggle.performed -= instance.OnDeleteModeToggle;
+            @DeleteModeToggle.canceled -= instance.OnDeleteModeToggle;
         }
 
         /// <summary>
@@ -1880,6 +1912,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBuildModeToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Delete Mode Toggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDeleteModeToggle(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
