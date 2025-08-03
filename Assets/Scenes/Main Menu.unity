@@ -784,7 +784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenuObjects: {fileID: 810708662}
   creditsMenuObjects: {fileID: 1222162511}
-  sceneToLoad: Main
+  sceneToLoad: Cutscene
 --- !u!1 &756930835
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace UI.MainMenu
         [SerializeField] private GameObject mainMenuObjects;
         [SerializeField] private GameObject creditsMenuObjects;
         
-        [SerializeField] private string sceneToLoad = "Main";
+        [SerializeField] private string sceneToLoad = "Cutscene";
 
         public void Awake()
         {
