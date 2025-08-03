@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd494a49f08401448375c3ef328b8a6, type: 3}
   m_Name: Metal Rod
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
+  icon: {fileID: 21300000, guid: 4adabab916ca8fdf1a94aecc31d7e8d3, type: 3}
   cost: 0
   marketBehaviour:
     maxPrice: 0
@@ -20,4 +20,5 @@ MonoBehaviour:
     minPrice: 0
     priceAddedFluctuationAverage: 0
     priceFluctuationStandardDeviation: 0
-  inWorldSprite: {fileID: 21300000, guid: ab86f478e3e8766778433c39973444d2, type: 3}
+    supplyDecayRate: 0
+  inWorldSprite: {fileID: 21300000, guid: 4adabab916ca8fdf1a94aecc31d7e8d3, type: 3}
