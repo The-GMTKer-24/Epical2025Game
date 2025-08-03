@@ -29,6 +29,7 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private float removeSoundLifetime;
     [SerializeField] private FactoryElementType marketType;
     [SerializeField] private FactoryElementType itemGeneratorType;
+    [SerializeField] private FactoryElementType waterGeneratorType;
 
     [SerializeField] private FactoryElementType itemSource;
 
@@ -101,7 +102,6 @@ public class GridSystem : MonoBehaviour
                 placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
             }
 
-            placedInBatch = true;
         }
         else
         {
@@ -121,11 +121,32 @@ public class GridSystem : MonoBehaviour
                 placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
             }
 
-            placedInBatch = true;
         }
         else
         {
             Debug.LogError("UNABLE TO PLACE TRASH");
+        }
+        
+        int2 waterPosition = new int2(gridWidth/2, gridHeight/2);
+        placedElement = factory.TryPlace(waterGeneratorType, waterPosition, Direction.North, out placed);
+        if (placed)
+        {
+            print("Placing water source");
+            IFactoryElement element = placedElement.GetComponent<IFactoryElement>();
+            print(element);
+            Vector2 worldPoint = GridToWorldSpace(waterPosition);
+            
+
+            placedElement.transform.position = worldPoint + new Vector2( (float)element.FactoryElementType.Size.x /2 , (float)element.FactoryElementType.Size.y/2 );
+            if (element.SupportsRotation)
+            {
+                placedElement.transform.rotation = Quaternion.Euler(0,0, 90*-(int)placeDirection); 
+            }
+
+        }
+        else
+        {
+            Debug.LogError("UNABLE TO PLACE WATER");
         }
     }
 

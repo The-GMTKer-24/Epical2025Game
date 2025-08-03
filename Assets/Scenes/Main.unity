@@ -213,6 +213,7 @@ MonoBehaviour:
   removeSoundLifetime: 0.5
   marketType: {fileID: 11400000, guid: 8e718260c1f019a2395d5bbd4bd0109b, type: 2}
   itemGeneratorType: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
+  waterGeneratorType: {fileID: 11400000, guid: 404aa2f1ff1c6486399b7a63fcebac61, type: 2}
   itemSource: {fileID: 11400000, guid: f2b1464155ec77f48b5f415f3afb9cb3, type: 2}
   trophy: {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}
 --- !u!4 &75410824
@@ -22786,7 +22787,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1778358349}
   m_HandleRect: {fileID: 1778358348}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
