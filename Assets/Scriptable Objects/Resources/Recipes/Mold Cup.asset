@@ -17,6 +17,6 @@ MonoBehaviour:
     amount: 1
   outputs:
   - type: {fileID: 11400000, guid: f89a8c72ba3315a73b05976c09f94872, type: 2}
-    amount: 0
+    amount: 3
   processingTime: 0
   minimumTemperature: 0

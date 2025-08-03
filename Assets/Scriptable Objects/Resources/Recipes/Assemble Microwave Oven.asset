@@ -26,7 +26,7 @@ MonoBehaviour:
   - type: {fileID: 11400000, guid: 4533524fe4d7fe7328c8d17c65f16bbd, type: 2}
     amount: 5
   outputs:
-  - type: {fileID: 0}
-    amount: 0
+  - type: {fileID: 11400000, guid: 650e44d6ad435e7eda332440fac08355, type: 2}
+    amount: 1
   processingTime: 15
   minimumTemperature: 0

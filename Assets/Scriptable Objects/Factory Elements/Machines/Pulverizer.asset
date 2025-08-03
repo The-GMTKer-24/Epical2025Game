@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost:
   - type: {fileID: 11400000, guid: 873084d8fd59abe6b80d0ef709811f83, type: 2}
-    amount: 20
+    amount: 15
   - type: {fileID: 11400000, guid: f2a8b08488c0168ef8e3149c79efc9ea, type: 2}
-    amount: 10
+    amount: 5
   - type: {fileID: 11400000, guid: 649e11e3b0790872b80c5e5c7a40f376, type: 2}
-    amount: 30
+    amount: 10
   - type: {fileID: 11400000, guid: 7c9b6233e40e6f8b388c7afe3781b386, type: 2}
-    amount: 4
+    amount: 1
   prefab: {fileID: 8729464739455396551, guid: ed8ceaf57f9e7a145b1cf11f6e413191, type: 3}
   size:
     x: 1
