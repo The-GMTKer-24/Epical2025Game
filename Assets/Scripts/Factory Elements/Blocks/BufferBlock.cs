@@ -97,7 +97,7 @@ namespace Factory_Elements.Blocks
                 Debug.Log(neighbor);
                 Debug.Log(outputs);
                 foreach (OutputLocation location in outputs[neighbor])
-                    if (configuration.Value.PipeSettingsFromLocation[location] == resourceType)
+                    if (configuration.Value == null || configuration.Value.PipeSettingsFromLocation[location] == resourceType)
                         canAccept = true;
                 if (buffer.Quantity != 0 && canAccept)
                     if (neighbor.AcceptsResource(this, buffer.QueryResource()))
