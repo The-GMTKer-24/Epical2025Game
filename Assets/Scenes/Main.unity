@@ -3770,8 +3770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rippleMaterial: {fileID: 2100000, guid: 161a2fa11d93d69859e157430ee92a25, type: 2}
-  buildColor: {r: 0, g: 0, b: 0, a: 0}
-  deleteColor: {r: 0, g: 0, b: 0, a: 0}
+  buildColor: {r: 0.18396226, g: 0.28008005, b: 0.735849, a: 0.68235296}
+  deleteColor: {r: 0.764151, g: 0.21266466, b: 0.21266466, a: 0.70980394}
   duration: 0.5
   soundWhenSwitching: {fileID: 1709309343}
 --- !u!82 &1709309343
@@ -4209,7 +4209,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1778358349}
   m_HandleRect: {fileID: 1778358348}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
