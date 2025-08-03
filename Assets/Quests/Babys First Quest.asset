@@ -10,14 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b54a0a437e2d4b87a0fd32f069b1a086, type: 3}
-  m_Name: First Quest
+  m_Name: Babys First Quest
   m_EditorClassIdentifier: 
   prerequisites: []
-  requirements:
-  - type: {fileID: 11400000, guid: 3f07bf5f6f17ad14eb32ee0459c98ee9, type: 2}
-    amount: 3
-  rewards:
-  - type: {fileID: 11400000, guid: 05d6a720fb5acbf478cc4142e672e5ca, type: 2}
-    amount: 8
-  moneyReward: 20
-  unlocks: []
+  requirements: []
+  rewards: []
+  moneyReward: 10
+  unlocks:
+  - {fileID: 11400000, guid: 74cbc29d3868f48e7bde2d7788aa71c6, type: 2}

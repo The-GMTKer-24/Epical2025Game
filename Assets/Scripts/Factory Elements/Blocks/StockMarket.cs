@@ -27,6 +27,16 @@ namespace Factory_Elements.Blocks
         {
             if (Array.Exists(sellableItems.Resources, element => element==resource.ResourceType))
             {
+                var submittedItems = GameInfo.Instance.SubmittedItems;
+                if (submittedItems.ContainsKey(resource.ResourceType))
+                {
+                    submittedItems[resource.ResourceType]++;
+                }
+                else
+                {
+                    submittedItems.Add(resource.ResourceType, 1);
+                }
+                
                 GameInfo.Instance.GainMoney((int)((ItemType)resource.ResourceType).MarketBehaviour.MaxPrice);
                 return true;
             }

@@ -17,6 +17,10 @@ namespace Factory_Elements.Blocks
         [SerializeField] public float equalizationRate = 0.15f;
         [SerializeField] public GameObject beltItemPrefab;
 
+        [SerializeField] private FactoryElementType conveyerType;
+        [SerializeField] private Sprite rotatyConveyer;
+        [SerializeField] private Sprite normalConveyer;
+
         private IFactoryElement aheadNeighbor;
         protected ElementSettings<Direction> directionSetting;
 
@@ -125,8 +129,19 @@ namespace Factory_Elements.Blocks
                 default: throw new Exception("Invalid direction");
             }
 
-            print(position);
             aheadNeighbor = Factory.Instance.FromLocation(Position + direction);
+            
+            // if (aheadNeighbor is not null && aheadNeighbor.FactoryElementType == conveyerType)
+            // {
+            //     if (aheadNeighbor.Rotation != Rotation)
+            //     {
+            //         aheadNeighbor.GameObject.GetComponent<SpriteRenderer>().sprite = rotatyConveyer;
+            //     }
+            //     else
+            //     {
+            //         aheadNeighbor.GameObject.GetComponent<SpriteRenderer>().sprite = normalConveyer;
+            //     }
+            // }
         }
 
         public override bool AcceptsResource(IFactoryElement sender, Resource resource)

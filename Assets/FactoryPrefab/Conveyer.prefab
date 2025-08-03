@@ -50,6 +50,9 @@ MonoBehaviour:
   rate: 5
   equalizationRate: 0.15
   beltItemPrefab: {fileID: 151456895289348352, guid: 8187620555795be8f94e0a2601dfba27, type: 3}
+  conveyerType: {fileID: 11400000, guid: 85b1ecdeda15a9443869030abfd34508, type: 2}
+  rotatyConveyer: {fileID: 574137338324900394, guid: 21b5ccf34d4dc8d359899a3519283026, type: 3}
+  normalConveyer: {fileID: -288591241881019157, guid: 8015a4f31480b3463ad5d4b711f44250, type: 3}
 --- !u!212 &8601062692840750735
 SpriteRenderer:
   m_ObjectHideFlags: 0
